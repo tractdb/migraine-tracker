@@ -1,0 +1,8 @@
+{
+  "name": "migraine-tracker",
+  "integrations": {
+    "cordova": {}
+  },
+  "type": "ionic-angular",
+  "pro_id": "a4ded52a"
+}
