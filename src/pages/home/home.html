@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <button ion-button menuToggle>
+    <button ion-button menuToggle icon-only>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>Home</ion-title>
@@ -8,11 +8,91 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Ionic Menu Starter</h3>
+  <h3>Migraine Tracking App</h3>
+  <ion-card *ngIf="!hasGoal">
+    <ion-card-header class="my-teams-header">No Goals Configured</ion-card-header>
+    <ion-card-content>
+      <p>You have not configured any migraine tracking goals.</p>
+      <button ion-button icon-left full (click)="addGoal()">
+        <ion-icon name="add-circle"></ion-icon>
+        Add a Goal
+      </button>
+    </ion-card-content>
+  </ion-card>
 
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will show you the way.
-  </p>
+  <p>Below is stuff to play around with CouchDB: </p>
 
-  <button ion-button secondary menuToggle>Toggle Menu</button>
+  <ion-card>
+    <ion-card-header>For Login Stuff</ion-card-header>
+    <ion-card-content>
+      <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
+        <div class="form-group" >
+          <label for="userName">User Name:</label>
+          <input (ngModel)="userName" name="userName" required id="userName" type="text" class="form-control" placeholder="User Name..." />
+        </div>
+        <div class="form-group" >
+          <label for="password">Password:</label>
+          <input (ngModel)="password" name="password" required id="password" type="password" class="form-control" placeholder="Password..." />
+        </div>
+        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>For Goals</ion-card-header>
+    <ion-card-content>
+
+      <button ion-button icon-left full (click)="viewGoals()">
+        <ion-icon name="eye"></ion-icon>
+        View Current Goal
+      </button>
+
+      <button ion-button icon-left full (click)="addGoal()">
+        <ion-icon name="add-circle"></ion-icon>
+        Add a Goal
+      </button>
+
+      <button ion-button icon-left full (click)="addGoal()">
+        <ion-icon name="remove-circle"></ion-icon>
+        Remove a Goal
+      </button>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>For Modifying Fields</ion-card-header>
+    <ion-card-content>
+
+      <button ion-button icon-left full (click)="viewFields()">
+        <ion-icon name="eye"></ion-icon>
+        View Current Fields
+      </button>
+
+      <button ion-button icon-left full (click)="addGoal()">
+        <ion-icon name="add-circle"></ion-icon>
+        Add a Field
+      </button>
+
+      <button ion-button icon-left full (click)="addGoal()">
+        <ion-icon name="remove-circle"></ion-icon>
+        Remove a Field
+      </button>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>For Tracking</ion-card-header>
+    <ion-card-content>
+
+    </ion-card-content>
+  </ion-card>
+
+
+
+
+
+
 </ion-content>
