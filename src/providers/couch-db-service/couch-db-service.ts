@@ -96,5 +96,5 @@ export class CouchDbServiceProvider {
       this.removeFieldFromArray(field, this.currentUser.goals[i].fields);
     }
   }
-  
+
 }

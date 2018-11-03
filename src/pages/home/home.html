@@ -25,16 +25,16 @@
   <ion-card>
     <ion-card-header>For Login Stuff</ion-card-header>
     <ion-card-content>
-      <form #loginForm="ngForm" (ngSubmit)="login(loginForm.value)" autocomplete="off" novalidate>
-        <div class="form-group" >
-          <label for="userName">User Name:</label>
-          <input (ngModel)="userName" name="userName" required id="userName" type="text" class="form-control" placeholder="User Name..." />
-        </div>
-        <div class="form-group" >
-          <label for="password">Password:</label>
-          <input (ngModel)="password" name="password" required id="password" type="password" class="form-control" placeholder="Password..." />
-        </div>
-        <button type="submit" [disabled]="loginForm.invalid" class="btn btn-primary">Login</button>
+      <form (ngSubmit)="login()" autocomplete="off" novalidate>
+        <ion-item>
+          <ion-label>User Name:</ion-label>
+          <ion-input type="text" [(ngModel)]="userName" name="userName" required placeholder="User Name..."></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label>Password:</ion-label>
+          <ion-input type="password" [(ngModel)]="password" name="password" required placeholder="Password..."></ion-input>
+        </ion-item>
+        <button ion-button type="submit" block>Login</button>
       </form>
     </ion-card-content>
   </ion-card>

@@ -11,6 +11,8 @@ export class HomePage {
 
   public hasGoal;
   public userLoggedIn;
+  userName;
+  password;
 
   constructor(public navCtrl: NavController,
               private couchDbService: CouchDbServiceProvider) {
@@ -28,7 +30,7 @@ export class HomePage {
 
 
   login(formValues) {
-    this.couchDbService.login(formValues.userName, formValues.password);
+    this.couchDbService.login(this.userName, this.password);
   }
 
   viewGoals() {
