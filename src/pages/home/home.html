@@ -81,10 +81,10 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>View Goals</ion-card-header>
+    <ion-card-header>View Active Goals</ion-card-header>
     <ion-card-content>
 
-      <button ion-button icon-left full (click)="viewGoals()">
+      <button ion-button icon-left full (click)="viewActiveGoals()">
         <ion-icon name="eye"></ion-icon>
         View Current Goals
       </button>
@@ -93,24 +93,27 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>For Goals</ion-card-header>
+    <ion-card-header>Remove Goals</ion-card-header>
     <ion-card-content>
 
-      <ion-item>
-        <ion-label>
-          Current Goals:
-        </ion-label>
+      <ion-list>
 
-        <ion-select multiple="true">
-          <ion-option *ngFor="let goal of goals" [value]="goal">{{goal['goaltype']}}</ion-option>
-        </ion-select>
+        <ion-item>
+          <ion-label>
+            Select Goals to Remove:
+          </ion-label>
 
-      </ion-item>
+          <ion-select multiple="true" (ionChange)="removeExGoal($event)">
+            <ion-option *ngFor="let goal of goals" [value]="goal">{{goal['goaltype']}}</ion-option>
+          </ion-select>
 
-      <button ion-button icon-left full (click)="removeExGoal()">
-        <ion-icon name="remove-circle"></ion-icon>
-        Remove Goal
-      </button>
+        </ion-item>
+      </ion-list>
+
+      <!--<button ion-button icon-left full (click)="removeExGoal()">-->
+        <!--<ion-icon name="remove-circle"></ion-icon>-->
+        <!--Remove Goal-->
+      <!--</button>-->
 
     </ion-card-content>
   </ion-card>

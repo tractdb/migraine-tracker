@@ -54,6 +54,7 @@ export class CouchDbServiceProvider {
 
     // needs to add date activated
     goal["activated"] = new Date();
+    goal["deactivated"] = null;
     this.currentUser.goals.push(goal);
     console.log(goal);
   }
@@ -63,10 +64,14 @@ export class CouchDbServiceProvider {
     return this.currentUser.goals;
   }
 
-  deactivateGoal(goal) {
-    // deactivates a goal; probably just takes the goal
+  getActiveGoals () {
+    return this.currentUser.goals.filter(goal => goal.deactivated === null);
+  }
+
+  deactivateGoal(goals) {
+    // deactivates goals
     for (let i=0; i<this.currentUser.goals.length; i++){
-      if (this.currentUser.goals[i].id === goal){
+      if (goals.includes(this.currentUser.goals[i])){
         this.currentUser.goals[i]["deactivated"] = new Date();
       }
     }

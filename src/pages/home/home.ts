@@ -31,7 +31,7 @@ export class HomePage {
       fields: ['']
     });
 
-    this.goals = this.couchDbService.getGoals();
+    this.goals = this.couchDbService.getActiveGoals();
 
   }
 
@@ -51,16 +51,16 @@ export class HomePage {
 
   addExGoal() {
     this.couchDbService.addGoal(this.goalAddition.value);
-    this.goals = this.couchDbService.getGoals();
-    console.log(this.goals[0]);
+    this.goals = this.couchDbService.getActiveGoals();
   }
 
-  viewGoals() {
-    console.log(this.couchDbService.getGoals());
+  removeExGoal (goals) {
+    this.couchDbService.deactivateGoal(goals);
+    this.goals = this.couchDbService.getActiveGoals();
   }
 
-  viewFields() {
-    console.log(this.couchDbService.getActiveTrackingFields());
+  viewActiveGoals() {
+    console.log(this.couchDbService.getActiveGoals());
   }
 
 
