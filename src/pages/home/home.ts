@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GoalTypePage} from "../addGoal/goal-type/goal-type";
+import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'page-home',
@@ -11,11 +12,16 @@ export class HomePage {
 
   public hasGoal;
   public userLoggedIn;
-  userName;
-  password;
+  private loginInfo: FormGroup;
+
 
   constructor(public navCtrl: NavController,
-              private couchDbService: CouchDbServiceProvider) {
+              private couchDbService: CouchDbServiceProvider,
+              private formBuilder: FormBuilder) {
+    this.loginInfo = this.formBuilder.group({
+      userName: ['', Validators.required],
+      password: ['', Validators.required],
+    });
 
   }
 
@@ -30,7 +36,7 @@ export class HomePage {
 
 
   login(formValues) {
-    this.couchDbService.login(this.userName, this.password);
+    this.couchDbService.login(this.loginInfo.value.userName, this.loginInfo.value.password);
   }
 
   viewGoals() {
