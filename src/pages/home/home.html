@@ -40,59 +40,80 @@
   </ion-card>
 
   <ion-card>
-    <ion-card-header>For Goals</ion-card-header>
+    <ion-card-header>Add Goal</ion-card-header>
+    <ion-card-content>
+      <form [formGroup]="goalAddition" (submit)="addExGoal($event)">
+        <ion-list>
+
+          <ion-item>
+            <ion-label>
+              Goal Type
+            </ion-label>
+
+            <ion-select formControlName="goaltype">
+              <ion-option value="Learning">Learning</ion-option>
+              <ion-option value="Predicting">Predicting</ion-option>
+              <ion-option value="Monitoring">Monitoring</ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>
+              Fields
+            </ion-label>
+
+            <ion-select formControlName="fields" multiple="true">
+              <ion-option value="Symptoms">Symptoms</ion-option>
+              <ion-option value="Treatments">Treatments</ion-option>
+              <ion-option value="Triggers">Contributing Factors ("Triggers")</ion-option>
+            </ion-select>
+          </ion-item>
+
+        </ion-list>
+
+        <button ion-button icon-left full type="submit">
+          <ion-icon name="add-circle"></ion-icon>
+          Add a Goal
+        </button>
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>View Goals</ion-card-header>
     <ion-card-content>
 
       <button ion-button icon-left full (click)="viewGoals()">
         <ion-icon name="eye"></ion-icon>
-        View Current Goal
-      </button>
-
-      <button ion-button icon-left full (click)="addGoal()">
-        <ion-icon name="add-circle"></ion-icon>
-        Add a Goal
-      </button>
-
-      <button ion-button icon-left full (click)="addGoal()">
-        <ion-icon name="remove-circle"></ion-icon>
-        Remove a Goal
+        View Current Goals
       </button>
 
     </ion-card-content>
   </ion-card>
 
   <ion-card>
-    <ion-card-header>For Modifying Fields</ion-card-header>
+    <ion-card-header>For Goals</ion-card-header>
     <ion-card-content>
 
-      <button ion-button icon-left full (click)="viewFields()">
-        <ion-icon name="eye"></ion-icon>
-        View Current Fields
-      </button>
+      <ion-item>
+        <ion-label>
+          Current Goals:
+        </ion-label>
 
-      <button ion-button icon-left full (click)="addGoal()">
-        <ion-icon name="add-circle"></ion-icon>
-        Add a Field
-      </button>
+        <ion-select multiple="true">
+          <ion-option *ngFor="let goal of goals" [value]="goal">{{goal['goaltype']}}</ion-option>
+        </ion-select>
 
-      <button ion-button icon-left full (click)="addGoal()">
+      </ion-item>
+
+      <button ion-button icon-left full (click)="removeExGoal()">
         <ion-icon name="remove-circle"></ion-icon>
-        Remove a Field
+        Remove Goal
       </button>
 
     </ion-card-content>
   </ion-card>
-
-  <ion-card>
-    <ion-card-header>For Tracking</ion-card-header>
-    <ion-card-content>
-
-    </ion-card-content>
-  </ion-card>
-
-
-
-
 
 
 </ion-content>

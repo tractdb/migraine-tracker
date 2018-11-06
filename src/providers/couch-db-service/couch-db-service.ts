@@ -55,6 +55,7 @@ export class CouchDbServiceProvider {
     // needs to add date activated
     goal["activated"] = new Date();
     this.currentUser.goals.push(goal);
+    console.log(goal);
   }
 
   getGoals () {
