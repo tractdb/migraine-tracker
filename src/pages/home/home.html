@@ -9,8 +9,8 @@
 
 <ion-content padding>
   <h3>Migraine Tracking App</h3>
-  <ion-card *ngIf="!hasGoal">
-    <ion-card-header class="my-teams-header">No Goals Configured</ion-card-header>
+  <ion-card *ngIf="goals.length==0">
+    <ion-card-header>No Goals Configured</ion-card-header>
     <ion-card-content>
       <p>You have not configured any migraine tracking goals.</p>
       <button ion-button icon-left full (click)="addGoal()">
@@ -19,104 +19,4 @@
       </button>
     </ion-card-content>
   </ion-card>
-
-  <p>Below is stuff to play around with CouchDB: </p>
-
-  <ion-card>
-    <ion-card-header>For Login Stuff</ion-card-header>
-    <ion-card-content>
-      <form (ngSubmit)="login()" [formGroup]="loginInfo">
-        <ion-item>
-          <ion-label>User Name:</ion-label>
-          <ion-input type="text" formControlName="userName" placeholder="User Name..."></ion-input>
-        </ion-item>
-        <ion-item>
-          <ion-label>Password:</ion-label>
-          <ion-input type="password" formControlName="password" placeholder="Password..."></ion-input>
-        </ion-item>
-        <button ion-button type="submit" [disabled]="!loginInfo.valid">Login</button>
-      </form>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>Add Goal</ion-card-header>
-    <ion-card-content>
-      <form [formGroup]="goalAddition" (submit)="addExGoal($event)">
-        <ion-list>
-
-          <ion-item>
-            <ion-label>
-              Goal Type
-            </ion-label>
-
-            <ion-select formControlName="goaltype">
-              <ion-option value="Learning">Learning</ion-option>
-              <ion-option value="Predicting">Predicting</ion-option>
-              <ion-option value="Monitoring">Monitoring</ion-option>
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-label>
-              Fields
-            </ion-label>
-
-            <ion-select formControlName="fields" multiple="true">
-              <ion-option value="Symptoms">Symptoms</ion-option>
-              <ion-option value="Treatments">Treatments</ion-option>
-              <ion-option value="Triggers">Contributing Factors ("Triggers")</ion-option>
-            </ion-select>
-          </ion-item>
-
-        </ion-list>
-
-        <button ion-button icon-left full type="submit">
-          <ion-icon name="add-circle"></ion-icon>
-          Add a Goal
-        </button>
-      </form>
-
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>View Active Goals</ion-card-header>
-    <ion-card-content>
-
-      <button ion-button icon-left full (click)="viewActiveGoals()">
-        <ion-icon name="eye"></ion-icon>
-        View Current Goals
-      </button>
-
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>Remove Goals</ion-card-header>
-    <ion-card-content>
-
-      <ion-list>
-
-        <ion-item>
-          <ion-label>
-            Select Goals to Remove:
-          </ion-label>
-
-          <ion-select multiple="true" (ionChange)="removeExGoal($event)">
-            <ion-option *ngFor="let goal of goals" [value]="goal">{{goal['goaltype']}}</ion-option>
-          </ion-select>
-
-        </ion-item>
-      </ion-list>
-
-      <!--<button ion-button icon-left full (click)="removeExGoal()">-->
-        <!--<ion-icon name="remove-circle"></ion-icon>-->
-        <!--Remove Goal-->
-      <!--</button>-->
-
-    </ion-card-content>
-  </ion-card>
-
-
 </ion-content>
