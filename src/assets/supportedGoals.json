@@ -1,0 +1,37 @@
+[
+    {
+        "goal": "Learning about my migraines",
+        "subgoals": [
+            {
+                "goal": "Identifying potential contributing factors",
+                "description": "",
+                "examples": "",
+            },
+            {
+                "goal": "Learning the frequency of my migraines",
+                "description": "",
+                "examples": "",
+            },
+            {
+                "goal": "Learning the effect of making a change",
+                "description": "",
+                "examples": "",
+            },
+        ],
+        "description": "",
+        "examples": "",
+        "effort": "medium"
+    },
+    {
+        "goal": "Predicting future migraines",
+        "description": "",
+        "examples": "",
+        "effort": "high"
+    },
+    {
+        "goal": "Monitoring my migraines",
+        "description": "",
+        "examples": "",
+        "effort": "low"
+    }
+]
