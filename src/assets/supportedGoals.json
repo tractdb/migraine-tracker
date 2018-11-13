@@ -1,0 +1,67 @@
+[
+    { 
+        "goalName": "Learning about my migraines",
+        "subgoals": [
+            {
+                "goalName": "Learning what factors may affect your symptoms",
+                "goodChoiceIf": [
+                    "You want to identify potential contributing factors (\"triggers\")"
+                ],
+                "examples": [
+                    "I want to track my stress and sleep to see if they seem to affect my migraines"
+                ]
+            },
+            {
+                "goalName": "Learning the frequency of my migraines",
+                "goodChoiceIf": [
+                    "You don't want to learn how different factors relate to each other; you just want to know how often you have migraines, pursue treatment, or are exposed to a treatment"
+                ],
+                "examples": [
+                    "I want to know how often I have migraines",
+                    "I want to know how frequently I take medications to stop my symptoms"
+                ]
+            },
+            {
+                "goalName": "Learning how a change affects your symptoms",
+                "goodChoiceIf": [
+                    "You have a good sense of your migraines, and want to make specific changes that may affect them"
+                ],
+                "examples": [
+                    "I want to see if regular exercise decreases my migraines",
+                    "I'm on a new medication and I want to see if it helps"
+                ]
+            }
+        ],
+        "goodChoiceIf": [
+            "You are new to migraine tracking",
+            "You are making a change"
+        ],
+        "iconName": "school",
+        "examples": [
+            "I want to know know what factors affect my migraines.",
+            "I want to know whether changing my diet is affecing my migraines."
+        ],
+        "effort": "medium"
+    },
+    {
+        "goalName": "Predicting future migraines",
+        "goodChoiceIf": [
+            "You know what factors affect your migraine and are willing to track frequently so you know when those factors are accumulating"
+        ],
+        "iconName": "alarm",
+        "examples": ["I want to know if I'm likely to get a migraine today."],
+        "effort": "high"
+    },
+    {
+        "goalName": "Monitoring my migraines",
+        "goodChoiceIf": [
+            "You just want to keep track of your migraines (or related data)"
+        ],
+        "examples": [
+            "I want to know how often I get migraines",
+            "I want to make sure I'm not overusing my medication"
+        ],
+        "iconName": "calendar",
+        "effort": "low"
+    }
+]

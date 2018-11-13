@@ -13,8 +13,8 @@ export class CouchDbServiceProvider {
 
   login(credentials) {
     // log the user in based on the credentials
-    const options = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
-    return this.http.post(this.baseUrl + '/login', credentials, options);
+    credentials = {'account': 'migraine_test', 'password': 'test'};
+    return this.http.post(this.baseUrl + '/login', JSON.stringify(credentials));
   }
 
   userLoggedIn() {
@@ -25,16 +25,14 @@ export class CouchDbServiceProvider {
     // }
     return true;
 
-
-    // let loggedIn = false;
     // this.http.get(this.baseUrl + '/authenticated').subscribe(
     //   data => {
     //     console.log(data);
-    //     loggedIn = true;
+    //     return true;
     //   }, error => {
     //     console.log(error);
+    //     return false;
     // });
-    // return loggedIn;
   }
 
   getActiveTrackingFields() {

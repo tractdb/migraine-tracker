@@ -11,13 +11,15 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CouchDbServiceProvider } from '../providers/couch-db-service/couch-db-service';
 import {GoalTypePage} from "../pages/addGoal/goal-type/goal-type";
 import {LoginPage} from "../pages/login/login";
+import {GoalDescriptionPage} from "../pages/addGoal/goal-description/goal-description";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     GoalTypePage,
-    LoginPage
+    LoginPage,
+    GoalDescriptionPage
   ],
   imports: [
     BrowserModule,
@@ -29,7 +31,8 @@ import {LoginPage} from "../pages/login/login";
     MyApp,
     HomePage,
     GoalTypePage,
-    LoginPage
+    LoginPage,
+    GoalDescriptionPage
   ],
   providers: [
     StatusBar,
