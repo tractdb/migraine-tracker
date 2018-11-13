@@ -15,37 +15,30 @@
 
 <ion-content padding>
   <h3>What best describes the migraine tracking goal you want to add?</h3>
+  <p>You can add more goals later if you have multiple!</p>
 
-  <ion-card (click)="configureLearningGoal()">
-    <ion-card-header class="my-teams-header">
-      <ion-icon name="school"></ion-icon>
-      Learning about your migraines
-    </ion-card-header>
-    <ion-card-content>
-      <p>Descriptive text here</p>
+  <ion-card *ngFor="let goal of goalList">
+    <ion-item padding text-wrap>
+        <ion-icon name="{{goal['iconName']}}" item-left></ion-icon>
+        {{goal['goalName']}}
+        <button item-right ion-button icon-only (click)="toggleContent(goal)">
+          <ion-icon name="arrow-down"></ion-icon>
+        </button>
+    </ion-item>
+    <ion-card-content [hidden]="!goal['collapse']"  (click)="configureGoal(goal)">
+      <ion-item text-wrap>
+        <h3>May be a good choice if:</h3>
+        <p *ngFor="let choice of goal['goodChoiceIf']">{{choice}}</p>
+      </ion-item>
+      <ion-item text-wrap>
+        <h3>Examples:</h3>
+        <p *ngFor="let example of goal['examples']">"{{example}}"</p>
+      </ion-item>
+      <ion-item>
+        <span *ngIf="goal['effort']">Likely requires {{goal['effort']}} effort</span>
+      </ion-item>
     </ion-card-content>
   </ion-card>
-
-  <ion-card (click)="configureLearningGoal()">
-    <ion-card-header class="my-teams-header">
-      <ion-icon name="school"></ion-icon>
-      Predicting your Migraines
-    </ion-card-header>
-    <ion-card-content>
-      <p>Descriptive text here</p>
-    </ion-card-content>
-  </ion-card>
-
-  <ion-card (click)="configureLearningGoal()">
-    <ion-card-header class="my-teams-header">
-      <ion-icon name="school"></ion-icon>
-      Monitoring your Migraines
-    </ion-card-header>
-    <ion-card-content>
-      <p>Descriptive text here</p>
-    </ion-card-content>
-  </ion-card>
-
 
 
 </ion-content>

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GoalTypePage} from "../addGoal/goal-type/goal-type";
-import {Validators, FormBuilder, FormGroup } from '@angular/forms';
 import {LoginPage} from "../login/login";
 
 @Component({
