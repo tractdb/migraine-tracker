@@ -12,10 +12,8 @@ export class HomePage {
 
   private goals = [];
 
-
   constructor(public navCtrl: NavController,
               private couchDbService: CouchDbServiceProvider){
-
   }
 
   addGoal() {
@@ -23,12 +21,16 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    if(!this.couchDbService.userLoggedIn()){
-      this.navCtrl.push(LoginPage);
-    }
-    else{
-      this.goals = this.couchDbService.getActiveGoals();
-    }
+    this.couchDbService.userLoggedIn().subscribe(
+      resp => {
+        this.goals = this.couchDbService.getActiveGoals();
+        console.log(resp);
+      }, error => {
+        console.log(error);
+        this.navCtrl.push(LoginPage);
+      });
+
+
   }
 
 
