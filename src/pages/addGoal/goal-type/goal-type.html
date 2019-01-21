@@ -7,25 +7,21 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Select a Goal</ion-title>
-  </ion-navbar>
+    <ion-title>Select Tracking Goals</ion-title>
+  </ion-navbar>`
 
 </ion-header>
 
 
 <ion-content padding>
-  <h3>What best describes the migraine tracking goal you want to add?</h3>
-  <p>You can add more goals later if you have multiple!</p>
+  <h3>What goal(s) do you have for your migraine tracking? </h3>
 
   <ion-card *ngFor="let goal of goalList">
     <ion-item padding text-wrap>
         <ion-icon name="{{goal['iconName']}}" item-left></ion-icon>
         {{goal['goalName']}}
-        <button item-right ion-button icon-only (click)="toggleContent(goal)">
-          <ion-icon name="arrow-down"></ion-icon>
-        </button>
     </ion-item>
-    <ion-card-content [hidden]="!goal['collapse']"  (click)="configureGoal(goal)">
+    <ion-card-content>
       <ion-item text-wrap>
         <h3>May be a good choice if:</h3>
         <p *ngFor="let choice of goal['goodChoiceIf']">{{choice}}</p>
@@ -37,8 +33,18 @@
       <ion-item>
         <span *ngIf="goal['effort']">Likely requires {{goal['effort']}} effort</span>
       </ion-item>
+      <button item-left ion-button icon-only color="{{goal.colors.remove}}" (click)="removeGoal(goal)">
+        <ion-icon name="close"></ion-icon>
+      </button>
+      <button float-right ion-button icon-only color="{{goal.colors.add}}" (click)="addGoal(goal)">
+        <ion-icon name="checkmark"></ion-icon>
+      </button>
     </ion-card-content>
   </ion-card>
+  <button float-right ion-button (click)="continueSetup()" [color]="selectedGoals.length > 0 ? 'primary': 'light' "
+          [disabled]="selectedGoals.length < 0">
+    Continue
+  </button>
 
 
 </ion-content>

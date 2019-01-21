@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
-import {HttpClient} from "@angular/common/http";
-import {GoalDescriptionPage} from "../goal-description/goal-description";
+import { NavController } from 'ionic-angular';
+import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
+import {SelectSubgoalsPage} from "../select-subgoals/select-subgoals";
+import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
 
 
 @Component({
@@ -10,48 +11,68 @@ import {GoalDescriptionPage} from "../goal-description/goal-description";
 })
 export class GoalTypePage {
 
-  private allGoalData;
-  private goalList;
 
-  private getGoalData() {
-    this.http.get('assets/supportedGoals.json', {},)
-      .subscribe(goalData => {
-          this.allGoalData = goalData;
-          this.goalList = this.allGoalData;
-        },
-        error => {
-          console.log(error);
-        });
-  }
+  private goalList;
+  selectedGoals;
+
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public http: HttpClient) {
+              public goalDetailsServiceProvider: GoalDetailsServiceProvider,
+              public globalFunctions: GlobalFunctionsServiceProvider) {
+    this.selectedGoals = [];
   }
+
+
 
   ionViewDidLoad() {
-    if (this.navParams.data["subgoals"]){
-      this.goalList = this.navParams.data["subgoals"];
-    }
-    else{ // I think this happens more times than it should need to :-/
-      this.getGoalData();
-    }
+    this.goalDetailsServiceProvider.getGoalData().subscribe(goalData => {
+      this.goalList = goalData;
+      this.goalDetailsServiceProvider.setGoalList(this.goalList);
+      for(let i=0;i<this.goalList.length; i++){
+        this.goalList[i].colors = this.globalFunctions.buttonColors(false);
+      }
+    },
+    error => {
+      console.log(error);
+    });
   }
 
-  toggleContent(goal) {
-    if(goal.collapse === undefined) {
-      goal.collapse = false;
+  addGoal(goal){
+    if (this.selectedGoals.indexOf(goal.goalName) < 0 ) {
+      this.selectedGoals.push(goal.goalName);
     }
-    goal.collapse = !goal.collapse;
+    goal.colors = this.globalFunctions.buttonColors(true);
   }
 
-  configureGoal(goal) {
-    if(goal["subgoals"]) {
-      this.navCtrl.push(GoalTypePage, goal); // so "back" works
+
+  removeGoal(goal) {
+    const index = this.selectedGoals.indexOf(goal.goalName);
+    if (index > -1) {
+      this.selectedGoals.splice(index, 1);
+    }
+    goal.colors = this.globalFunctions.buttonColors(false);
+  }
+
+
+  continueSetup() {
+    let dataToSend = {"selectedGoals": this.selectedGoals};
+    let allSubgoals = [];
+    for(let i=0; i<this.selectedGoals.length; i++){
+      let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
+      if(subgoals !== null){
+        allSubgoals.push(subgoals);
+        this.selectedGoals.splice(i, 1) // because we just need the subgoals
+        i--;
+      }
+    }
+
+    if(allSubgoals.length > 0){
+      dataToSend['unseenSubgoals'] = allSubgoals;
+      this.navCtrl.push(SelectSubgoalsPage, dataToSend);
     }
     else{
-      this.navCtrl.push(GoalDescriptionPage, goal);
+      console.log("continue to blank goal input page?");
+      // this.navCtrl.push(GoalDescriptionPage);
     }
   }
-
 }
