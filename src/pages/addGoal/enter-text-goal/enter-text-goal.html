@@ -1,0 +1,37 @@
+<!--
+  Generated template for the EnterTextGoalPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Enter Any Additional Goals</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h3>Do you have any other goals you want to specify?</h3>
+
+  <p>
+    For example, you might have the management goal of reducing your headache days to 4 per month.
+    You can write down any migraine tracking or management goals you want to strive for so you can
+    reflect on them later or share them with your doctor!
+  </p>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item>
+        <ion-textarea [(ngModel)]="textGoals" rows="20" placeholder="Write any goals you want to remember here."></ion-textarea>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+  <button float-right ion-button (click)="continueSetup()">
+    Continue
+  </button>
+
+
+</ion-content>

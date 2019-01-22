@@ -1,0 +1,49 @@
+{
+    "Symptoms": {
+        "migraineToday": {
+            "name": "Migraine Day",
+            "explanation": "Whether you had a migraine.",
+            "fieldDescription": "Whether you had a migraine (yes/no)",
+            "field": "binary",
+            "goal": {
+                "freq": "less than",
+                "number": 1,
+                "time": "week"
+            }
+        },
+        "headacheToday": {
+            "name": "Headache Day",
+            "explanation": "Whether you had a (non-migraine) headache.",
+            "fieldDescription": "Whether you had a headache (yes/no)",
+            "field": "binary"
+        },
+        "peakMigraineSeverity": {
+            "name": "Peak Migraine Severity",
+            "explanation": "How bad your migraine was at its worst point.",
+            "fieldDescription": "Pain level from 1-10",
+            "field": "scale",
+            "condition": "migraineToday"
+        }
+    },
+    "Treatments": {
+        "acuteMedication": {
+            "name": "As-needed medications",
+            "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
+            "fieldDescription": "Number of pills you took",
+            "field": "number",
+            "goal": {
+                "freq": "less than",
+                "number": 1,
+                "time": "week"
+            }
+        }
+    },
+    "Triggers": {
+        "frequentMedUse": {
+            "name": "Frequent Use of Medications",
+            "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
+            "fieldDescription": "Number of pills you took",
+            "field": "automatically calculated"
+        }
+    }
+}

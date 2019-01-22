@@ -1,0 +1,83 @@
+{
+    "How frequently you get migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+        ]
+    },
+    "What factors may affect your migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "stress",
+            "frequentMedUse"
+        ]
+    },
+    "Whether a specific change affects your migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ]
+    },
+    "Predicting future migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ]
+    },
+    "I'm just tracking for my own knowledge": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ]
+    },
+    "My doctor wants more detailed information about my migraines": {
+        "Symptoms": [
+            "migraineToday",
+            "headacheToday",
+            "peakMigraineSeverity"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ]
+    }, 
+    "My insurance needs more detailed information about my migraines": {
+        "Symptoms": [
+            "migraineToday",
+            "headacheToday",
+            "peakMigraineSeverity"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ]
+    }
+}

@@ -3,6 +3,8 @@ import { NavController } from 'ionic-angular';
 import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
 import {SelectSubgoalsPage} from "../select-subgoals/select-subgoals";
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
+import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
+import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
 
 
 @Component({
@@ -18,7 +20,8 @@ export class GoalTypePage {
 
   constructor(public navCtrl: NavController,
               public goalDetailsServiceProvider: GoalDetailsServiceProvider,
-              public globalFunctions: GlobalFunctionsServiceProvider) {
+              public globalFunctions: GlobalFunctionsServiceProvider,
+              public dataDetailsServiceProvider: DataDetailsServiceProvider) {
     this.selectedGoals = [];
   }
 
@@ -59,6 +62,7 @@ export class GoalTypePage {
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
       let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
+      console.log(subgoals)
       if(subgoals !== null){
         allSubgoals.push(subgoals);
         this.selectedGoals.splice(i, 1) // because we just need the subgoals
@@ -71,8 +75,7 @@ export class GoalTypePage {
       this.navCtrl.push(SelectSubgoalsPage, dataToSend);
     }
     else{
-      console.log("continue to blank goal input page?");
-      // this.navCtrl.push(GoalDescriptionPage);
+      this.navCtrl.push(EnterTextGoalPage, dataToSend);
     }
   }
 }

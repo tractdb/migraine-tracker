@@ -9,6 +9,7 @@ export class GoalDetailsServiceProvider {
   private goalList;
   private subgoals;
 
+
   getSubgoals() {
     this.http.get('assets/subgoals.json', {},).subscribe(subgoalData => {
         this.subgoals = subgoalData;
@@ -25,6 +26,7 @@ export class GoalDetailsServiceProvider {
   constructor(public http: HttpClient) {
     this.getGoalList();
     this.getSubgoals();
+
   }
 
   getGoalData() {
@@ -35,24 +37,6 @@ export class GoalDetailsServiceProvider {
     this.goalList = goalList;
   }
 
-  findGoalInList(name, list){
-    let matchingGoal = null;
-    list.forEach(function(goal){
-      if(goal.goalName.includes(name)){
-        matchingGoal = goal;
-      }
-    });
-    return matchingGoal;
-  }
-
-
-  getGoalFromList(name, goalList){
-    return this.findGoalInList(name, goalList);
-  }
-
-  getGoalByName(name){
-    return this.findGoalInList(name, this.goalList);
-  }
 
   getSubgoalByName(name) {
 
@@ -69,7 +53,6 @@ export class GoalDetailsServiceProvider {
         }
       });
     }
-
 
     if(fullName !== null){
       return this.subgoals[fullName];

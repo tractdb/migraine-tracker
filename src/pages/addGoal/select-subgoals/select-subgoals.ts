@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
+import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
 
 /**
  * Generated class for the SelectSubgoalsPage page.
@@ -37,15 +38,15 @@ export class SelectSubgoalsPage {
   }
 
   addGoal(subgoal){
-    if (this.selectedSubgoals.indexOf(subgoal) < 0 ) {
-      this.selectedSubgoals.push(subgoal);
+    if (this.selectedSubgoals.indexOf(subgoal.subgoalName) < 0 ) {
+      this.selectedSubgoals.push(subgoal.subgoalName);
     }
     subgoal.colors = this.globalFunctions.buttonColors(true);
   }
 
 
   removeGoal(subgoal) {
-    const index = this.selectedSubgoals.indexOf(subgoal);
+    const index = this.selectedSubgoals.indexOf(subgoal.subgoalName);
     if (index > -1) {
       this.selectedSubgoals.splice(index, 1);
     }
@@ -58,7 +59,7 @@ export class SelectSubgoalsPage {
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{
-      console.log("continue to blank goal input page?");
+      this.navCtrl.push(EnterTextGoalPage, this.navParams.data);
     }
   }
 

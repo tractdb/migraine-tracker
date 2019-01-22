@@ -15,6 +15,10 @@ import {GoalDescriptionPage} from "../pages/addGoal/goal-description/goal-descri
 import { GoalDetailsServiceProvider } from '../providers/goal-details-service/goal-details-service';
 import {SelectSubgoalsPage} from "../pages/addGoal/select-subgoals/select-subgoals";
 import { GlobalFunctionsServiceProvider } from '../providers/global-functions-service/global-functions-service';
+import {EnterTextGoalPage} from "../pages/addGoal/enter-text-goal/enter-text-goal";
+import {SymptomConfigPage} from "../pages/addGoal/symptom-config/symptom-config";
+import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
+import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
 
 @NgModule({
   declarations: [
@@ -23,7 +27,10 @@ import { GlobalFunctionsServiceProvider } from '../providers/global-functions-se
     GoalTypePage,
     SelectSubgoalsPage,
     LoginPage,
-    GoalDescriptionPage
+    GoalDescriptionPage,
+    EnterTextGoalPage,
+    SymptomConfigPage,
+    AddCustomDataPage,
   ],
   imports: [
     BrowserModule,
@@ -37,7 +44,10 @@ import { GlobalFunctionsServiceProvider } from '../providers/global-functions-se
     GoalTypePage,
     LoginPage,
     SelectSubgoalsPage,
-    GoalDescriptionPage
+    GoalDescriptionPage,
+    EnterTextGoalPage,
+    SymptomConfigPage,
+    AddCustomDataPage
   ],
   providers: [
     StatusBar,
@@ -45,7 +55,8 @@ import { GlobalFunctionsServiceProvider } from '../providers/global-functions-se
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     CouchDbServiceProvider,
     GoalDetailsServiceProvider,
-    GlobalFunctionsServiceProvider
+    GlobalFunctionsServiceProvider,
+    DataDetailsServiceProvider
   ]
 })
 export class AppModule {}

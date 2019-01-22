@@ -1,0 +1,30 @@
+[
+    {
+        "name": "binary",
+        "explanation": "whether or not it happened"
+    },
+    {
+        "name": "number",
+        "explanation": "a count (for example, of the times it happened, of how many hours it lasted)"
+    },
+    {
+        "hame": "number scale",
+        "explanation": "rating from 1-10"
+    },
+    {
+        "name": "category scale",
+        "explanation": "rating of none, some, or lots"
+    }
+    {
+        "name": "note",
+        "explanation": "typed description"
+    },
+    {
+        "name": "time",
+        "explanation": "time it happened"
+    },
+    {
+        "name": "time range",
+        "explanation": "time it started and ended"
+    }
+]
