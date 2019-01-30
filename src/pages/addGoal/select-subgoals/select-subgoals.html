@@ -1,0 +1,58 @@
+<!--
+  Generated template for the GoalTypePage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Select Tracking SubGoals</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <h3>{{pageTitle}} </h3>
+
+  <ion-slides pager="true" options="{autoheight: true}">
+    <ion-slide *ngFor="let subgoal of subgoals">
+      <ion-card class="goalCard">
+        <ion-item padding text-wrap>
+          {{subgoal['subgoalName']}}
+        </ion-item>
+        <ion-card-content>
+          <ion-item text-wrap [hidden]="!subgoal['goodChoiceIf']">
+            <h3>May be a good choice if:</h3>
+            <p *ngFor="let choice of subgoal['goodChoiceIf']">{{choice}}</p>
+          </ion-item>
+          <ion-item text-wrap [hidden]="!subgoal['examples']">
+            <h3>Examples:</h3>
+            <p *ngFor="let example of subgoal['examples']">"{{example}}"</p>
+          </ion-item>
+          <ion-item [hidden]="!subgoal['effort']">
+            <span *ngIf="subgoal['effort']">Likely requires {{subgoal['effort']}} effort</span>
+          </ion-item>
+          <div class = "item item-divider bottom">
+            <button float-left ion-button icon-only color="{{subgoal.colors.remove}}" (click)="removeGoal(subgoal)">
+              <ion-icon name="close"></ion-icon>
+            </button>
+            <button float-right ion-button icon-only color="{{subgoal.colors.add}}" (click)="addGoal(subgoal)">
+              <ion-icon name="checkmark"></ion-icon>
+            </button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-slide>
+  </ion-slides>
+
+
+
+  <button float-right ion-button [color]="selectedSubgoals.length > 0 ? 'primary': 'light' "
+          [disabled]="selectedSubgoals.length < 0" (click)="continueSetup()">
+    Continue
+  </button>
+
+
+</ion-content>

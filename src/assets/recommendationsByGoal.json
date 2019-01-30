@@ -1,0 +1,97 @@
+{
+    "How frequently you get migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+        ],
+        "Other": [
+        ]
+    },
+    "What factors may affect your migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "stress",
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    },
+    "Whether a specific change affects your migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    },
+    "Predicting future migraines": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    },
+    "Tracking for your own knowledge": {
+        "Symptoms": [
+            "migraineToday"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    },
+    "Tracking for your doctor": {
+        "Symptoms": [
+            "migraineToday",
+            "headacheToday",
+            "peakMigraineSeverity"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    }, 
+    "Tracking for Insurance": {
+        "Symptoms": [
+            "migraineToday",
+            "headacheToday",
+            "peakMigraineSeverity"
+        ],
+        "Treatments": [
+            "acuteMedication"
+        ],
+        "Triggers": [
+            "frequentMedUse"
+        ],
+        "Other": [
+        ]
+    }
+}

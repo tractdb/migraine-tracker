@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GoalTypePage} from "../addGoal/goal-type/goal-type";
 import {LoginPage} from "../login/login";
@@ -12,10 +12,9 @@ export class HomePage {
 
   private goals = [];
 
-
   constructor(public navCtrl: NavController,
-              private couchDbService: CouchDbServiceProvider){
-
+              private couchDbService: CouchDbServiceProvider,
+              public navParams: NavParams){
   }
 
   addGoal() {
@@ -23,12 +22,21 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    if(!this.couchDbService.userLoggedIn()){
-      this.navCtrl.push(LoginPage);
+    if(this.navParams.data.selectedGoals){
+      this.goals = this.navParams.data.selectedGoals;
     }
+
     else{
-      this.goals = this.couchDbService.getActiveGoals();
+      this.couchDbService.userLoggedIn().subscribe(
+        resp => {
+          this.goals = this.couchDbService.getActiveGoals();
+          console.log(resp);
+        }, error => {
+          console.log(error);
+          this.navCtrl.push(LoginPage);
+        });
     }
+
   }
 
 

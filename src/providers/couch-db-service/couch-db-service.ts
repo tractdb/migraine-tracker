@@ -7,32 +7,19 @@ export class CouchDbServiceProvider {
 
   private baseUrl = 'https://tractdb.org/api';
   private currentUser = null;
+  private options = {withCredentials: true};
 
   constructor(public http: HttpClient) {
   }
 
   login(credentials) {
     // log the user in based on the credentials
-    credentials = {'account': 'migraine_test', 'password': 'test'};
-    return this.http.post(this.baseUrl + '/login', JSON.stringify(credentials));
+    return this.http.post(this.baseUrl + '/login', JSON.stringify(credentials), this.options);
   }
 
   userLoggedIn() {
-    // see if we're logged in; not working despite logging in hypothetically working.
-    // if(this.currentUser === null) { //bs because the below isn't working to tet login
-    //   this.currentUser = true;
-    //   return false;
-    // }
-    return true;
-
-    // this.http.get(this.baseUrl + '/authenticated').subscribe(
-    //   data => {
-    //     console.log(data);
-    //     return true;
-    //   }, error => {
-    //     console.log(error);
-    //     return false;
-    // });
+    // see if we're logged in; response gives account
+    return this.http.get(this.baseUrl + '/authenticated', this.options);
   }
 
   getActiveTrackingFields() {

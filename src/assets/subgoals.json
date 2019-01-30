@@ -1,0 +1,62 @@
+{
+    "Learning about my migraines": {
+        "GoalCategory": "Learning",
+        "Title": "What do you want to learn about your migraines?",
+        "subgoals": [
+            {
+                "subgoalName": "How frequently you get migraines",
+                "goodChoiceIf": [
+                    "You want to know how often you have migraines (or pursue treatment)"
+                ],
+                "examples": [
+                    "I want to know how many days per month I have a migraine",
+                    "I want to know how many times per month I take medications to stop my symptoms"
+                ]
+            },
+            {
+                "subgoalName": "What factors may affect your migraines",
+                "goodChoiceIf": [
+                    "You want to identify potential contributing factors (\"triggers\")"
+                ],
+                "examples": [
+                    "I want to track my stress and sleep to see if they seem to affect my migraines"
+                ]
+            },
+            
+            {
+                "subgoalName": "Whether a specific change affects your migraines",
+                "goodChoiceIf": [
+                    "You are making a specific change in your life and want to see how it affects your migraines"
+                ],
+                "examples": [
+                    "I want to see if regular exercise decreases my migraines",
+                    "I'm on a new medication and I want to see if it helps"
+                ]
+            }
+        ]
+    },
+    "Monitoring my migraines": {
+        "GoalCategory": "Monitoring",
+        "Title": "Why do you want to monitor your migraines?",
+        "subgoals": [
+            {
+                "subgoalName": "Tracking for your own knowledge",
+                "examples": [
+                    "I just want to know how often I get migraines"
+                ]
+            },
+            {
+                "subgoalName": "Tracking for your doctor",
+                "examples": [
+                    "My doctor wants more detailed information about my migraines"
+                ]
+            },
+            {
+                "subgoalName": "Tracking for Insurance",
+                "examples": [
+                    "My insurance needs more detailed information about my migraines to cover my prescription"
+                ]
+            }
+        ]
+    }
+}

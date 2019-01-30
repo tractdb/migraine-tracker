@@ -20,7 +20,7 @@
       <form (ngSubmit)="login()" [formGroup]="loginInfo">
         <ion-item>
           <ion-label>User Name:</ion-label>
-          <ion-input type="text" formControlName="account" placeholder="User Name..."></ion-input>
+          <ion-input type="text" autocapitalize="none" formControlName="account" placeholder="User Name..."></ion-input>
         </ion-item>
         <ion-item>
           <ion-label>Password:</ion-label>

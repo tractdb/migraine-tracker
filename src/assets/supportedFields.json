@@ -1,0 +1,30 @@
+[
+    {
+        "name": "binary",
+        "explanation": "whether it happened"
+    },
+    {
+        "name": "number",
+        "explanation": "a count"
+    },
+    {
+        "name": "numeric scale",
+        "explanation": "a rating from 1-10"
+    },
+    {
+        "name": "category scale",
+        "explanation": "a rating of none, some, or lots"
+    },
+    {
+        "name": "note",
+        "explanation": "a typed description"
+    },
+    {
+        "name": "time",
+        "explanation": "the time it happened"
+    },
+    {
+        "name": "time range",
+        "explanation": "the time it started and ended"
+    }
+]
