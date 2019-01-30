@@ -30,7 +30,8 @@
         ],
         "examples": [
             "I want to know how often I get migraines",
-            "I want to make sure I'm not overusing my medication"
+            "I want to make sure I'm not overusing my medication",
+            "I need to track my migraines for my insurance/doctor"
         ],
         "iconName": "calendar",
         "subgoals": true,

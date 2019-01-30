@@ -25,8 +25,6 @@ export class GoalTypePage {
     this.selectedGoals = [];
   }
 
-
-
   ionViewDidLoad() {
     this.goalDetailsServiceProvider.getGoalData().subscribe(goalData => {
       this.goalList = goalData;
@@ -62,11 +60,8 @@ export class GoalTypePage {
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
       let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
-      console.log(subgoals)
       if(subgoals !== null){
         allSubgoals.push(subgoals);
-        this.selectedGoals.splice(i, 1) // because we just need the subgoals
-        i--;
       }
     }
 

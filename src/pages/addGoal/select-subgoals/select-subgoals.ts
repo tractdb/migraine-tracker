@@ -27,9 +27,7 @@ export class SelectSubgoalsPage {
   }
 
   ionViewDidLoad() {
-    console.log( this.navParams.data['unseenSubgoals'])
-    this.subgoalDict = this.navParams.data['unseenSubgoals'].splice(0,1)[0];
-    console.log( this.navParams.data['unseenSubgoals'])
+    this.subgoalDict = this.navParams.data['unseenSubgoals'][0]
     this.pageTitle = this.subgoalDict['Title']; // because of an incomprehensible error when I try to just use the dict
     this.subgoals = this.subgoalDict['subgoals'];
     for(let i=0; i<this.subgoals.length; i++){
@@ -55,6 +53,7 @@ export class SelectSubgoalsPage {
 
   continueSetup() {
     this.navParams.data.selectedGoals = this.navParams.data['selectedGoals'].concat(this.selectedSubgoals);
+    this.navParams.data['unseenSubgoals'].splice(0,1);
     if(this.navParams.data['unseenSubgoals'].length > 0){
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }

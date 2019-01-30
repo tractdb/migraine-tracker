@@ -40,13 +40,22 @@
         "Title": "Why do you want to monitor your migraines?",
         "subgoals": [
             {
-                "subgoalName": "I'm just tracking for my own knowledge"
+                "subgoalName": "Tracking for your own knowledge",
+                "examples": [
+                    "I just want to know how often I get migraines"
+                ]
             },
             {
-                "subgoalName": "My doctor wants more detailed information about my migraines"
+                "subgoalName": "Tracking for your doctor",
+                "examples": [
+                    "My doctor wants more detailed information about my migraines"
+                ]
             },
             {
-                "subgoalName": "My insurance needs more detailed information about my migraines"
+                "subgoalName": "Tracking for Insurance",
+                "examples": [
+                    "My insurance needs more detailed information about my migraines to cover my prescription"
+                ]
             }
         ]
     }

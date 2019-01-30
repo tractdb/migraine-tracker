@@ -7,6 +7,8 @@
             "acuteMedication"
         ],
         "Triggers": [
+        ],
+        "Other": [
         ]
     },
     "What factors may affect your migraines": {
@@ -19,6 +21,8 @@
         "Triggers": [
             "stress",
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     },
     "Whether a specific change affects your migraines": {
@@ -30,6 +34,8 @@
         ],
         "Triggers": [
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     },
     "Predicting future migraines": {
@@ -41,9 +47,11 @@
         ],
         "Triggers": [
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     },
-    "I'm just tracking for my own knowledge": {
+    "Tracking for your own knowledge": {
         "Symptoms": [
             "migraineToday"
         ],
@@ -52,9 +60,11 @@
         ],
         "Triggers": [
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     },
-    "My doctor wants more detailed information about my migraines": {
+    "Tracking for your doctor": {
         "Symptoms": [
             "migraineToday",
             "headacheToday",
@@ -65,9 +75,11 @@
         ],
         "Triggers": [
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     }, 
-    "My insurance needs more detailed information about my migraines": {
+    "Tracking for Insurance": {
         "Symptoms": [
             "migraineToday",
             "headacheToday",
@@ -78,6 +90,8 @@
         ],
         "Triggers": [
             "frequentMedUse"
+        ],
+        "Other": [
         ]
     }
 }

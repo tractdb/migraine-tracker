@@ -1,18 +1,18 @@
 {
     "Symptoms": {
         "migraineToday": {
-            "name": "Migraine Day",
+            "name": "Migraine Days",
             "explanation": "Whether you had a migraine.",
             "fieldDescription": "Whether you had a migraine (yes/no)",
             "field": "binary",
             "goal": {
                 "freq": "less than",
-                "number": 1,
-                "time": "week"
+                "threshold": 1,
+                "timespan": "week"
             }
         },
         "headacheToday": {
-            "name": "Headache Day",
+            "name": "Headache Days",
             "explanation": "Whether you had a (non-migraine) headache.",
             "fieldDescription": "Whether you had a headache (yes/no)",
             "field": "binary"
@@ -33,8 +33,8 @@
             "field": "number",
             "goal": {
                 "freq": "less than",
-                "number": 1,
-                "time": "week"
+                "threshold": 1,
+                "timespan": "week"
             }
         }
     },
@@ -45,5 +45,7 @@
             "fieldDescription": "Number of pills you took",
             "field": "automatically calculated"
         }
+    },
+    "Other": {
     }
 }

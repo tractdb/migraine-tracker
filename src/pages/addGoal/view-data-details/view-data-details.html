@@ -1,0 +1,49 @@
+<!--
+  Generated template for the ViewDataDetailsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>View Data Details</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h3>{{selected.name}} Details:</h3>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item-divider>Name</ion-item-divider>
+      <ion-item text-wrap *ngIf="selected.explanation">
+        {{selected.name}}: {{selected.explanation}}
+      </ion-item>
+      <ion-item text-wrap *ngIf="!selected.explanation">
+        {{selected.name}}: Custom {{dataType}} data you configured
+      </ion-item>
+      <ion-item-divider text-wrap *ngIf="selected.recommendingGoal">Recommended Because You Selected:</ion-item-divider>
+      <ion-item text-wrap *ngFor="let goal of selected.recommendingGoal">
+       {{goal}}
+      </ion-item>
+      <ion-item-divider>Field</ion-item-divider>
+      <ion-item text-wrap *ngIf="selected.fieldDescription">
+        {{selected.field}}: {{selected.fieldDescription}}
+      </ion-item>
+      <ion-item-divider *ngIf="selected.freq !== undefined">Goal/Limit (If Applicable)</ion-item-divider>
+      <ion-item text-wrap *ngIf="selected.freq !== undefined">
+        {{selected.freq}} than {{selected.threshold}} times per {{selected.timespan}}
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <button outline float-md-start ion-button (click)="backToConfig()">
+    Done
+  </button>
+
+
+</ion-content>

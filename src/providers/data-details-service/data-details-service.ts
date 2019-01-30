@@ -12,14 +12,15 @@ export class DataDetailsServiceProvider {
 
   private recommendationData;
   private supportedFields;
+  private commonData;
 
   constructor(public http: HttpClient) {
-    console.log('Hello DataDetailsServiceProvider Provider');
-    this.getDataRecommendations();
-    this.getSupportedFields();
+    this.openSupportedFields();
+    this.oepnDataRecommendations();
+    this.openCommonData();
   }
 
-  getSupportedFields() {
+  openSupportedFields() {
     this.http.get('assets/supportedFields.json', {},).subscribe(fieldList => {
         this.supportedFields = fieldList;
       },
@@ -28,13 +29,31 @@ export class DataDetailsServiceProvider {
       });
   }
 
-  getDataRecommendations() {
+  openCommonData() {
+    this.http.get('assets/commonData.json', {},).subscribe(commonData => {
+        this.commonData = commonData;
+      },
+      error => {
+        console.log(error);
+      });
+  }
+
+  oepnDataRecommendations() {
     this.http.get('assets/recommendationsByGoal.json', {},).subscribe(recommendationData => {
         this.recommendationData = recommendationData;
       },
       error => {
         console.log(error);
       });
+  }
+
+  getSupportedFields() {
+    return this.supportedFields;
+  }
+
+
+  getCommonData(dataType) {
+    return this.commonData[dataType];
   }
 
   getRecommendations(name, dataType) {
@@ -52,13 +71,10 @@ export class DataDetailsServiceProvider {
       });
     }
 
-    console.log(this.recommendationData);
-    console.log(name);
-
     if(fullName !== null){
       return this.recommendationData[fullName][dataType];
     }
 
-    return null;
+    return [];
   }
 }

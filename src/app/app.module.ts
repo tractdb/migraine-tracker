@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ErrorHandler, NgModule } from '@angular/core';
+import {CUSTOM_ELEMENTS_SCHEMA, ErrorHandler, NgModule} from '@angular/core';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {HttpClientModule} from "@angular/common/http";
 
@@ -11,14 +11,16 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { CouchDbServiceProvider } from '../providers/couch-db-service/couch-db-service';
 import {GoalTypePage} from "../pages/addGoal/goal-type/goal-type";
 import {LoginPage} from "../pages/login/login";
-import {GoalDescriptionPage} from "../pages/addGoal/goal-description/goal-description";
 import { GoalDetailsServiceProvider } from '../providers/goal-details-service/goal-details-service';
 import {SelectSubgoalsPage} from "../pages/addGoal/select-subgoals/select-subgoals";
 import { GlobalFunctionsServiceProvider } from '../providers/global-functions-service/global-functions-service';
 import {EnterTextGoalPage} from "../pages/addGoal/enter-text-goal/enter-text-goal";
-import {SymptomConfigPage} from "../pages/addGoal/symptom-config/symptom-config";
+import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
 import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
+import {ViewDataDetailsPage} from "../pages/addGoal/view-data-details/view-data-details";
+import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
+import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notifications/configure-notifications";
 
 @NgModule({
   declarations: [
@@ -27,10 +29,12 @@ import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-dat
     GoalTypePage,
     SelectSubgoalsPage,
     LoginPage,
-    GoalDescriptionPage,
     EnterTextGoalPage,
-    SymptomConfigPage,
+    DataConfigPage,
+    ViewDataDetailsPage,
     AddCustomDataPage,
+    SelectTrackingFrequencyPage,
+    ConfigureNotificationsPage
   ],
   imports: [
     BrowserModule,
@@ -44,10 +48,12 @@ import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-dat
     GoalTypePage,
     LoginPage,
     SelectSubgoalsPage,
-    GoalDescriptionPage,
     EnterTextGoalPage,
-    SymptomConfigPage,
-    AddCustomDataPage
+    DataConfigPage,
+    ViewDataDetailsPage,
+    AddCustomDataPage,
+    SelectTrackingFrequencyPage,
+    ConfigureNotificationsPage
   ],
   providers: [
     StatusBar,
@@ -57,6 +63,7 @@ import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-dat
     GoalDetailsServiceProvider,
     GlobalFunctionsServiceProvider,
     DataDetailsServiceProvider
-  ]
+  ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule {}

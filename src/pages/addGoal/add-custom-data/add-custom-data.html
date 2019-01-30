@@ -19,8 +19,36 @@
 
   <ion-card>
     <ion-card-content>
+      <ion-item-divider>{{dataType}} Name</ion-item-divider>
       <ion-item>
-        <ion-textarea [(ngModel)]="dataName" placeholder="{{dataType}} Name"></ion-textarea>
+        <ion-input type="text" [(ngModel)]="dataName" placeholder="{{dataType}} Name"></ion-input>
+      </ion-item>
+      <ion-item-divider>{{dataType}} Field</ion-item-divider>
+      <ion-item>
+        <ion-label>Select field:</ion-label>
+        <ion-select [(ngModel)]="dataField">
+          <ion-option *ngFor="let field of fieldList" [value]="field['name']"><p>{{field['name']}}:</p> <p>{{field['explanation']}}</p></ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-divider>Goal/Limit (Optional)</ion-item-divider>
+      <ion-item>
+        <ion-label>More or less</ion-label>
+        <ion-select [(ngModel)]="goalFreq">
+          <ion-option [value]="more">More</ion-option>
+          <ion-option [value]="less">Less</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-label>than</ion-label>
+        <ion-input [(ngModel)]="goalThresh" text-right type="number" value="1"> time(s)</ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>per</ion-label>
+        <ion-select [(ngModel)]="goalTime">
+          <ion-option [value]="day">Day</ion-option>
+          <ion-option [value]="week">Week</ion-option>
+          <ion-option [value]="month">Month</ion-option>
+        </ion-select>
       </ion-item>
     </ion-card-content>
   </ion-card>

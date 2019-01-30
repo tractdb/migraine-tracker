@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {SymptomConfigPage} from "../symptom-config/symptom-config";
+import {DataConfigPage} from "../data-config/data-config";
 
 /**
  * Generated class for the EnterTextGoalPage page.
@@ -25,7 +25,8 @@ export class EnterTextGoalPage {
 
   continueSetup() {
     this.navParams.data['textGoals'] = this.textGoals;
-    this.navCtrl.push(SymptomConfigPage, this.navParams.data);
+    this.navParams.data['dataToConfigure'] = "Symptoms";
+    this.navCtrl.push(DataConfigPage, this.navParams.data);
   }
 
 }
