@@ -1,0 +1,115 @@
+<!--
+  Generated template for the EditDataPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editData</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h3>
+    {{data.name}} Details:
+  </h3>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item-divider>Name</ion-item-divider>
+      <ion-item text-wrap *ngIf="data.explanation">
+        {{data.name}}: {{data.explanation}}
+      </ion-item>
+      <ion-item text-wrap *ngIf="!data.explanation">
+        {{data.name}}: Custom data you configured
+      </ion-item>
+      <ion-item-divider text-wrap *ngIf="data.recommendingGoal">Recommended Because You Selected:</ion-item-divider>
+      <ion-item text-wrap *ngFor="let goal of data.recommendingGoal">
+        {{goal}}
+      </ion-item>
+      <ion-item-divider>
+        <button icon-only color="primary" item-right (click)="editData('field')">
+          <ion-icon *ngIf="!editField" slot="icon-only" name="create"></ion-icon>
+          <ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>
+        </button>
+        Field
+      </ion-item-divider>
+      <ion-item text-wrap *ngIf="data.fieldDescription">
+        {{data.field}}: {{data.fieldDescription}}
+      </ion-item>
+      <ion-item text-wrap *ngIf="!data.fieldDescription">
+        {{data.field}}
+      </ion-item>
+      <ion-item *ngIf="editField">
+        <ion-select [(ngModel)]="dataField">
+          <ion-option *ngFor="let field of fieldList"
+                      [value]="field['name']"
+                      [selected]="data.field === field['name']">
+            <p>{{field['name']}}:</p>
+            <p>{{field['explanation']}}</p></ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item-divider>
+        Goal/Limit (If Applicable):
+        <button icon-only color="primary" item-right (click)="editData('goal')">
+          <ion-icon *ngIf="!editGoal" slot="icon-only" name="create"></ion-icon>
+          <ion-icon *ngIf="editGoal" slot="icon-only" name="checkmark-circle"></ion-icon>
+        </button>
+      </ion-item-divider>
+      <ion-item text-wrap *ngIf="(data.goal.freq !== undefined) && !editGoal">
+        {{data.goal.freq}} than {{data.goal.threshold}} times per {{data.goal.timespan}}
+      </ion-item>
+      <ion-item *ngIf="editGoal">
+        <ion-label>More or less</ion-label>
+        <ion-select [(ngModel)]="goalFreq">
+          <ion-option [value]="more" [selected]="data.goal && data.goal.freq === 'more'">
+            More
+          </ion-option>
+          <ion-option [value]="less" [selected]="data.goal && data.goal.freq === 'less'">
+            Less
+          </ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="editGoal">
+        <ion-label>than</ion-label>
+        <ion-select [(ngModel)]="goalThresh">
+          <ion-option *ngFor="let num of numList" [value]="num" [selected]="data.goal && data.goal.threshold === num">
+            {{num}}
+          </ion-option>
+        </ion-select>
+        <!--<ion-input [(ngModel)]="goalThresh" text-right type="number"-->
+                   <!--[value]="data.goal ? data.goal.threshold:1">-->
+        <!--</ion-input>-->
+      </ion-item>
+      <ion-item *ngIf="editGoal">
+        <ion-label>times per</ion-label>
+        <ion-select [(ngModel)]="goalTime">
+          <ion-option [value]="day" [selected]="data.goal && data.goal.timespan === 'day'">
+            Day
+          </ion-option>
+          <ion-option [value]="week" [selected]="data.goal && data.goal.timespan === 'week'">
+            Week
+          </ion-option>
+          <ion-option [value]="month" [selected]="data.goal && data.goal.timespan === 'month'">
+            Month
+          </ion-option>
+        </ion-select>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+
+  <button float-left ion-button (click)="backToConfig('cancel')">
+    Cancel
+  </button>
+
+  <button float-right ion-button (click)="backToConfig('add')">
+    Save
+  </button>
+
+</ion-content>

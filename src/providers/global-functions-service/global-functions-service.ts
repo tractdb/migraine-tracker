@@ -17,9 +17,7 @@ export class GlobalFunctionsServiceProvider {
   getAllGoalsAndSubgoals(configPath) {
     let goals = [];
     for (let i = 0; i < configPath.length; i++) {
-      console.log(configPath[i]);
       if(configPath[i].step.includes("goal")){
-        console.log("here")
         goals = goals.concat(configPath[i].added);
       }
     }

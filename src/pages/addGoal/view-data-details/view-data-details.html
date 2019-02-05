@@ -24,7 +24,7 @@
         {{selected.name}}: {{selected.explanation}}
       </ion-item>
       <ion-item text-wrap *ngIf="!selected.explanation">
-        {{selected.name}}: Custom {{dataType}} data you configured
+        {{selected.name}}: Custom <span text-lowercase>{{dataType}}</span> data you configured
       </ion-item>
       <ion-item-divider text-wrap *ngIf="selected.recommendingGoal">Recommended Because You Selected:</ion-item-divider>
       <ion-item text-wrap *ngFor="let goal of selected.recommendingGoal">

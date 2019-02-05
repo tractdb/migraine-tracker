@@ -40,7 +40,12 @@
       </ion-item>
       <ion-item>
         <ion-label>than</ion-label>
-        <ion-input [(ngModel)]="goalThresh" text-right type="number" value="1"> time(s)</ion-input>
+        <ion-select [(ngModel)]="goalThresh">
+          <ion-option *ngFor="let num of numList" [value]="num">
+            {{num}}
+          </ion-option>
+        </ion-select>
+        <!--<ion-input [(ngModel)]="goalThresh" text-right type="number" value="1"> time(s)</ion-input>-->
       </ion-item>
       <ion-item>
         <ion-label>per</ion-label>
@@ -53,11 +58,11 @@
     </ion-card-content>
   </ion-card>
 
-  <button float-left ion-button (click)="backToConfig()">
+  <button float-left ion-button (click)="backToConfig('cancel')">
     Cancel
   </button>
 
-  <button float-right ion-button (click)="backToConfig()">
+  <button float-right ion-button (click)="backToConfig('add')">
     Add {{dataType}}
   </button>
 

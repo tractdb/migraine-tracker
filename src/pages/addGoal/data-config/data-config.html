@@ -26,16 +26,15 @@
             <ion-label >{{custom.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="secondary" (click)="viewDataDetails(custom)">
-              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+            <ion-item-option icon-only color="primary"  (click)="editData(custom)">
+              <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-item-option>
-            <ion-item-option icon-only color="primary"
-                             *ngIf="selectedFromList.indexOf(custom) < 0" (click)="track(custom)">
-              <ion-icon slot="icon-only" name="add-circle"></ion-icon>
-            </ion-item-option>
+            <!--<ion-item-option icon-only color="secondary" (click)="editData(custom)">-->
+              <!--<ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>-->
+            <!--</ion-item-option>-->
             <ion-item-option icon-only color="danger"
-                             *ngIf="selectedFromList.indexOf(custom) >= 0"
-                             (click)="remove(custom, 'recommended')">
+                             *ngIf="customData[dataType].indexOf(custom) >= 0"
+                             (click)="remove(custom, 'custom')">
               <ion-icon slot="icon-only" name="trash"></ion-icon>
             </ion-item-option>
           </ion-item-options>
@@ -65,9 +64,12 @@
             <ion-label>{{rec.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="primary"  (click)="viewDataDetails(rec)">
+            <ion-item-option icon-only color="primary"  (click)="editData(rec)">
               <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
+            <!--<ion-item-option icon-only color="primary"  (click)="editData(rec)">-->
+              <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->
+            <!--</ion-item-option>-->
             <ion-item-option icon-only color="secondary"
                              *ngIf="selectedFromList.indexOf(rec) < 0"
                              (click)="track(rec)">
@@ -94,9 +96,12 @@
             <ion-label>{{data.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="primary" (click)="viewDataDetails(data)">
+            <ion-item-option icon-only color="primary" (click)="editData(data)">
               <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
+            <!--<ion-item-option icon-only color="primary"  (click)="editData(data)">-->
+              <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->
+            <!--</ion-item-option>-->
             <ion-item-option icon-only color="secondary"
                              *ngIf="selectedFromList.indexOf(data) < 0" (click)="track(data)">
               <ion-icon slot="icon-only" name="add-circle"></ion-icon>

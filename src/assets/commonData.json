@@ -6,7 +6,7 @@
             "fieldDescription": "Whether you had a migraine (yes/no)",
             "field": "binary",
             "goal": {
-                "freq": "less than",
+                "freq": "less",
                 "threshold": 1,
                 "timespan": "week"
             }
@@ -21,7 +21,7 @@
             "name": "Peak Migraine Severity",
             "explanation": "How bad your migraine was at its worst point.",
             "fieldDescription": "Pain level from 1-10",
-            "field": "scale",
+            "field": "numeric scale",
             "condition": "migraineToday"
         }
     },
@@ -32,7 +32,7 @@
             "fieldDescription": "Number of pills you took",
             "field": "number",
             "goal": {
-                "freq": "less than",
+                "freq": "less",
                 "threshold": 1,
                 "timespan": "week"
             }
@@ -43,7 +43,7 @@
             "fieldDescription": "Number of minutes of exercise",
             "field": "number",
             "goal": {
-                "freq": "more than",
+                "freq": "more",
                 "threshold": 120,
                 "timespan": "week"
             }
@@ -66,7 +66,7 @@
             "fieldDescription": "Number of minutes of exercise",
             "field": "number",
             "goal": {
-                "freq": "more than",
+                "freq": "more",
                 "threshold": 120,
                 "timespan": "week"
             }

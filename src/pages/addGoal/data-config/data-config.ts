@@ -5,6 +5,7 @@ import {AddCustomDataPage} from "../add-custom-data/add-custom-data";
 import {ViewDataDetailsPage} from "../view-data-details/view-data-details";
 import {SelectTrackingFrequencyPage} from "../select-tracking-frequency/select-tracking-frequency";
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
+import {EditDataPage} from "../edit-data/edit-data";
 
 /**
  * Generated class for the SymptomConfigPage page.
@@ -70,14 +71,24 @@ export class DataConfigPage {
 
   continueSetup() {
     // todo: maybe we should have pushed goals to couch by now; otherwise, push them forward more
-    // todo: figure out whether/how they can change scales/goals
+
+    let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
+    console.log(selectedData.map(x => x.name));
+
 
     console.log(this.selectedFromList.concat(this.customData));
 
+    if (!this.navParams.data['selectedData']) {
+      this.navParams.data['selectedData'] = {};
+    }
+
+    this.navParams.data['selectedData'][this.dataType] = selectedData;
+
+
     let configStep = {"step": this.dataType,
                         "desc": "Selected " + this.dataType,
-                        "added": this.selectedFromList.concat(this.customData)
-    }; // todo: added isn't right, has full details ...
+                        "added": selectedData.map(x => x.name)
+    };
     configStep = this.globalFunctions.toggleDetails(configStep);
     this.navParams.data['configPath'].push(configStep);
 
@@ -102,27 +113,56 @@ export class DataConfigPage {
         data.selected = true;
         data['custom'] = true;
         this.customData[this.dataType].push(data);
-        console.log(this.selectedFromList.concat(this.customData));
       }
 
     });
     customDataModal.present();
+  }
 
+  editData(oldData, type) {
+    let customDataModal = this.modalCtrl.create(EditDataPage, oldData);
+    customDataModal.onDidDismiss(newData => {
+      if(newData){
+        newData.selected = true;
+
+        if(type=="custom"){
+          this.remove(oldData, type);
+          newData.selected = true;
+          newData['custom'] = true;
+          this.customData[this.dataType].push(newData);
+        }
+
+        else if (type=="rec"){
+          this.recommendedData.splice(this.otherData.indexOf(oldData), 1);
+          this.recommendedData.push(newData);
+          this.remove(oldData, type);
+          this.track(newData);
+        }
+        else if (type=="other"){
+          this.otherData.splice(this.otherData.indexOf(oldData), 1);
+          this.otherData.push(newData);
+          this.remove(oldData, type);
+          this.track(newData);
+        }
+      }
+
+    });
+    customDataModal.present();
   }
 
   track(data) {
     data.selected = true;
     this.selectedFromList.push(data);
-    console.log(this.selectedFromList.concat(this.customData));
   }
 
   remove(data, category){
-    data.selected = false;
     if(category === "custom") {
-      this.customData.splice(data, 1);
+      this.customData[this.dataType].splice(data, 1);
+      console.log(this.customData);
     }
     else{
       this.selectedFromList.splice(data, 1);
+      data.selected = false;
     }
   }
 
