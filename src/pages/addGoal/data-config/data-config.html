@@ -22,11 +22,11 @@
 
       <ion-list *ngFor="let custom of customData[dataType]">
         <ion-item-sliding>
-          <ion-item class="selectedSlider">
+          <ion-item class="selectedSlider" (click)="editData(custom, 'custom')">
             <ion-label >{{custom.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="primary"  (click)="editData(custom)">
+            <ion-item-option icon-only color="primary"  (click)="editData(custom, 'custom')">
               <ion-icon slot="icon-only" name="create"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="secondary" (click)="editData(custom)">-->
@@ -60,11 +60,11 @@
 
       <ion-list *ngFor="let rec of recommendedData">
         <ion-item-sliding>
-          <ion-item [ngClass]="rec.selected ? 'selectedSlider' : 'unselectedSlider'">
+          <ion-item [ngClass]="rec.selected ? 'selectedSlider' : 'unselectedSlider'" (click)="editData(rec, 'rec')">
             <ion-label>{{rec.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="primary"  (click)="editData(rec)">
+            <ion-item-option icon-only color="primary"  (click)="editData(rec, 'rec')">
               <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="primary"  (click)="editData(rec)">-->
@@ -92,12 +92,12 @@
     <ion-card-content>
       <ion-list *ngFor="let data of otherData">
         <ion-item-sliding>
-          <ion-item [ngClass]="data.selected ? 'selectedSlider' : 'unselectedSlider'">
+          <ion-item [ngClass]="data.selected ? 'selectedSlider' : 'unselectedSlider'" (click)="editData(data, 'other')">
             <ion-label>{{data.name}}</ion-label>
           </ion-item>
           <ion-item-options>
-            <ion-item-option icon-only color="primary" (click)="editData(data)">
-              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+            <ion-item-option icon-only color="primary" (click)="editData(data, 'other')">
+              <ion-icon  slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="primary"  (click)="editData(data)">-->
               <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->

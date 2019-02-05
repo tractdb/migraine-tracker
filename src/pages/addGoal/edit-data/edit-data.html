@@ -61,7 +61,7 @@
           <ion-icon *ngIf="editGoal" slot="icon-only" name="checkmark-circle"></ion-icon>
         </button>
       </ion-item-divider>
-      <ion-item text-wrap *ngIf="(data.goal.freq !== undefined) && !editGoal">
+      <ion-item text-wrap *ngIf="data.goal && !editGoal">
         {{data.goal.freq}} than {{data.goal.threshold}} times per {{data.goal.timespan}}
       </ion-item>
       <ion-item *ngIf="editGoal">
@@ -109,7 +109,8 @@
   </button>
 
   <button float-right ion-button (click)="backToConfig('add')">
-    Save
+    <p *ngIf="data.selected">Save</p>
+    <p *ngIf="!data.selected">Add</p>
   </button>
 
 </ion-content>

@@ -73,10 +73,7 @@ export class DataConfigPage {
     // todo: maybe we should have pushed goals to couch by now; otherwise, push them forward more
 
     let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
-    console.log(selectedData.map(x => x.name));
 
-
-    console.log(this.selectedFromList.concat(this.customData));
 
     if (!this.navParams.data['selectedData']) {
       this.navParams.data['selectedData'] = {};
@@ -86,7 +83,7 @@ export class DataConfigPage {
 
 
     let configStep = {"step": this.dataType,
-                        "desc": "Selected " + this.dataType,
+                        "description": "Selected " + this.dataType,
                         "added": selectedData.map(x => x.name)
     };
     configStep = this.globalFunctions.toggleDetails(configStep);
@@ -101,6 +98,7 @@ export class DataConfigPage {
     }
 
     else {
+      console.log(this.navParams.data);
       this.navCtrl.push(SelectTrackingFrequencyPage, this.navParams.data);
     }
 
@@ -127,20 +125,17 @@ export class DataConfigPage {
 
         if(type=="custom"){
           this.remove(oldData, type);
-          newData.selected = true;
           newData['custom'] = true;
           this.customData[this.dataType].push(newData);
         }
 
         else if (type=="rec"){
-          this.recommendedData.splice(this.otherData.indexOf(oldData), 1);
-          this.recommendedData.push(newData);
+          this.recommendedData.splice(this.otherData.indexOf(oldData), 1, newData);
           this.remove(oldData, type);
           this.track(newData);
         }
         else if (type=="other"){
-          this.otherData.splice(this.otherData.indexOf(oldData), 1);
-          this.otherData.push(newData);
+          this.otherData.splice(this.otherData.indexOf(oldData), 1, newData);
           this.remove(oldData, type);
           this.track(newData);
         }

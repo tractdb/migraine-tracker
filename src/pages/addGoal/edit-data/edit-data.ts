@@ -39,11 +39,10 @@ export class EditDataPage {
   editData(type){
     if(type==='field'){
       if(this.editField){
-        console.log(this.dataField);
-        if(this.data.field !== this.dataField){
+        if(this.dataField && (this.data.field !== this.dataField)){
           this.data.fieldDescription = null;
+          this.data.field = this.dataField;
         }
-        this.data.field = this.dataField;
       }
       this.editField = !this.editField;
     }
@@ -62,12 +61,13 @@ export class EditDataPage {
   backToConfig(choice){
     if(choice==='add') {
       this.data.field = (this.dataField ? this.dataField: this.data.field);
-      this.data.goal = {
-        'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
-        "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
-        'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
-      };
-      console.log(this.data);
+      if(this.data.goal || this.goalFreq) {
+        this.data.goal = {
+          'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
+          "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
+          'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
+        };
+      }
       this.viewCtrl.dismiss(this.data);
     }
     else {

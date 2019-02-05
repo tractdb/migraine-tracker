@@ -7,6 +7,7 @@
             "acuteMedication"
         ],
         "Triggers": [
+            "frequentMedUse"
         ],
         "Other": [
         ],
