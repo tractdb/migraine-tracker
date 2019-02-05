@@ -15,7 +15,8 @@
 
 <ion-content padding>
   <h3>What goal(s) do you have for your migraine tracking? </h3>
-  <ion-slides pager="true" options="{autoheight: true}">
+
+  <ion-slides pager="true">
     <ion-slide *ngFor="let goal of goalList">
       <ion-card class="goalCard">
       <ion-item padding text-wrap>
@@ -47,6 +48,17 @@
       </ion-card>
     </ion-slide>
   </ion-slides>
+
+  <ion-card>
+    <ion-list>
+      <ion-list-header>Selected Goals</ion-list-header>
+      <div>
+        <ion-item text-wrap *ngFor="let goal of selectedGoals">{{goal}}</ion-item>
+      </div>
+    </ion-list>
+  </ion-card>
+
+
   <button float-right ion-button (click)="continueSetup()" [color]="selectedGoals.length > 0 ? 'primary': 'light' "
           [disabled]="selectedGoals.length < 0">
     Continue

@@ -1,5 +1,5 @@
 {
-    "How frequently you get migraines": {
+    "Learn how frequently I get migraines": {
         "Symptoms": [
             "migraineToday"
         ],
@@ -9,9 +9,11 @@
         "Triggers": [
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     },
-    "What factors may affect your migraines": {
+    "Learn what factors may affect my migraines": {
         "Symptoms": [
             "migraineToday"
         ],
@@ -23,9 +25,11 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     },
-    "Whether a specific change affects your migraines": {
+    "Learn whether a specific change affects my migraines": {
         "Symptoms": [
             "migraineToday"
         ],
@@ -36,6 +40,9 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
+            "exercise"
         ]
     },
     "Predicting future migraines": {
@@ -49,9 +56,11 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     },
-    "Tracking for your own knowledge": {
+    "Monitor for my own knowledge": {
         "Symptoms": [
             "migraineToday"
         ],
@@ -62,9 +71,11 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     },
-    "Tracking for your doctor": {
+    "Monitor for my doctor": {
         "Symptoms": [
             "migraineToday",
             "headacheToday",
@@ -77,9 +88,11 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     }, 
-    "Tracking for Insurance": {
+    "Monitor for insurance": {
         "Symptoms": [
             "migraineToday",
             "headacheToday",
@@ -92,6 +105,8 @@
             "frequentMedUse"
         ],
         "Other": [
+        ],
+        "Changes": [
         ]
     }
 }

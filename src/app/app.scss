@@ -20,13 +20,26 @@
 .alert-wp .alert-radio-label{ white-space: pre-line;}
 
 .goalCard{
-  height: 95%;
+  //height: 80%;
+  height: auto !important;
 }
 
-ion-slides {
-  height: 75%;
-}
+
 
 .slide-zoom{
-  height: 80%;
+  height: 110%;
 }
+
+.slides{
+  height:55%;
+}
+
+//.scroll-content {
+//  display: flex;
+//  flex-direction: column;
+//
+//  ion-slides {
+//    //height: 85%;
+//  }
+//
+//}

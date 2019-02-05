@@ -25,7 +25,6 @@ export class HomePage {
     if(this.navParams.data.selectedGoals){
       this.goals = this.navParams.data.selectedGoals;
     }
-
     else{
       this.couchDbService.userLoggedIn().subscribe(
         resp => {

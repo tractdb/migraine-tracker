@@ -29,9 +29,8 @@
             "You just want to keep track of your migraines (or related data)"
         ],
         "examples": [
-            "I want to know how often I get migraines",
-            "I want to make sure I'm not overusing my medication",
-            "I need to track my migraines for my insurance/doctor"
+            "I want to know how often I get migraines or use medication",
+            "I need to track for my insurance or doctor"
         ],
         "iconName": "calendar",
         "subgoals": true,

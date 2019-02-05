@@ -36,6 +36,17 @@
                 "threshold": 1,
                 "timespan": "week"
             }
+        },
+        "exercise": {
+            "name": "Exercise",
+            "explanation": "How much you exercised",
+            "fieldDescription": "Number of minutes of exercise",
+            "field": "number",
+            "goal": {
+                "freq": "more than",
+                "threshold": 120,
+                "timespan": "week"
+            }
         }
     },
     "Triggers": {
@@ -47,5 +58,18 @@
         }
     },
     "Other": {
+    },
+    "Changes": {
+        "exercise": {
+            "name": "Increasing exercise",
+            "explanation": "How much you exercised",
+            "fieldDescription": "Number of minutes of exercise",
+            "field": "number",
+            "goal": {
+                "freq": "more than",
+                "threshold": 120,
+                "timespan": "week"
+            }
+        }
     }
 }

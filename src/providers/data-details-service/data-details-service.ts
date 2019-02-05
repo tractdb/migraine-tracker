@@ -13,11 +13,27 @@ export class DataDetailsServiceProvider {
   private recommendationData;
   private supportedFields;
   private commonData;
+  private configData;
 
   constructor(public http: HttpClient) {
+
+  }
+
+  initData() {
+    this.openDataConfig();
     this.openSupportedFields();
     this.oepnDataRecommendations();
     this.openCommonData();
+
+  }
+
+  openDataConfig() {
+    this.http.get('assets/dataConfig.json', {},).subscribe(configData => {
+        this.configData = configData;
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   openSupportedFields() {
@@ -45,6 +61,10 @@ export class DataDetailsServiceProvider {
       error => {
         console.log(error);
       });
+  }
+
+  getConfigData() {
+    return this.configData;
   }
 
   getSupportedFields() {
