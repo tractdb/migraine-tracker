@@ -51,12 +51,14 @@ export class DataConfigPage {
     for(let goalIndex=0; goalIndex<goals.length; goalIndex++){
       let recs = this.dataDetailsServiceProvider.getRecommendations(goals[goalIndex], this.dataType);
       for (let recIndex=0; recIndex<recs.length; recIndex++){
-        let listIndex = this.recommendedData.indexOf(recs[recIndex]);
-        if(listIndex > -1){
-          this.recommendedData[listIndex].recommendingGoal.push(goals[goalIndex]);
-
+        let alreadyAdded = false;
+        for(var i in this.recommendedData){
+          if(this.recommendedData[i].name === commonData[recs[recIndex]].name){
+            this.recommendedData[i].recommendingGoal.push(goals[goalIndex]);
+            alreadyAdded = true;
+          }
         }
-        else{
+        if(!alreadyAdded){
           let data = commonData[recs[recIndex]];
           this.otherData.splice(this.otherData.indexOf(data), 1);
           data["recommendingGoal"] = [goals[goalIndex]];
@@ -153,7 +155,6 @@ export class DataConfigPage {
   remove(data, category){
     if(category === "custom") {
       this.customData[this.dataType].splice(data, 1);
-      console.log(this.customData);
     }
     else{
       this.selectedFromList.splice(data, 1);

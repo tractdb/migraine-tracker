@@ -44,7 +44,8 @@ export class SelectTrackingFrequencyPage {
 
   finish(){
     this.navParams.data['trackingFreq'] = 'postSymptoms';
-    this.navCtrl.push(HomePage, this.navParams.data);
+    // this.navCtrl.push(HomePage, this.navParams.data);
+    this.navCtrl.setRoot(HomePage, this.navParams.data);
   }
 
 }

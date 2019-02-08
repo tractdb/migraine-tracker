@@ -1,7 +1,7 @@
 [
     {"name": "Changes",
     "description": "What change are you planning on making?",
-    "conditionalGoal": "Whether a specific change affects your migraines"},
+    "conditionalGoal": "Learn whether a specific change affects my migraines"},
 
     {"name": "Symptoms",
     "description": "What symptoms do you want to track?"},

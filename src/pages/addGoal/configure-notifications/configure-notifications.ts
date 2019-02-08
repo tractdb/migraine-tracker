@@ -47,7 +47,7 @@ export class ConfigureNotificationsPage {
     }
 
     this.navParams.data['notificationSettings'] = notificationData;
-    this.navCtrl.push(HomePage, this.navParams.data);
+    this.navCtrl.setRoot(HomePage, this.navParams.data);
   }
 
 }

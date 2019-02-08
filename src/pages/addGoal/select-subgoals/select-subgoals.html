@@ -49,14 +49,16 @@
 
 
   <ion-card>
-    <ion-list padding *ngFor="let step of configPath">
-      <ion-list-header (click)="toggleDetails(step)">
-        <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
-        {{step.description}}
-      </ion-list-header>
-      <div *ngIf="step.showDetails">
-        <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
-      </div>
+    <ion-list padding>
+      <ng-container *ngFor="let step of configPath">
+        <ion-list-header (click)="toggleDetails(step)">
+          <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
+          {{step.description}}
+        </ion-list-header>
+        <div *ngIf="step.showDetails">
+          <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
+        </div>
+      </ng-container>
 
       <ion-list-header>Selected {{goalType}} Subgoals</ion-list-header>
       <div>

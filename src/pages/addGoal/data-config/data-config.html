@@ -27,7 +27,7 @@
           </ion-item>
           <ion-item-options>
             <ion-item-option icon-only color="primary"  (click)="editData(custom, 'custom')">
-              <ion-icon slot="icon-only" name="create"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="create"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="secondary" (click)="editData(custom)">-->
               <!--<ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>-->
@@ -35,7 +35,7 @@
             <ion-item-option icon-only color="danger"
                              *ngIf="customData[dataType].indexOf(custom) >= 0"
                              (click)="remove(custom, 'custom')">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
@@ -65,7 +65,7 @@
           </ion-item>
           <ion-item-options>
             <ion-item-option icon-only color="primary"  (click)="editData(rec, 'rec')">
-              <ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="primary"  (click)="editData(rec)">-->
               <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->
@@ -73,12 +73,12 @@
             <ion-item-option icon-only color="secondary"
                              *ngIf="selectedFromList.indexOf(rec) < 0"
                              (click)="track(rec)">
-              <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="add-circle"></ion-icon>
             </ion-item-option>
             <ion-item-option icon-only color="danger"
                              *ngIf="selectedFromList.indexOf(rec) >= 0"
                              (click)="remove(rec, 'recommended')">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
@@ -97,18 +97,18 @@
           </ion-item>
           <ion-item-options>
             <ion-item-option icon-only color="primary" (click)="editData(data, 'other')">
-              <ion-icon  slot="icon-only" name="information-circle-outline"></ion-icon>
+              <ion-icon class="adjust"  slot="icon-only" name="information-circle-outline"></ion-icon>
             </ion-item-option>
             <!--<ion-item-option icon-only color="primary"  (click)="editData(data)">-->
               <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->
             <!--</ion-item-option>-->
             <ion-item-option icon-only color="secondary"
                              *ngIf="selectedFromList.indexOf(data) < 0" (click)="track(data)">
-              <ion-icon slot="icon-only" name="add-circle"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="add-circle"></ion-icon>
             </ion-item-option>
             <ion-item-option color="danger" icon-only
                              *ngIf="selectedFromList.indexOf(data) >= 0" (click)="remove(data, 'common')">
-              <ion-icon slot="icon-only" name="trash"></ion-icon>
+              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
             </ion-item-option>
           </ion-item-options>
         </ion-item-sliding>
@@ -118,16 +118,17 @@
 
 
   <ion-card>
-    <ion-list padding *ngFor="let step of configPath">
-      <ion-list-header (click)="toggleDetails(step)">
-        <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
-        {{step.description}}
-      </ion-list-header>
-      <div *ngIf="step.showDetails">
-        <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
-      </div>
-
-    </ion-list>
+    <ng-container *ngFor="let step of configPath">
+      <ion-list padding *ngIf="step.added.length > 0">
+        <ion-list-header (click)="toggleDetails(step)">
+          <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
+          {{step.description}}
+        </ion-list-header>
+        <div *ngIf="step.showDetails">
+          <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
+        </div>
+      </ion-list>
+    </ng-container>
   </ion-card>
 
   <button float-right ion-button (click)="continueSetup()">
