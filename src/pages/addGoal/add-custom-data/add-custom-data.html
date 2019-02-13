@@ -27,34 +27,37 @@
       <ion-item>
         <ion-label>Select field:</ion-label>
         <ion-select [(ngModel)]="dataField">
-          <ion-option *ngFor="let field of fieldList" [value]="field['name']"><p>{{field['name']}}:</p> <p>{{field['explanation']}}</p></ion-option>
+          <ion-option *ngFor="let field of fieldList" [value]="field['name']"><p>{{field['name']}}:</p>
+            <p>{{field['explanation']}}</p></ion-option>
         </ion-select>
       </ion-item>
-      <ion-item-divider>Goal/Limit (Optional)</ion-item-divider>
-      <ion-item>
-        <ion-label>More or less</ion-label>
-        <ion-select [(ngModel)]="goalFreq">
-          <ion-option [value]="more">More</ion-option>
-          <ion-option [value]="less">Less</ion-option>
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-label>than</ion-label>
-        <ion-select [(ngModel)]="goalThresh">
-          <ion-option *ngFor="let num of numList" [value]="num">
-            {{num}}
-          </ion-option>
-        </ion-select>
-        <!--<ion-input [(ngModel)]="goalThresh" text-right type="number" value="1"> time(s)</ion-input>-->
-      </ion-item>
-      <ion-item>
-        <ion-label>per</ion-label>
-        <ion-select [(ngModel)]="goalTime">
-          <ion-option [value]="day">Day</ion-option>
-          <ion-option [value]="week">Week</ion-option>
-          <ion-option [value]="month">Month</ion-option>
-        </ion-select>
-      </ion-item>
+
+
+      <ng-container *ngIf="dataField === 'binary' || dataField === 'number'">
+        <ion-item-divider >Goal/Limit (Optional)</ion-item-divider>
+        <ion-item>
+          <ion-label>More or less</ion-label>
+          <ion-select [(ngModel)]="goalFreq">
+            <ion-option [value]="More">More</ion-option>
+            <ion-option [value]="Less">Less</ion-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>than</ion-label>
+          <ion-input type="number" text-right placeholder="---" [(ngModel)]="goalThresh"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>per</ion-label>
+          <ion-select [(ngModel)]="goalTime">
+            <ion-option *ngIf="dataField !== 'binary'" [value]="Day">Day</ion-option>
+            <ion-option [value]="Week">Week</ion-option>
+            <ion-option [value]="Month">Month</ion-option>
+          </ion-select>
+        </ion-item>
+
+      </ng-container>
     </ion-card-content>
   </ion-card>
 

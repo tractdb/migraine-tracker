@@ -67,8 +67,7 @@ export class DataConfigPage {
   continueSetup() {
 
     let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
-
-
+    console.log(selectedData);
 
     if(selectedData.length > 0){
       if (!this.navParams.data['selectedData']) {
@@ -93,7 +92,6 @@ export class DataConfigPage {
     }
 
     else {
-      console.log(this.navParams.data);
       this.navCtrl.push(SelectTrackingFrequencyPage, {'configPath': this.navParams.data['configPath'],
                                                               'dataToTrack': this.navParams.data['selectedData'],
                                                               'textGoals': this.navParams.data['textGoals']});
@@ -114,57 +112,62 @@ export class DataConfigPage {
     customDataModal.present();
   }
 
+  replaceData(list, oldData, newData){
+    let oldIndex = list.indexOf(oldData);
+    if(oldIndex > -1){
+      list.splice(oldIndex, 1, newData);
+    }
+    else{
+      list.push(newData);
+    }
+  }
+
   editData(oldData, type) {
-    let customDataModal = this.modalCtrl.create(EditDataPage, oldData);
-    customDataModal.onDidDismiss(newData => {
+    let editDataModal = this.modalCtrl.create(EditDataPage, oldData);
+
+    editDataModal.onDidDismiss(newData => {
       if(newData){
         newData.selected = true;
 
         if(type=="custom"){
-          this.remove(oldData, type);
           newData['custom'] = true;
-          this.customData[this.dataType].push(newData);
+          this.replaceData(this.customData[this.dataType], oldData, newData);
         }
-
-        else if (type=="rec"){
-          this.recommendedData.splice(this.otherData.indexOf(oldData), 1, newData);
-          this.remove(oldData, type);
-          this.track(newData);
+        else if(type==='rec'){
+          this.replaceData(this.recommendedData, oldData, newData);
+          this.replaceData(this.selectedFromList, oldData, newData);
         }
-        else if (type=="other"){
-          this.otherData.splice(this.otherData.indexOf(oldData), 1, newData);
-          this.remove(oldData, type);
-          this.track(newData);
+        else if(type ==='other'){
+          this.replaceData(this.otherData, oldData, newData);
+          this.replaceData(this.selectedFromList, oldData, newData);
         }
       }
-
     });
-    customDataModal.present();
+
+    editDataModal.present();
   }
 
   track(data) {
+    console.log("adding");
+    console.log(this.selectedFromList)
     data.selected = true;
     this.selectedFromList.push(data);
+    console.log(this.selectedFromList)
   }
 
   remove(data, category){
+    console.log("removing");
     if(category === "custom") {
       this.customData[this.dataType].splice(data, 1);
     }
     else{
+      console.log(this.selectedFromList)
       this.selectedFromList.splice(data, 1);
       data.selected = false;
+      console.log(this.selectedFromList)
     }
   }
 
-
-
-  viewDataDetails(selectedData) {
-    let viewDataModal = this.modalCtrl.create(ViewDataDetailsPage, {"type": this.dataType,
-                                                                        "selected": selectedData});
-    viewDataModal.present();
-
-  }
 
   toggleDetails(configStep) {
     this.globalFunctions.toggleDetails(configStep);

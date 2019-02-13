@@ -6,9 +6,9 @@
             "fieldDescription": "Whether you had a migraine (yes/no)",
             "field": "binary",
             "goal": {
-                "freq": "less",
+                "freq": "Less",
                 "threshold": 1,
-                "timespan": "week"
+                "timespan": "Week"
             }
         },
         "headacheToday": {
@@ -32,9 +32,9 @@
             "fieldDescription": "Number of pills you took",
             "field": "number",
             "goal": {
-                "freq": "less",
+                "freq": "Less",
                 "threshold": 1,
-                "timespan": "week"
+                "timespan": "Week"
             }
         },
         "exercise": {
@@ -43,9 +43,9 @@
             "fieldDescription": "Number of minutes of exercise",
             "field": "number",
             "goal": {
-                "freq": "more",
+                "freq": "More",
                 "threshold": 120,
-                "timespan": "week"
+                "timespan": "Week"
             }
         }
     },
@@ -56,9 +56,9 @@
             "fieldDescription": "Number of pills you took",
             "field": "calculated medication use",
             "goal": {
-                "freq": "less",
+                "freq": "Less",
                 "threshold": 2,
-                "timespan": "week"
+                "timespan": "Week"
             }
         },
         "stress": {
@@ -77,9 +77,9 @@
             "fieldDescription": "Number of minutes of exercise",
             "field": "number",
             "goal": {
-                "freq": "more",
+                "freq": "More",
                 "threshold": 120,
-                "timespan": "week"
+                "timespan": "Week"
             }
         }
     }

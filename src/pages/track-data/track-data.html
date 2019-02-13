@@ -78,13 +78,13 @@
 
       <ng-container *ngIf="data.field === 'time range'">
         <ion-item>
-          <ion-label>{{data.name}}: Start Time</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name + '_start']">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-datetime displayFormat="h:mm a" placeholder="Start Time" [(ngModel)]="tracked[data.name + '_start']">
           </ion-datetime>
         </ion-item>
         <ion-item>
-          <ion-label>{{data.name}}: End Time</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name + '_end']">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-datetime displayFormat="h:mm a" placeholder="End Time" [(ngModel)]="tracked[data.name + '_end']">
           </ion-datetime>
         </ion-item>
       </ng-container>
@@ -113,7 +113,24 @@
             Your goal is <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}}
               times per {{data.goal.timespan}}.</span>
             <span *ngIf="data.goal.timespan!=='Day'">
-              Including today, you have tracked x this <span text-lowercase>{{data.goal.timespan}}</span>.
+              Including today, you have tracked
+              {{totalTrackedTimes(data)}}
+              this <span text-lowercase>{{data.goal.timespan}}</span>.
+            </span>
+            <span *ngIf="goalProgress(data) === 'met'">
+              Good job, you met your goal!
+            </span>
+            <span *ngIf="goalProgress(data) === 'below limit'">
+              Good job, you're still under your limit!
+            </span>
+            <span *ngIf="goalProgress(data) === 'under'">
+              Keep striving for your goal!
+            </span>
+            <span *ngIf="goalProgress(data) === 'over'">
+              Try to cut back!
+            </span>
+            <span *ngIf="goalProgress(data) === 'at limit'">
+              You're at your limit!
             </span>
           </p>
         </ion-item>

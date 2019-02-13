@@ -8,6 +8,7 @@ export class CouchDbServiceProvider {
 
   private baseUrl = 'https://tractdb.org/api';
   private activeUserGoals = {}; // only ONE entry is active at a given time; "goals" lists all current goals
+  private trackedData = [];
   private options = {withCredentials: true};
 
   constructor(public http: HttpClient, private globalFunctions: GlobalFunctionsServiceProvider) {
@@ -27,7 +28,11 @@ export class CouchDbServiceProvider {
 
   trackData(newData) {
     // todo: should store a datapoint in couch as a new object
+    console.log(newData); // push to db
+    this.trackedData.push(newData);
   }
+
+
 
   combineDataToTrack(oldDataToTrack, newDataToTrack) {
     // should return all data to track
@@ -52,25 +57,37 @@ export class CouchDbServiceProvider {
       let newGoal = {'goals': goalsOnly.concat(this.activeUserGoals['goals']),
                       'dataToTrack':
                         this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['dataToTrack']),
-                      'textGoals': this.activeUserGoals['textGoals'].push(setupDict['textGoals'])};
+                      'textGoals': this.activeUserGoals['textGoals'].push(setupDict['textGoals']),
+                      'dateAdded': new Date()};
       this.activeUserGoals = newGoal; // push
     }
     else{
       this.activeUserGoals = {'goals': goalsOnly,
                               'dataToTrack': setupDict.dataToTrack,
-                              'textGoals': [setupDict.textGoals]};
+                              'textGoals': [setupDict.textGoals],
+                              'dateAdded': new Date()};
     }
+    console.log(this.activeUserGoals);
     return this.activeUserGoals;
   }
 
-  getGoalsFromDatabase() {
-    // todo: should pull (active??) goals
+  getPreviouslyAddedGoals() {
+    // todo: should pull (active? All???) goals
+  }
+
+  getPreviouslyTrackedData() {
+    // todo: should pull data from database
   }
 
 
   getActiveGoals() {
-    return this.activeUserGoals;
-    // return this.getExampleGoal();
+    // return this.activeUserGoals;
+    return this.getExampleGoal();
+  }
+
+
+  getTrackedData() {
+    return this.trackedData;
   }
 
 
@@ -80,51 +97,141 @@ export class CouchDbServiceProvider {
         "Learning about my migraines",
         "Monitoring my migraines",
         "Learn what factors may affect my migraines",
-        "Monitor for insurance"
+        "Monitor for my doctor"
       ],
+      "dateAdded": "2019-02-13T03:19:26.639Z",
       "dataToTrack": {
         "Symptoms": [
           {
-            "name": "Migraine Days",
+            "name": "Migraine today",
             "explanation": "Whether you had a migraine.",
             "fieldDescription": "Whether you had a migraine (yes/no)",
             "field": "binary",
             "goal": {
-              "freq": "less",
+              "freq": "Less",
               "threshold": 1,
-              "timespan": "week"
+              "timespan": "Week"
             },
             "recommendingGoal": [
-              "Learn how frequently I get migraines"
+              "Learn what factors may affect my migraines",
+              "Monitor for my doctor"
             ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
             "selected": true
+          },
+          {
+            "name": "Headache today",
+            "explanation": "Whether you had a (non-migraine) headache.",
+            "fieldDescription": "Whether you had a headache (yes/no)",
+            "field": "binary",
+            "recommendingGoal": [
+              "Monitor for my doctor"
+            ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
+            "selected": true
+          },
+          {
+            "name": "Peak migraine severity",
+            "explanation": "How bad your migraine was at its worst point.",
+            "fieldDescription": "Pain level from 1-10",
+            "field": "numeric scale",
+            "condition": "migraineToday",
+            "recommendingGoal": [
+              "Monitor for my doctor"
+            ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
+            "selected": true
+          },
+          {
+            "name": "Migraine duration",
+            "field": "time range",
+            "goal": {},
+            "selected": true,
+            "custom": true
           }
         ],
         "Treatments": [
           {
-            "name": "As-needed medications",
+            "name": "As-needed medications today",
             "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
             "fieldDescription": "Number of pills you took",
             "field": "number",
             "goal": {
-              "freq": "less",
+              "freq": "Less",
               "threshold": 1,
-              "timespan": "week"
+              "timespan": "Week"
             },
             "recommendingGoal": [
-              "Learn how frequently I get migraines"
+              "Learn what factors may affect my migraines",
+              "Monitor for my doctor"
             ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
             "selected": true
+          },
+          {
+            "name": "Minutes exercised today",
+            "explanation": "How much you exercised",
+            "fieldDescription": "Number of minutes of exercise",
+            "field": "number",
+            "goal": {
+              "freq": "More",
+              "threshold": 120,
+              "timespan": "Week"
+            },
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
+            "selected": true
+          },
+          {
+            "name": "Time I took advil",
+            "field": "time",
+            "goal": {},
+            "selected": true,
+            "custom": true
           }
         ],
         "Triggers": [
+          {
+            "name": "Stress today",
+            "explanation": "How stressed you were today.",
+            "fieldDescription": "3-point stress rating",
+            "field": "category scale",
+            "recommendingGoal": [
+              "Learn what factors may affect my migraines"
+            ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
+            "selected": true
+          },
           {
             "name": "Frequent Use of Medications",
             "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
             "fieldDescription": "Number of pills you took",
             "field": "calculated medication use",
+            "goal": {
+              "freq": "Less",
+              "threshold": 2,
+              "timespan": "Week"
+            },
             "recommendingGoal": [
-              "Learn how frequently I get migraines"
+              "Learn what factors may affect my migraines",
+              "Monitor for my doctor"
             ],
             "opts": {
               "showBackdrop": true,
@@ -135,64 +242,17 @@ export class CouchDbServiceProvider {
         ],
         "Other": [
           {
-            "name": "trial1",
-            "field": "binary",
-            "goal": {
-              "freq": "More",
-              "threshold": 3,
-              "timespan": "Day"
-            },
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial2",
-            "field": "number",
-            "goal": {
-              "freq": "More",
-              "threshold": 3,
-              "timespan": "Month"
-            },
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial3",
-            "field": "numeric scale",
-            "goal": {},
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial4",
-            "field": "category scale",
-            "goal": {},
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial5",
+            "name": "abnormalities",
             "field": "note",
-            "goal": {},
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial6",
-            "field": "time",
-            "goal": {},
-            "selected": true,
-            "custom": true
-          },
-          {
-            "name": "trial7",
-            "field": "time range",
             "goal": {},
             "selected": true,
             "custom": true
           }
         ]
-      }
+      },
+      "textGoals": [
+        "Have fewer migraines"
+      ]
     }
   }
 
