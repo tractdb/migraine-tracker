@@ -45,9 +45,9 @@ export class ConfigureNotificationsPage {
     if(this.dayOfWeek){
       notificationData['dayOfWeek'] = this.dayOfWeek;
     }
-    console.log(notificationData);
+
     this.navParams.data['notificationSettings'] = notificationData;
-    this.navCtrl.push(HomePage, this.navParams.data);
+    this.navCtrl.setRoot(HomePage, this.navParams.data);
   }
 
 }

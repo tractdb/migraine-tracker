@@ -22,11 +22,13 @@ export class AddCustomDataPage {
   private goalThresh;
   private goalTime;
   private fieldList;
+  private numList;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
     this.dataType = navParams.data.type;
+    this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 
   ionViewDidLoad() {
@@ -34,9 +36,8 @@ export class AddCustomDataPage {
   }
 
   backToConfig(choice){
-    let data;
-    if(choice==='cancel') {
-      data = {
+    if(choice==='add') {
+      let data = {
         'name': this.dataName,
         'field': this.dataField,
         'goal': {
@@ -45,11 +46,12 @@ export class AddCustomDataPage {
           'timespan': this.goalTime
         }
       };
+      this.viewCtrl.dismiss(data);
     }
     else {
-        data = {};
+      this.viewCtrl.dismiss();
     }
-    this.viewCtrl.dismiss(data);
-    }
+
+  }
 
 }

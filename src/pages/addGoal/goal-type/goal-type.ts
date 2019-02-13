@@ -15,7 +15,7 @@ export class GoalTypePage {
 
 
   private goalList;
-  selectedGoals;
+  private selectedGoals;
 
 
   constructor(public navCtrl: NavController,
@@ -23,6 +23,7 @@ export class GoalTypePage {
               public globalFunctions: GlobalFunctionsServiceProvider,
               public dataDetailsServiceProvider: DataDetailsServiceProvider) {
     this.selectedGoals = [];
+    this.dataDetailsServiceProvider.initData();
   }
 
   ionViewDidLoad() {
@@ -56,12 +57,15 @@ export class GoalTypePage {
 
 
   continueSetup() {
-    let dataToSend = {"selectedGoals": this.selectedGoals};
+    this.selectedGoals.sort();
+    let configStep = {"step": "goalType", "description": "Selected Goals", "added": this.selectedGoals};
+    configStep = this.globalFunctions.toggleDetails(configStep);
+    let dataToSend = {"configPath": [configStep]};
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
       let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
       if(subgoals !== null){
-        allSubgoals.push(subgoals);
+        allSubgoals.push({"goal": this.selectedGoals[i], "subgoals": subgoals});
       }
     }
 

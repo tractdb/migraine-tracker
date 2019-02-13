@@ -19,7 +19,9 @@ export class SelectSubgoalsPage {
   private subgoalDict;
   private pageTitle;
   private subgoals;
-  selectedSubgoals;
+  private selectedSubgoals;
+  private configPath;
+  private goalType;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public globalFunctions: GlobalFunctionsServiceProvider) {
@@ -27,12 +29,14 @@ export class SelectSubgoalsPage {
   }
 
   ionViewDidLoad() {
-    this.subgoalDict = this.navParams.data['unseenSubgoals'][0]
+    this.goalType = this.navParams.data['unseenSubgoals'][0]["goal"].split(" ")[0];
+    this.subgoalDict = this.navParams.data['unseenSubgoals'][0]["subgoals"];
     this.pageTitle = this.subgoalDict['Title']; // because of an incomprehensible error when I try to just use the dict
     this.subgoals = this.subgoalDict['subgoals'];
     for(let i=0; i<this.subgoals.length; i++){
       this.subgoals[i].colors = this.globalFunctions.buttonColors(false);
     }
+    this.configPath = this.navParams.data['configPath'];
   }
 
   addGoal(subgoal){
@@ -52,14 +56,26 @@ export class SelectSubgoalsPage {
   }
 
   continueSetup() {
-    this.navParams.data.selectedGoals = this.navParams.data['selectedGoals'].concat(this.selectedSubgoals);
+    let configStep = {"step": this.goalType.toLowerCase()+"Subgoal",
+      "description": "Selected " + this.goalType + " Subgoals",
+      "added": this.selectedSubgoals};
+    configStep = this.globalFunctions.toggleDetails(configStep);
+    this.navParams.data.configPath.push(configStep);
     this.navParams.data['unseenSubgoals'].splice(0,1);
     if(this.navParams.data['unseenSubgoals'].length > 0){
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{
-      this.navCtrl.push(EnterTextGoalPage, this.navParams.data);
+      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath});
     }
   }
+
+
+  toggleDetails(configStep) {
+    this.globalFunctions.toggleDetails(configStep);
+  }
+
+
+
 
 }

@@ -1,0 +1,18 @@
+[
+    {"name": "Changes",
+    "description": "What change are you planning on making?",
+    "conditionalGoal": "Learn whether a specific change affects my migraines"},
+
+    {"name": "Symptoms",
+    "description": "What symptoms do you want to track?"},
+
+    {"name": "Treatments",
+    "description": "What treatments do you want to track?"},
+
+    {"name": "Triggers",
+    "description": "What possible contributing factors (also known as triggers) do you want to track?"},
+
+    {"name": "Other",
+    "description": "Is there anything else you want to track?"}
+
+]

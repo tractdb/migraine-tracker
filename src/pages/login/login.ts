@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { ViewController, NavController, NavParams } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -18,7 +18,7 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDbService: CouchDbServiceProvider,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder, public viewCtrl: ViewController) {
     this.loginInfo = this.formBuilder.group({
       account: ['', Validators.required],
       password: ['', Validators.required],
@@ -29,7 +29,7 @@ export class LoginPage {
   login() {
     this.couchDbService.login(this.loginInfo.value).subscribe(() => {
         console.log("logged in");
-        this.navCtrl.popToRoot();
+        this.viewCtrl.dismiss();
       },
       error => {
         console.log(error);

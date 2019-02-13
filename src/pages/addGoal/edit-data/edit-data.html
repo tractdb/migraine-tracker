@@ -1,0 +1,122 @@
+<!--
+  Generated template for the EditDataPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>editData</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <h3>
+    {{data.name}} Details:
+  </h3>
+
+  <ion-card>
+    <ion-card-content>
+      <ion-item-divider>Name</ion-item-divider>
+      <ion-item text-wrap *ngIf="data.explanation">
+        {{data.name}}: {{data.explanation}}
+      </ion-item>
+      <ion-item text-wrap *ngIf="!data.explanation">
+        {{data.name}}: Custom data you configured
+      </ion-item>
+      <ion-item-divider text-wrap *ngIf="data.recommendingGoal">Recommended Because You Selected:</ion-item-divider>
+      <ion-item text-wrap *ngFor="let goal of data.recommendingGoal">
+        {{goal}}
+      </ion-item>
+      <ion-item-divider>
+        <button *ngIf="!data.field.includes('calculated')" icon-only color="primary" item-right (click)="editData('field')">
+          <ion-icon *ngIf="!editField" slot="icon-only" name="create"></ion-icon>
+          <ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>
+        </button>
+        Field
+      </ion-item-divider>
+      <ion-item text-wrap *ngIf="data.fieldDescription">
+        {{data.field}}: {{data.fieldDescription}}
+      </ion-item>
+      <ion-item text-wrap *ngIf="!data.fieldDescription">
+        {{data.field}}
+      </ion-item>
+      <ion-item *ngIf="editField">
+        <ion-select [(ngModel)]="dataField">
+          <ion-option *ngFor="let field of fieldList"
+                      [value]="field['name']"
+                      [selected]="data.field === field['name']">
+            <p>{{field['name']}}:</p>
+            <p>{{field['explanation']}}</p></ion-option>
+        </ion-select>
+      </ion-item>
+
+      <ng-container *ngIf="(dataField === undefined && data.field === 'binary' || data.field === 'number')
+                          ||(dataField === 'binary' || dataField === 'number')">
+        <ion-item-divider>
+          Goal/Limit (If Applicable):
+          <button icon-only color="primary" item-right (click)="editData('goal')">
+            <ion-icon *ngIf="!editGoal" slot="icon-only" name="create"></ion-icon>
+            <ion-icon *ngIf="editGoal" slot="icon-only" name="checkmark-circle"></ion-icon>
+          </button>
+        </ion-item-divider>
+
+        <ion-item text-wrap *ngIf="data.goal && !editGoal">
+          <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}} times per {{data.goal.timespan}}</span>
+        </ion-item>
+
+        <ng-container *ngIf="editGoal">
+          <ion-item>
+            <ion-label>More or less</ion-label>
+            <ion-select [(ngModel)]="goalFreq">
+              <ion-option [value]="More" [selected]="data.goal && data.goal.freq === 'More'">
+                More
+              </ion-option>
+              <ion-option [value]="Less" [selected]="data.goal && data.goal.freq === 'Less'">
+                Less
+              </ion-option>
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>than</ion-label>
+            <ion-input type="number" text-right
+                       [placeholder]="(data.goal && data.goal.threshold) ? data.goal.threshold : '---'"
+                       [(ngModel)]="goalThresh"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>times per</ion-label>
+            <ion-select [(ngModel)]="goalTime">
+              <ion-option *ngIf="data.field !== 'binary'"
+                          [value]="Day" [selected]="data.goal && data.goal.timespan === 'Day'">
+                Day
+              </ion-option>
+              <ion-option [value]="Week" [selected]="data.goal && data.goal.timespan === 'Week'">
+                Week
+              </ion-option>
+              <ion-option [value]="Month" [selected]="data.goal && data.goal.timespan === 'Month'">
+                Month
+              </ion-option>
+            </ion-select>
+          </ion-item>
+        </ng-container>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
+
+
+  <button float-left ion-button (click)="backToConfig('cancel')">
+    Cancel
+  </button>
+
+  <button float-right ion-button (click)="backToConfig('add')">
+    <p *ngIf="data.selected">Save</p>
+    <p *ngIf="!data.selected">Add</p>
+  </button>
+
+</ion-content>

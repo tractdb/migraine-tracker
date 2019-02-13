@@ -4,7 +4,7 @@
         "Title": "What do you want to learn about your migraines?",
         "subgoals": [
             {
-                "subgoalName": "How frequently you get migraines",
+                "subgoalName": "Learn how frequently I get migraines",
                 "goodChoiceIf": [
                     "You want to know how often you have migraines (or pursue treatment)"
                 ],
@@ -14,7 +14,7 @@
                 ]
             },
             {
-                "subgoalName": "What factors may affect your migraines",
+                "subgoalName": "Learn what factors may affect my migraines",
                 "goodChoiceIf": [
                     "You want to identify potential contributing factors (\"triggers\")"
                 ],
@@ -24,7 +24,7 @@
             },
             
             {
-                "subgoalName": "Whether a specific change affects your migraines",
+                "subgoalName": "Learn whether a specific change affects my migraines",
                 "goodChoiceIf": [
                     "You are making a specific change in your life and want to see how it affects your migraines"
                 ],
@@ -40,19 +40,19 @@
         "Title": "Why do you want to monitor your migraines?",
         "subgoals": [
             {
-                "subgoalName": "Tracking for your own knowledge",
+                "subgoalName": "Monitor for my own knowledge",
                 "examples": [
                     "I just want to know how often I get migraines"
                 ]
             },
             {
-                "subgoalName": "Tracking for your doctor",
+                "subgoalName": "Monitor for my doctor",
                 "examples": [
                     "My doctor wants more detailed information about my migraines"
                 ]
             },
             {
-                "subgoalName": "Tracking for Insurance",
+                "subgoalName": "Monitor for insurance",
                 "examples": [
                     "My insurance needs more detailed information about my migraines to cover my prescription"
                 ]

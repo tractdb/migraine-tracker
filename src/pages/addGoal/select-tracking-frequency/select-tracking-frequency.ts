@@ -34,15 +34,18 @@ export class SelectTrackingFrequencyPage {
   }
 
   ionViewDidLoad() {
-    this.getGoals(this.navParams.data.selectedGoals);
+    this.getGoals(this.navParams.data.configPath[0].added);
   }
 
   configureNotifications(){
+    this.navParams.data['trackingFreq'] = 'regular';
     this.navCtrl.push(ConfigureNotificationsPage, this.navParams.data);
   }
 
   finish(){
-    this.navCtrl.push(HomePage, this.navParams.data);
+    this.navParams.data['trackingFreq'] = 'postSymptoms';
+    // this.navCtrl.push(HomePage, this.navParams.data);
+    this.navCtrl.setRoot(HomePage, this.navParams.data);
   }
 
 }

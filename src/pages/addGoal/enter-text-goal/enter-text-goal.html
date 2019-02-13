@@ -25,10 +25,23 @@
   <ion-card>
     <ion-card-content>
       <ion-item>
-        <ion-textarea [(ngModel)]="textGoals" rows="20" placeholder="Write any goals you want to remember here."></ion-textarea>
+        <ion-textarea [(ngModel)]="textGoals" rows="15" placeholder="Write any goals you want to remember here."></ion-textarea>
       </ion-item>
     </ion-card-content>
   </ion-card>
+
+  <ion-card>
+    <ion-list padding *ngFor="let step of configPath">
+      <ion-list-header (click)="toggleDetails(step)">
+        <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
+        {{step.description}}
+      </ion-list-header>
+      <div *ngIf="step.showDetails">
+        <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
+      </div>
+    </ion-list>
+  </ion-card>
+
   <button float-right ion-button (click)="continueSetup()">
     Continue
   </button>
