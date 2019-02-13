@@ -1,18 +1,13 @@
 import { Injectable } from '@angular/core';
 
-/*
-  Generated class for the GlobalFunctionsServiceProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class GlobalFunctionsServiceProvider {
 
-  private changeSubgoal = "Learn whether a specific change affects my migraines";
-
   constructor() {
   }
+
+
 
   getAllGoalsAndSubgoals(configPath) {
     let goals = [];
@@ -23,6 +18,7 @@ export class GlobalFunctionsServiceProvider {
     }
     return goals;
   }
+
 
   findNextConfigData(configPath, configDataList) {
     let totalDataTypes = configDataList.length;
@@ -50,10 +46,6 @@ export class GlobalFunctionsServiceProvider {
     else{
       return {"add": "light", "remove": "danger"};
     }
-  }
-
-  getChangeSubgoal(){
-    return this.changeSubgoal;
   }
 
 

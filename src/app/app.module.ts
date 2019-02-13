@@ -22,6 +22,7 @@ import {ViewDataDetailsPage} from "../pages/addGoal/view-data-details/view-data-
 import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
 import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notifications/configure-notifications";
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
+import {TrackDataPage} from "../pages/track-data/track-data";
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
     AddCustomDataPage,
     SelectTrackingFrequencyPage,
     ConfigureNotificationsPage,
-    EditDataPage
+    EditDataPage,
+    TrackDataPage
   ],
   imports: [
     BrowserModule,
@@ -56,7 +58,8 @@ import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
     AddCustomDataPage,
     SelectTrackingFrequencyPage,
     ConfigureNotificationsPage,
-    EditDataPage
+    EditDataPage,
+    TrackDataPage
   ],
   providers: [
     StatusBar,

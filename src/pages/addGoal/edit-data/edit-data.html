@@ -33,7 +33,7 @@
         {{goal}}
       </ion-item>
       <ion-item-divider>
-        <button icon-only color="primary" item-right (click)="editData('field')">
+        <button *ngIf="!data.field.includes('calculated')" icon-only color="primary" item-right (click)="editData('field')">
           <ion-icon *ngIf="!editField" slot="icon-only" name="create"></ion-icon>
           <ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>
         </button>

@@ -1,0 +1,130 @@
+<!--
+  Generated template for the TrackDataPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Track {{dataType}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card *ngFor="let data of dataToTrack">
+
+    <ion-card-content>
+
+        <ion-item text-wrap *ngIf="data.field === 'binary'">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-toggle [(ngModel)]="tracked[data.name]"></ion-toggle>
+        </ion-item>
+
+        <ion-item text-wrap *ngIf="data.field === 'number'">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-input type="number" text-right placeholder="---" [(ngModel)]="tracked[data.name]"></ion-input>
+        </ion-item>
+
+        <ion-item text-wrap *ngIf="data.field === 'numeric scale'">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-select [(ngModel)]="tracked[data.name]" placeholder="---">
+            <ion-option *ngFor="let num of numList" [value]="num">
+              {{num}}
+            </ion-option>
+          </ion-select>
+        </ion-item>
+
+
+      <ng-container *ngIf="data.field === 'category scale'">
+        <ion-item>
+          <ion-label>{{data.name}}</ion-label>
+        </ion-item>
+        <div class="row" >
+          <div class="col" text-left>
+            <button ion-button [color]="getColor(data, 'None')" value="None" (click)="catScale(data, 'None')">
+              None
+            </button>
+          </div>
+          <div class="col" text-center >
+            <button ion-button [color]="getColor(data, 'Some')" value="Some" (click)="catScale(data, 'Some')">
+              Some
+            </button>
+          </div>
+          <div class="col" text-center >
+            <button ion-button [color]="getColor(data, 'Lots')" value="Lots" (click)="catScale(data, 'Lots')">
+              Lots
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+        <ion-item text-wrap *ngIf="data.field === 'note'">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-input [(ngModel)]="tracked[data.name]" placeholder="Enter note here"></ion-input>
+        </ion-item>
+
+
+        <ion-item text-wrap *ngIf="data.field === 'time'">
+          <ion-label>{{data.name}}</ion-label>
+          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name]">
+          </ion-datetime>
+        </ion-item>
+
+
+
+      <ng-container *ngIf="data.field === 'time range'">
+        <ion-item>
+          <ion-label>{{data.name}}: Start Time</ion-label>
+          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name + '_start']">
+          </ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label>{{data.name}}: End Time</ion-label>
+          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name + '_end']">
+          </ion-datetime>
+        </ion-item>
+      </ng-container>
+
+
+      <ng-container *ngIf="data.field === 'calculated medication use'">
+        <ion-item >
+          <ion-label>{{data.name}} </ion-label>
+        </ion-item>
+          <p text-wrap *ngIf="trackedSoFar['Treatments'] && trackedSoFar['Treatments']['As-needed medications'] > 0">
+            You took as-needed medication today.  Remember that too-frequent use of medication can cause more migraines!
+          </p>
+          <p text-wrap *ngIf="trackedSoFar['Treatments']
+                              && trackedSoFar['Treatments']['As-needed medications'] === '0' ">
+            You did not take as-needed medication today!
+          </p>
+          <p text-wrap *ngIf="(trackedSoFar === {}) || (trackedSoFar['Treatments'] === undefined)
+                                || (trackedSoFar['Treatments']['As-needed medications'] === undefined)">
+            You did not track whether you took as-needed medication today.
+          </p>
+      </ng-container>
+
+
+        <ion-item padding text-wrap *ngIf="data.goal && data.goal.freq">
+          <p>
+            Your goal is <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}}
+              times per {{data.goal.timespan}}.</span>
+            <span *ngIf="data.goal.timespan!=='Day'">
+              Including today, you have tracked x this <span text-lowercase>{{data.goal.timespan}}</span>.
+            </span>
+          </p>
+        </ion-item>
+
+
+    </ion-card-content>
+  </ion-card>
+
+  <button float-right ion-button (click)="continueTracking()">
+    <ng-container *ngIf="nothingTracked()">Skip</ng-container>
+    <ng-container *ngIf="!nothingTracked()">Continue</ng-container>
+  </button>
+
+</ion-content>

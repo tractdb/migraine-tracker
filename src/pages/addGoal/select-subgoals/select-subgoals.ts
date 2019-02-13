@@ -37,7 +37,6 @@ export class SelectSubgoalsPage {
       this.subgoals[i].colors = this.globalFunctions.buttonColors(false);
     }
     this.configPath = this.navParams.data['configPath'];
-    console.log(this.configPath);
   }
 
   addGoal(subgoal){
@@ -62,13 +61,12 @@ export class SelectSubgoalsPage {
       "added": this.selectedSubgoals};
     configStep = this.globalFunctions.toggleDetails(configStep);
     this.navParams.data.configPath.push(configStep);
-    console.log(this.navParams.data.configPath);
     this.navParams.data['unseenSubgoals'].splice(0,1);
     if(this.navParams.data['unseenSubgoals'].length > 0){
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{
-      this.navCtrl.push(EnterTextGoalPage, this.navParams.data);
+      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath});
     }
   }
 

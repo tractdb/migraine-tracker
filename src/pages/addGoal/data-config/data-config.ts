@@ -7,13 +7,6 @@ import {SelectTrackingFrequencyPage} from "../select-tracking-frequency/select-t
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
 import {EditDataPage} from "../edit-data/edit-data";
 
-/**
- * Generated class for the SymptomConfigPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-
 
 @Component({
   selector: 'page-data-config',
@@ -72,24 +65,24 @@ export class DataConfigPage {
 
 
   continueSetup() {
-    // todo: maybe we should have pushed goals to couch by now; otherwise, push them forward more
 
     let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
 
 
-    if (!this.navParams.data['selectedData']) {
-      this.navParams.data['selectedData'] = {};
+
+    if(selectedData.length > 0){
+      if (!this.navParams.data['selectedData']) {
+        this.navParams.data['selectedData'] = {};
+      }
+
+      this.navParams.data['selectedData'][this.dataType] = selectedData;
+      let configStep = {"step": this.dataType,
+        "description": "Selected " + this.dataType,
+        "added": selectedData.map(x => x.name)
+      };
+      configStep = this.globalFunctions.toggleDetails(configStep);
+      this.navParams.data['configPath'].push(configStep);
     }
-
-    this.navParams.data['selectedData'][this.dataType] = selectedData;
-
-
-    let configStep = {"step": this.dataType,
-                        "description": "Selected " + this.dataType,
-                        "added": selectedData.map(x => x.name)
-    };
-    configStep = this.globalFunctions.toggleDetails(configStep);
-    this.navParams.data['configPath'].push(configStep);
 
     let configData = this.globalFunctions.findNextConfigData(this.configPath, this.navParams.data['unconfigured']);
 
@@ -101,7 +94,9 @@ export class DataConfigPage {
 
     else {
       console.log(this.navParams.data);
-      this.navCtrl.push(SelectTrackingFrequencyPage, this.navParams.data);
+      this.navCtrl.push(SelectTrackingFrequencyPage, {'configPath': this.navParams.data['configPath'],
+                                                              'dataToTrack': this.navParams.data['selectedData'],
+                                                              'textGoals': this.navParams.data['textGoals']});
     }
 
   }

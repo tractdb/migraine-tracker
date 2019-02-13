@@ -1,7 +1,7 @@
 {
     "Symptoms": {
         "migraineToday": {
-            "name": "Migraine Days",
+            "name": "Migraine today",
             "explanation": "Whether you had a migraine.",
             "fieldDescription": "Whether you had a migraine (yes/no)",
             "field": "binary",
@@ -12,13 +12,13 @@
             }
         },
         "headacheToday": {
-            "name": "Headache Days",
+            "name": "Headache today",
             "explanation": "Whether you had a (non-migraine) headache.",
             "fieldDescription": "Whether you had a headache (yes/no)",
             "field": "binary"
         },
         "peakMigraineSeverity": {
-            "name": "Peak Migraine Severity",
+            "name": "Peak migraine severity",
             "explanation": "How bad your migraine was at its worst point.",
             "fieldDescription": "Pain level from 1-10",
             "field": "numeric scale",
@@ -27,7 +27,7 @@
     },
     "Treatments": {
         "acuteMedication": {
-            "name": "As-needed medications",
+            "name": "As-needed medications today",
             "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
             "fieldDescription": "Number of pills you took",
             "field": "number",
@@ -38,7 +38,7 @@
             }
         },
         "exercise": {
-            "name": "Exercise",
+            "name": "Minutes exercised today",
             "explanation": "How much you exercised",
             "fieldDescription": "Number of minutes of exercise",
             "field": "number",
@@ -54,10 +54,15 @@
             "name": "Frequent Use of Medications",
             "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
             "fieldDescription": "Number of pills you took",
-            "field": "automatically calculated"
+            "field": "calculated medication use",
+            "goal": {
+                "freq": "less",
+                "threshold": 2,
+                "timespan": "week"
+            }
         },
         "stress": {
-            "name": "Stress",
+            "name": "Stress today",
             "explanation": "How stressed you were today.",
             "fieldDescription": "3-point stress rating",
             "field": "category scale"

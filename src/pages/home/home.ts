@@ -5,6 +5,7 @@ import {GoalTypePage} from "../addGoal/goal-type/goal-type";
 import {LoginPage} from "../login/login";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {AddCustomDataPage} from "../addGoal/add-custom-data/add-custom-data";
+import {TrackDataPage} from "../track-data/track-data";
 
 @Component({
   selector: 'page-home',
@@ -12,7 +13,7 @@ import {AddCustomDataPage} from "../addGoal/add-custom-data/add-custom-data";
 })
 export class HomePage {
 
-  private goals = [];
+  private activeGoals = {};
 
   constructor(public navCtrl: NavController,
               private couchDbService: CouchDbServiceProvider,
@@ -24,7 +25,7 @@ export class HomePage {
   login() {
     let customDataModal = this.modalCtrl.create(LoginPage);
     customDataModal.onDidDismiss(() => {
-      this.goals = this.couchDbService.getActiveGoals();
+      this.activeGoals = this.couchDbService.getActiveGoals();
     });
     customDataModal.present();
   }
@@ -33,17 +34,20 @@ export class HomePage {
     this.navCtrl.push(GoalTypePage);
   }
 
+  trackData() {
+    this.navCtrl.push(TrackDataPage, {'dataDict': this.activeGoals['dataToTrack'],
+                                      'leftToTrack': Object.keys(this.activeGoals['dataToTrack'])});
+  }
+
   ionViewDidEnter(){
-    if(this.navParams.data.configPath){
-      this.goals = this.globalFunctions.getAllGoalsAndSubgoals(this.navParams.data.configPath);
+    if(this.navParams.data.configPath){ //todo: notification stuff, text goals
+      this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
     }
     else{
       this.couchDbService.userLoggedIn().subscribe(
         resp => {
-          this.goals = this.couchDbService.getActiveGoals();
-          console.log(resp);
+          this.activeGoals = this.couchDbService.getActiveGoals();
         }, error => {
-          console.log(error);
           this.login();
         });
     }
