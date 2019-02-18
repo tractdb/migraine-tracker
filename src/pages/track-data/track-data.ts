@@ -64,6 +64,15 @@ export class TrackDataPage {
 
 
   totalTrackedTimes(data) {
+    if(data.name === 'Frequent Use of Medications'){
+      let dataName = 'As-needed medications today';
+      let timesSoFar = this.globalFunctions.calculatePriorGoalProgress({'name': dataName, 'field': 'Number'},
+        'Treatments', this.previouslyTracked, data.goal.timespan);
+      if(!this.trackedSoFar['Treatments'] || !this.trackedSoFar['Treatments'][dataName]){
+        return timesSoFar;
+      }
+      return Number(this.trackedSoFar['Treatments'][dataName]) + timesSoFar;
+    }
     let timesSoFar = this.goalProgresses[data.name];
     if(this.tracked[data.name] !== 'undefined' && !isNaN(this.tracked[data.name])){
       if(data.field === 'number'){
@@ -134,7 +143,7 @@ export class TrackDataPage {
     else {
       this.navParams.data['tracked']['dateTracked'] = new Date();
       this.couchDBService.trackData(this.navParams.data['tracked']);
-      this.navCtrl.push(HomePage, {'trackedData': this.navParams.data['tracked']});
+      this.navCtrl.setRoot(HomePage, {'trackedData': this.navParams.data['tracked']});
     }
   }
 

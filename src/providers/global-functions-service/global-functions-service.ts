@@ -1,10 +1,29 @@
 import { Injectable } from '@angular/core';
+import {GoalDetailsServiceProvider} from "../goal-details-service/goal-details-service";
 
 
 @Injectable()
 export class GlobalFunctionsServiceProvider {
 
-  constructor() {
+  constructor(private goalDetails: GoalDetailsServiceProvider) {
+  }
+
+  getGoalHierarchy(goals){
+    let allGoals = {};
+    let allSubgoals = this.goalDetails.getSubgoalList();
+    for(let i=0; i<goals.length; i++){
+      if(goals[i] in allSubgoals){
+        let possibleSubgoals = allSubgoals[goals[i]].subgoals;
+        let subgoals = [];
+        for(let j=0; j<possibleSubgoals.length; j++){
+          if(goals.indexOf(possibleSubgoals[j]['subgoalName'])>-1){
+            subgoals.push(possibleSubgoals[j]['subgoalName']);
+          }
+        }
+        allGoals[goals[i]] = subgoals;
+      }
+    }
+    return allGoals;
   }
 
 
@@ -38,20 +57,22 @@ export class GlobalFunctionsServiceProvider {
     return null;
   }
 
-  calculatePriorGoalProgress(data, dataType, previouslyTracked) {
+  calculatePriorGoalProgress(data, dataType, previouslyTracked, timespan=undefined) {
     let timesTracked = 0;
+    if(!timespan){
+      timespan = data.goal.timespan;
+    }
     for(let i=0; i<previouslyTracked.length; i++){
-      console.log(previouslyTracked[i]);
       if(previouslyTracked[i][dataType] === undefined
         || previouslyTracked[i][dataType][data.name] === undefined) {
         continue;
       }
       let today = new Date();
       let cutoff;
-      if(data.goal.timespan === "Week") {
+      if(timespan === "Week") {
         cutoff = new Date().setDate(today.getDate() - 7);
       }
-      else if(data.goal.timespan === "Month"){
+      else if(timespan === "Month"){
         cutoff = new Date().setMonth(today.getMonth() - 1);
       }
       else{

@@ -29,6 +29,10 @@ export class GoalDetailsServiceProvider {
 
   }
 
+  getSubgoalList(){
+    return this.subgoals;
+  }
+
   getGoalData() {
     return this.allGoalData;
   }
