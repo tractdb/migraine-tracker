@@ -11,6 +11,7 @@ export class GlobalFunctionsServiceProvider {
   getGoalHierarchy(goals){
     let allGoals = {};
     let allSubgoals = this.goalDetails.getSubgoalList();
+    let allGoalTypes = this.goalDetails.getAllGoals();
     for(let i=0; i<goals.length; i++){
       if(goals[i] in allSubgoals){
         let possibleSubgoals = allSubgoals[goals[i]].subgoals;
@@ -21,6 +22,13 @@ export class GlobalFunctionsServiceProvider {
           }
         }
         allGoals[goals[i]] = subgoals;
+      }
+      else{
+        for(let j=0; j<allGoalTypes.length; j++){
+          if(allGoalTypes[j].goalName === goals[i]){
+            allGoals[goals[i]] = undefined;
+          }
+        }
       }
     }
     return allGoals;

@@ -7,6 +7,9 @@
 <ion-header>
 
   <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
     <ion-title>Goals</ion-title>
   </ion-navbar>
 
@@ -52,12 +55,12 @@
         <ion-icon name="create"></ion-icon>
       </button>
 
-      <button float-right class="button" *ngIf="editingTextGoal" ion-button icon-only (click)="editTextGoal()">
-        <ion-icon name="trash"></ion-icon>
+      <button float-right class="button" *ngIf="editingTextGoal" ion-button icon-only (click)="saveTextGoal()">
+        <ion-icon name="checkmark"></ion-icon>
       </button>
 
-      <button float-right class="button" *ngIf="editingTextGoal" ion-button icon-only (click)="saveTextGoal()">
-        <ion-icon name="save"></ion-icon>
+      <button float-right class="button" *ngIf="editingTextGoal" ion-button icon-only (click)="cancelNewTextGoal()">
+        <ion-icon name="close"></ion-icon>
       </button>
 
 
@@ -70,8 +73,7 @@
         You haven't specified any custom goals!
       </ion-item>
       <ion-item *ngIf="editingTextGoal">
-        <ion-textarea [(ngModel)]="newTextGoals" rows="10" [placeholder]="textGoals ? textGoals : 'Add any goals you want to remember here'"
-                      [default]="textGoals ? textGoals : ''"></ion-textarea>
+        <ion-textarea [(ngModel)]="textGoals" placeholder='Type your goal here' rows="10"></ion-textarea>
       </ion-item>
     </ion-card-content>
   </ion-card>

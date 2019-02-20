@@ -21,7 +21,7 @@ export class GoalModificationPage {
   goalTypes;
   textGoals;
   editingTextGoal = false;
-  newTextGoals;
+  oldTextGoals;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider,
@@ -29,11 +29,15 @@ export class GoalModificationPage {
   }
 
   ionViewDidLoad() {
-    this.activeGoals = this.couchDBService.getActiveGoals();
+    if(this.navParams.data.configPath){ //todo: notification stuff, text goals
+      this.activeGoals = this.couchDBService.addGoalFromSetup(this.navParams.data);
+    }
+    else{
+      this.activeGoals = this.couchDBService.getActiveGoals();
+    }
     this.textGoals = this.activeGoals.textGoals;
     this.goalHierarchy = this.globalFunctionsService.getGoalHierarchy(this.activeGoals.goals);
     this.goalTypes = Object.keys(this.goalHierarchy);
-    console.log(this.goalHierarchy);
   }
 
   addGoal() {
@@ -42,26 +46,51 @@ export class GoalModificationPage {
 
 
   deleteGoal(goal) {
-    this.activeGoals.goals.splice(goal);
+    // console.log(this.activeGoals.goals)
+    this.activeGoals.goals.splice(this.activeGoals.goals.indexOf(goal), 1);
     this.couchDBService.removeGoal(goal);
+    if(goal in this.goalHierarchy){
+      delete(this.goalHierarchy[goal]);
+      this.goalTypes = Object.keys(this.goalHierarchy);
+    }
+    else{
+      for(let i=0; i<this.goalTypes.length; i++){
+        console.log(this.goalHierarchy[this.goalTypes[i]])
+        let subgoalIndex = this.goalHierarchy[this.goalTypes[i]].indexOf(goal);
+        if(subgoalIndex > -1){
+          this.goalHierarchy[this.goalTypes[i]].splice(subgoalIndex, 1);
+          if(this.goalHierarchy[this.goalTypes[i]].length === 0){
+            delete(this.goalHierarchy[this.goalTypes[i]]);
+            this.goalTypes = Object.keys(this.goalHierarchy);
+          }
+          break;
+        }
+      }
+    }
   }
 
 
 
   deleteTextGoal(){
     this.textGoals = "";
+    this.oldTextGoals = "";
     this.couchDBService.removeGoal('textGoal');
+  }
+
+  cancelNewTextGoal() {
+    this.editingTextGoal = !this.editingTextGoal;
+    this.textGoals = this.oldTextGoals;
   }
 
 
   saveTextGoal(){
     this.couchDBService.editTextGoal(this.textGoals);
-    this.textGoals = this.newTextGoals;
     this.editingTextGoal = !this.editingTextGoal;
 
   }
 
   editTextGoal(){
+    this.oldTextGoals = this.textGoals;
     this.editingTextGoal = !this.editingTextGoal;
   }
 

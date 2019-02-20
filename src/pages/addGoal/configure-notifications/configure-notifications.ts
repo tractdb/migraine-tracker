@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {HomePage} from "../../home/home";
+import {GoalModificationPage} from "../../goal-modification/goal-modification";
+import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 
 /**
  * Generated class for the ConfigureNotificationsPage page.
@@ -24,7 +26,7 @@ export class ConfigureNotificationsPage {
   days;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
     this.startdate = new Date().toISOString();
     this.minDate = new Date().toISOString();
     this.days = Array.from(new Array(31), (x,i) => i + 1)
@@ -47,7 +49,13 @@ export class ConfigureNotificationsPage {
     }
 
     this.navParams.data['notificationSettings'] = notificationData;
-    this.navCtrl.setRoot(HomePage, this.navParams.data);
+
+    if(this.couchDBService.getActiveGoals()){
+      this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
+    }
+    else{
+      this.navCtrl.setRoot(HomePage, this.navParams.data);
+    }
   }
 
 }

@@ -37,13 +37,14 @@ export class CouchDbServiceProvider {
 
   combineDataToTrack(oldDataToTrack, newDataToTrack) {
     // should return all data to track
-    // @ts-ignore
-    for (const [ dataType, newData ] of Object.entries(newDataToTrack)) {
-      if (dataType in oldDataToTrack){
-        oldDataToTrack[dataType] = oldDataToTrack[dataType].concat(newData)
-      }
-      else{
-        oldDataToTrack[dataType] = newData;
+    if(newDataToTrack) {
+      // @ts-ignore
+      for (const [dataType, newData] of Object.entries(newDataToTrack)) {
+        if (dataType in oldDataToTrack) {
+          oldDataToTrack[dataType] = oldDataToTrack[dataType].concat(newData)
+        } else {
+          oldDataToTrack[dataType] = newData;
+        }
       }
     }
     console.log(oldDataToTrack);
@@ -58,7 +59,7 @@ export class CouchDbServiceProvider {
       let newGoal = {'goals': goalsOnly.concat(this.activeUserGoals['goals']),
                       'dataToTrack':
                         this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['dataToTrack']),
-                      'textGoals': this.activeUserGoals['textGoals'].push(setupDict['textGoals']),
+                      'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
                       'dateAdded': new Date()};
       this.activeUserGoals = newGoal; // push
     }
@@ -78,7 +79,7 @@ export class CouchDbServiceProvider {
       this.activeUserGoals['textGoals'] = undefined;
     }
     else{
-      this.activeUserGoals['goals'].splice(goal, 1);
+      this.activeUserGoals['goals'].splice(this.activeUserGoals['goals'].indexOf(goal), 1);
     }
   }
 
@@ -97,7 +98,9 @@ export class CouchDbServiceProvider {
 
 
   getActiveGoals() {
-    // return this.activeUserGoals;
+    if(Object.keys(this.activeUserGoals).length > 0){
+      return this.activeUserGoals;
+    }
     return this.getExampleGoal();
   }
 
@@ -190,7 +193,7 @@ export class CouchDbServiceProvider {
 
 
   getExampleGoal() {
-    return {
+    let exGoal = {
       "goals": [
         "Learning about my migraines",
         "Monitoring my migraines",
@@ -351,7 +354,9 @@ export class CouchDbServiceProvider {
       "textGoals": [
         "Have fewer migraines"
       ]
-    }
+    };
+    this.activeUserGoals = exGoal;
+    return exGoal;
   }
 
 

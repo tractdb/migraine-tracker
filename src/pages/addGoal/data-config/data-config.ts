@@ -67,7 +67,6 @@ export class DataConfigPage {
   continueSetup() {
 
     let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
-    console.log(selectedData);
 
     if(selectedData.length > 0){
       if (!this.navParams.data['selectedData']) {
