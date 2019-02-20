@@ -28,21 +28,23 @@ export class CouchDbServiceProvider {
 
   trackData(newData) {
     // todo: should store a datapoint in couch as a new object
-    console.log(newData); // push to db
+    // console.log(newData); // push to db
     this.trackedData.push(newData);
+    console.log(this.trackedData);
   }
 
 
 
   combineDataToTrack(oldDataToTrack, newDataToTrack) {
     // should return all data to track
-    // @ts-ignore
-    for (const [ dataType, newData ] of Object.entries(newDataToTrack)) {
-      if (dataType in oldDataToTrack){
-        oldDataToTrack[dataType] = oldDataToTrack[dataType].concat(newData)
-      }
-      else{
-        oldDataToTrack[dataType] = newData;
+    if(newDataToTrack) {
+      // @ts-ignore
+      for (const [dataType, newData] of Object.entries(newDataToTrack)) {
+        if (dataType in oldDataToTrack) {
+          oldDataToTrack[dataType] = oldDataToTrack[dataType].concat(newData)
+        } else {
+          oldDataToTrack[dataType] = newData;
+        }
       }
     }
     console.log(oldDataToTrack);
@@ -57,7 +59,7 @@ export class CouchDbServiceProvider {
       let newGoal = {'goals': goalsOnly.concat(this.activeUserGoals['goals']),
                       'dataToTrack':
                         this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['dataToTrack']),
-                      'textGoals': this.activeUserGoals['textGoals'].push(setupDict['textGoals']),
+                      'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
                       'dateAdded': new Date()};
       this.activeUserGoals = newGoal; // push
     }
@@ -71,6 +73,21 @@ export class CouchDbServiceProvider {
     return this.activeUserGoals;
   }
 
+  removeGoal(goal) {
+    // todo: push to database
+    if(goal === 'textGoal'){
+      this.activeUserGoals['textGoals'] = undefined;
+    }
+    else{
+      this.activeUserGoals['goals'].splice(this.activeUserGoals['goals'].indexOf(goal), 1);
+    }
+  }
+
+  editTextGoal(newGoal){
+    // todo: push to database
+    this.activeUserGoals['textGoals'] = newGoal;
+  }
+
   getPreviouslyAddedGoals() {
     // todo: should pull (active? All???) goals
   }
@@ -81,7 +98,9 @@ export class CouchDbServiceProvider {
 
 
   getActiveGoals() {
-    // return this.activeUserGoals;
+    if(Object.keys(this.activeUserGoals).length > 0){
+      return this.activeUserGoals;
+    }
     return this.getExampleGoal();
   }
 
@@ -91,8 +110,90 @@ export class CouchDbServiceProvider {
   }
 
 
+  getExamplePreviouslyTracked() {
+    return [
+      {
+        "Symptoms": {
+          "Migraine today": true,
+          "Peak migraine severity": 9,
+          "Migraine duration_start": "19:42",
+          "Migraine duration_end": "12:43"
+        },
+        "Treatments": {
+          "As-needed medications today": "1",
+          "Minutes exercised today": ""
+        },
+        "Triggers": {
+          "Stress today": "Some"
+        },
+        "dateTracked": "2019-02-18T19:43:20.103Z"
+      },
+      {
+        "Symptoms": {
+          "Headache today": true
+        },
+        "Treatments": {
+          "Minutes exercised today": "30"
+        },
+        "Triggers": {
+          "Stress today": "Lots"
+        },
+        "dateTracked": "2019-02-18T19:43:32.452Z"
+      },
+      {
+        "Symptoms": {
+          "Migraine today": true,
+          "Peak migraine severity": 3
+        },
+        "Treatments": {
+          "As-needed medications today": "2"
+        },
+        "Triggers": {
+          "Stress today": "Some"
+        },
+        "dateTracked": "2019-02-18T19:43:51.225Z"
+      },
+      {
+        "Treatments": {
+          "Minutes exercised today": "45"
+        },
+        "Triggers": {
+          "Stress today": "None"
+        },
+        "dateTracked": "2019-02-18T19:44:06.425Z"
+      },
+      {
+        "Symptoms": {
+          "Headache today": true
+        },
+        "Treatments": {
+          "Minutes exercised today": "15"
+        },
+        "Triggers": {
+          "Stress today": "Some"
+        },
+        "dateTracked": "2019-02-18T19:44:51.472Z"
+      },
+      {
+        "Symptoms": {
+          "Migraine today": true,
+          "Headache today": true,
+          "Peak migraine severity": 2
+        },
+        "Treatments": {
+          "As-needed medications today": "1"
+        },
+        "Triggers": {
+          "Stress today": "Some"
+        },
+        "dateTracked": "2019-02-18T19:45:06.669Z"
+      }
+    ]
+  }
+
+
   getExampleGoal() {
-    return {
+    let exGoal = {
       "goals": [
         "Learning about my migraines",
         "Monitoring my migraines",
@@ -253,7 +354,9 @@ export class CouchDbServiceProvider {
       "textGoals": [
         "Have fewer migraines"
       ]
-    }
+    };
+    this.activeUserGoals = exGoal;
+    return exGoal;
   }
 
 

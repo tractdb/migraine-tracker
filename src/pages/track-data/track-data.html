@@ -94,15 +94,15 @@
         <ion-item >
           <ion-label>{{data.name}} </ion-label>
         </ion-item>
-          <p text-wrap *ngIf="trackedSoFar['Treatments'] && trackedSoFar['Treatments']['As-needed medications'] > 0">
+          <p text-wrap *ngIf="trackedSoFar['Treatments'] && trackedSoFar['Treatments']['As-needed medications today'] > 0">
             You took as-needed medication today.  Remember that too-frequent use of medication can cause more migraines!
           </p>
           <p text-wrap *ngIf="trackedSoFar['Treatments']
-                              && trackedSoFar['Treatments']['As-needed medications'] === '0' ">
+                              && trackedSoFar['Treatments']['As-needed medications today'] === '0' ">
             You did not take as-needed medication today!
           </p>
           <p text-wrap *ngIf="(trackedSoFar === {}) || (trackedSoFar['Treatments'] === undefined)
-                                || (trackedSoFar['Treatments']['As-needed medications'] === undefined)">
+                                || (trackedSoFar['Treatments']['As-needed medications today'] === undefined)">
             You did not track whether you took as-needed medication today.
           </p>
       </ng-container>

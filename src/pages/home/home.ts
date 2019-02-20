@@ -4,7 +4,6 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 import {GoalTypePage} from "../addGoal/goal-type/goal-type";
 import {LoginPage} from "../login/login";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
-import {AddCustomDataPage} from "../addGoal/add-custom-data/add-custom-data";
 import {TrackDataPage} from "../track-data/track-data";
 
 @Component({

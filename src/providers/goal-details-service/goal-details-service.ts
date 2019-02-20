@@ -23,10 +23,24 @@ export class GoalDetailsServiceProvider {
     this.allGoalData = this.http.get('assets/supportedGoals.json', {},);
   }
 
+  getGoals() {
+    this.allGoalData.subscribe(goalData => {
+      this.goalList = goalData;
+    },
+      error => {
+      console.log(error);
+      });
+  }
+
   constructor(public http: HttpClient) {
     this.getGoalList();
     this.getSubgoals();
+    this.getGoals();
 
+  }
+
+  getSubgoalList(){
+    return this.subgoals;
   }
 
   getGoalData() {
@@ -35,6 +49,10 @@ export class GoalDetailsServiceProvider {
 
   setGoalList(goalList) {
     this.goalList = goalList;
+  }
+
+  getAllGoals() {
+    return this.goalList;
   }
 
 

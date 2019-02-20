@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {ConfigureNotificationsPage} from "../configure-notifications/configure-notifications";
 import {HomePage} from "../../home/home";
+import {GoalModificationPage} from "../../goal-modification/goal-modification";
+import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 
 /**
  * Generated class for the SelectTrackingFrequencyPage page.
@@ -18,7 +20,7 @@ export class SelectTrackingFrequencyPage {
 
   recommended;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
   }
 
   getGoals(goals){
@@ -44,8 +46,12 @@ export class SelectTrackingFrequencyPage {
 
   finish(){
     this.navParams.data['trackingFreq'] = 'postSymptoms';
-    // this.navCtrl.push(HomePage, this.navParams.data);
-    this.navCtrl.setRoot(HomePage, this.navParams.data);
+    if(this.couchDBService.getActiveGoals()){
+      this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
+    }
+    else{
+      this.navCtrl.setRoot(HomePage, this.navParams.data);
+    }
   }
 
 }
