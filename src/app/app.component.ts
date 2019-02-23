@@ -6,6 +6,8 @@ import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { HomePage } from '../pages/home/home';
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
+import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
+import {CouchDbServiceProvider} from "../providers/couch-db-service/couch-db-service";
 
 @Component({
   templateUrl: 'app.html'
@@ -17,14 +19,24 @@ export class MyApp {
 
   pages: Array<{title: string, component: any}>;
 
-  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen) {
+  constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
+              private couchDBService: CouchDbServiceProvider) {
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    this.pages = [
-      { title: 'Home', component: HomePage},
-      { title: 'Goals', component: GoalModificationPage},
-    ];
+    if(Object.keys(this.couchDBService.getActiveGoals()).length === 0){
+      // todo: add FAQ page
+      this.pages = [
+        { title: 'Home', component: HomePage},
+      ];
+    }
+    else{
+      this.pages = [
+        { title: 'Home', component: HomePage},
+        { title: 'Goals', component: GoalModificationPage},
+        { title: 'Tracking Routine', component: TrackingModificationPage},
+      ];
+    }
 
   }
 

@@ -20,10 +20,8 @@ export class GoalTypePage {
 
   constructor(public navCtrl: NavController,
               public goalDetailsServiceProvider: GoalDetailsServiceProvider,
-              public globalFunctions: GlobalFunctionsServiceProvider,
-              public dataDetailsServiceProvider: DataDetailsServiceProvider) {
+              public globalFunctions: GlobalFunctionsServiceProvider) {
     this.selectedGoals = [];
-    this.dataDetailsServiceProvider.initData();
   }
 
   ionViewDidLoad() {
@@ -70,7 +68,8 @@ export class GoalTypePage {
     }
 
     if(allSubgoals.length > 0){
-      dataToSend['unseenSubgoals'] = allSubgoals;
+      dataToSend['allSubgoals'] = allSubgoals;
+      dataToSend['currentSubgoal'] = allSubgoals[0];
       this.navCtrl.push(SelectSubgoalsPage, dataToSend);
     }
     else{

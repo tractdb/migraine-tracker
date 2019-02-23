@@ -101,7 +101,8 @@ export class CouchDbServiceProvider {
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }
-    return this.getExampleGoal();
+    return this.getExampleGoal(); //todo: will leave
+  //  return {};
   }
 
 
@@ -223,20 +224,20 @@ export class CouchDbServiceProvider {
             },
             "selected": true
           },
-          {
-            "name": "Headache today",
-            "explanation": "Whether you had a (non-migraine) headache.",
-            "fieldDescription": "Whether you had a headache (yes/no)",
-            "field": "binary",
-            "recommendingGoal": [
-              "Monitor for my doctor"
-            ],
-            "opts": {
-              "showBackdrop": true,
-              "enableBackdropDismiss": true
-            },
-            "selected": true
-          },
+          // {
+          //   "name": "Headache today",
+          //   "explanation": "Whether you had a (non-migraine) headache.",
+          //   "fieldDescription": "Whether you had a headache (yes/no)",
+          //   "field": "binary",
+          //   "recommendingGoal": [
+          //     "Monitor for my doctor"
+          //   ],
+          //   "opts": {
+          //     "showBackdrop": true,
+          //     "enableBackdropDismiss": true
+          //   },
+          //   "selected": true
+          // },
           {
             "name": "Peak migraine severity",
             "explanation": "How bad your migraine was at its worst point.",

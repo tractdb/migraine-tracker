@@ -70,7 +70,7 @@
 
 
   <button float-right ion-button [color]="selectedSubgoals.length > 0 ? 'primary': 'light' "
-          [disabled]="selectedSubgoals.length < 0" (click)="continueSetup()">
+          [disabled]="selectedSubgoals.length === 0" (click)="continueSetup()">
     Continue
   </button>
 

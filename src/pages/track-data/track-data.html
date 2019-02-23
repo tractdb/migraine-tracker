@@ -19,10 +19,23 @@
 
     <ion-card-content>
 
-        <ion-item text-wrap *ngIf="data.field === 'binary'">
+      <ng-container *ngIf="data.field === 'binary'">
+        <ion-item>
           <ion-label>{{data.name}}</ion-label>
-          <ion-toggle [(ngModel)]="tracked[data.name]"></ion-toggle>
         </ion-item>
+        <div class="row" >
+          <div class="col" text-left>
+            <button ion-button [color]="getColor(data, 'No')" value="No" (click)="catScale(data, 'No')">
+              No
+            </button>
+          </div>
+          <div class="col" text-left >
+            <button ion-button [color]="getColor(data, 'Yes')" value="Yes" (click)="catScale(data, 'Yes')">
+              Yes
+            </button>
+          </div>
+        </div>
+      </ng-container>
 
         <ion-item text-wrap *ngIf="data.field === 'number'">
           <ion-label>{{data.name}}</ion-label>
@@ -140,7 +153,7 @@
   </ion-card>
 
   <button float-right ion-button (click)="continueTracking()">
-    <ng-container *ngIf="nothingTracked()">Skip</ng-container>
+    <ng-container *ngIf="nothingTracked()">Skip Tracking {{dataType}}</ng-container>
     <ng-container *ngIf="!nothingTracked()">Continue</ng-container>
   </button>
 

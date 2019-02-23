@@ -5,6 +5,7 @@ import {GoalTypePage} from "../addGoal/goal-type/goal-type";
 import {LoginPage} from "../login/login";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {TrackDataPage} from "../track-data/track-data";
+import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
 
 @Component({
   selector: 'page-home',
@@ -18,7 +19,8 @@ export class HomePage {
               private couchDbService: CouchDbServiceProvider,
               public navParams: NavParams,
               private globalFunctions: GlobalFunctionsServiceProvider,
-              private modalCtrl: ModalController){
+              private modalCtrl: ModalController,
+              private dataDetailsService: DataDetailsServiceProvider){
   }
 
   login() {
@@ -34,11 +36,14 @@ export class HomePage {
   }
 
   trackData() {
+    let dataToTrack = Object.keys(this.activeGoals['dataToTrack'])
     this.navCtrl.push(TrackDataPage, {'dataDict': this.activeGoals['dataToTrack'],
-                                      'leftToTrack': Object.keys(this.activeGoals['dataToTrack'])});
+                                      'allDataTypes': dataToTrack,
+                                        'currentDataType': dataToTrack[0]});
   }
 
   ionViewDidEnter(){
+    this.dataDetailsService.initData();
     if(this.navParams.data.configPath){ //todo: notification stuff, text goals
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
     }

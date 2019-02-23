@@ -1,0 +1,48 @@
+<!--
+  Generated template for the TrackingModificationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Tracking Routine</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card *ngFor="let dataType of allDataTypes">
+    <ion-card-header text-wrap>
+      Current {{displayNames[dataType]}}
+    </ion-card-header>
+    <ion-card-content>
+      <ion-list *ngFor="let data of currentData[dataType]">
+        <ion-item-sliding>
+          <ion-item (click)="editData(data, dataType)">
+            <ion-label>{{data.name}}</ion-label>
+          </ion-item>
+          <ion-item-options>
+            <ion-item-option icon-only color="primary" (click)="editData(data, dataType)">
+              <ion-icon class="adjust"  slot="icon-only" name="create"></ion-icon>
+            </ion-item-option>
+            <ion-item-option color="danger" icon-only (click)="removeData(data, dataType)">
+              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
+            </ion-item-option>
+          </ion-item-options>
+        </ion-item-sliding>
+      </ion-list>
+      <button class="button" ion-button full icon-start (click)="addData(dataType)">
+        <ion-icon name="add-circle"></ion-icon>
+        Add {{displayNames[dataType]}}
+      </button>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

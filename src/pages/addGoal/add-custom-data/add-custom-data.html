@@ -65,7 +65,7 @@
     Cancel
   </button>
 
-  <button float-right ion-button (click)="backToConfig('add')">
+  <button float-right ion-button (click)="backToConfig('add')" [disabled]="dataField === undefined">
     Add {{dataType}}
   </button>
 

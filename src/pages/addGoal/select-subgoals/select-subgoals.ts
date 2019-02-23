@@ -15,7 +15,7 @@ import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
   templateUrl: 'select-subgoals.html',
 })
 export class SelectSubgoalsPage {
-
+  private currentSubgoal;
   private subgoalDict;
   private pageTitle;
   private subgoals;
@@ -29,8 +29,9 @@ export class SelectSubgoalsPage {
   }
 
   ionViewDidLoad() {
-    this.goalType = this.navParams.data['unseenSubgoals'][0]["goal"].split(" ")[0];
-    this.subgoalDict = this.navParams.data['unseenSubgoals'][0]["subgoals"];
+    this.currentSubgoal = this.navParams.data['currentSubgoal'];
+    this.goalType = this.navParams.data['currentSubgoal']["goal"].split(" ")[0];
+    this.subgoalDict = this.navParams.data['currentSubgoal']["subgoals"];
     this.pageTitle = this.subgoalDict['Title']; // because of an incomprehensible error when I try to just use the dict
     this.subgoals = this.subgoalDict['subgoals'];
     for(let i=0; i<this.subgoals.length; i++){
@@ -61,8 +62,10 @@ export class SelectSubgoalsPage {
       "added": this.selectedSubgoals};
     configStep = this.globalFunctions.toggleDetails(configStep);
     this.navParams.data.configPath.push(configStep);
-    this.navParams.data['unseenSubgoals'].splice(0,1);
-    if(this.navParams.data['unseenSubgoals'].length > 0){
+
+    let nextSubgoalIndex = this.navParams.data['allSubgoals'].indexOf(this.currentSubgoal) + 1;
+    if(nextSubgoalIndex < this.navParams.data['allSubgoals'].length){
+      this.navParams.data['currentSubgoal'] = this.navParams.data['allSubgoals'][nextSubgoalIndex];
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{

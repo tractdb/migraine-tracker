@@ -24,6 +24,7 @@ export class EditDataPage {
   private editField = false;
   private editGoal = false;
   private numList;
+  private somethingEdited = false;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -43,6 +44,7 @@ export class EditDataPage {
           this.data.fieldDescription = null;
           this.data.field = this.dataField;
         }
+        this.somethingEdited = true;
       }
       this.editField = !this.editField;
     }
@@ -53,6 +55,7 @@ export class EditDataPage {
           "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
           'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
         };
+        this.somethingEdited = true;
       }
       this.editGoal = !this.editGoal;
     }
@@ -60,15 +63,20 @@ export class EditDataPage {
 
   backToConfig(choice){
     if(choice==='add') {
-      this.data.field = (this.dataField ? this.dataField: this.data.field);
-      if(this.data.goal || this.goalFreq) {
-        this.data.goal = {
-          'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
-          "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
-          'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
-        };
+      if(this.somethingEdited){
+        this.data.field = (this.dataField ? this.dataField: this.data.field);
+        if(this.data.goal || this.goalFreq) {
+          this.data.goal = {
+            'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
+            "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
+            'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
+          };
+        }
       }
       this.viewCtrl.dismiss(this.data);
+    }
+    else if(choice=='remove'){
+      this.viewCtrl.dismiss('remove');
     }
     else {
       this.viewCtrl.dismiss();
