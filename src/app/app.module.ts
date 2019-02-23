@@ -24,6 +24,7 @@ import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notificatio
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
 import {TrackDataPage} from "../pages/track-data/track-data";
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
+import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {GoalModificationPage} from "../pages/goal-modification/goal-modification
     ConfigureNotificationsPage,
     EditDataPage,
     TrackDataPage,
-    GoalModificationPage
+    GoalModificationPage,
+    TrackingModificationPage
   ],
   imports: [
     BrowserModule,
@@ -62,7 +64,8 @@ import {GoalModificationPage} from "../pages/goal-modification/goal-modification
     ConfigureNotificationsPage,
     EditDataPage,
     TrackDataPage,
-    GoalModificationPage
+    GoalModificationPage,
+    TrackingModificationPage
   ],
   providers: [
     StatusBar,

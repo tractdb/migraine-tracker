@@ -28,12 +28,12 @@
       <ion-item text-wrap *ngIf="!data.explanation">
         {{data.name}}: Custom data you configured
       </ion-item>
-      <ion-item-divider text-wrap *ngIf="data.recommendingGoal">Recommended Because You Selected:</ion-item-divider>
+      <ion-item-divider text-wrap *ngIf="data.recommendingGoal">Recommended Because of Your Goals:</ion-item-divider>
       <ion-item text-wrap *ngFor="let goal of data.recommendingGoal">
         {{goal}}
       </ion-item>
       <ion-item-divider>
-        <button *ngIf="!data.field.includes('calculated')" icon-only color="primary" item-right (click)="editData('field')">
+        <button *ngIf="!(data.field && data.field.includes('calculated'))" icon-only color="primary" item-right (click)="editData('field')">
           <ion-icon *ngIf="!editField" slot="icon-only" name="create"></ion-icon>
           <ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>
         </button>
@@ -114,9 +114,13 @@
     Cancel
   </button>
 
-  <button float-right ion-button (click)="backToConfig('add')">
-    <p *ngIf="data.selected">Save</p>
-    <p *ngIf="!data.selected">Add</p>
+  <button *ngIf="!data.selected || somethingEdited" float-right ion-button (click)="backToConfig('add')">
+    <ng-container *ngIf="!data.selected">Add</ng-container>
+    <ng-container *ngIf="data.selected">Save</ng-container>
+  </button>
+
+  <button *ngIf="data.selected && !somethingEdited" float-right ion-button (click)="backToConfig('remove')">
+    Remove
   </button>
 
 </ion-content>

@@ -47,17 +47,17 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  findNextConfigData(configPath, configDataList) {
-    let totalDataTypes = configDataList.length;
-    for(let i = 0; i < totalDataTypes; i++) {
-      let dataType = configDataList.splice(0, 1)[0];
+  findNextConfigData(configPath, configDataList, currentlyConfiguring) {
+    let newDataIndex = configDataList.indexOf(currentlyConfiguring) + 1;
+    for(let i = newDataIndex; i < configDataList.length; i++) {
+      let dataType = configDataList[i];
       if(!(dataType.conditionalGoal)){
-        return {"dataType": dataType, "configList": configDataList};
+        return dataType;
       }
       else{
         for (let i = 0; i < configPath.length; i++) {
           if (configPath[i].added.includes(dataType.conditionalGoal)) {
-            return {"dataType": dataType, "configList": configDataList};
+            return dataType;
           }
         }
       }

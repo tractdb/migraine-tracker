@@ -37,12 +37,13 @@ export class EnterTextGoalPage {
     let allConfigData = this.dataDetails.getConfigData();
 
 
-    let configData = this.globalFunctions.findNextConfigData(this.configPath, allConfigData);
+
+    let configData = this.globalFunctions.findNextConfigData(this.configPath, allConfigData, '');
 
 
     if (configData!== null){
-      this.navParams.data['dataPage'] = configData['dataType'];
-      this.navParams.data['unconfigured'] = configData['configList'];
+      this.navParams.data['dataPage'] = configData;
+      this.navParams.data['allConfigurationData'] = allConfigData;
       this.navCtrl.push(DataConfigPage, this.navParams.data);
     }
 

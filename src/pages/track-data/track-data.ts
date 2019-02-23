@@ -29,13 +29,14 @@ export class TrackDataPage {
   }
 
   ionViewDidLoad() {
-    this.dataType = this.navParams.data['leftToTrack'][0];
+    this.dataType = this.navParams.data['currentDataType'];
     this.dataToTrack = this.navParams.data['dataDict'][this.dataType];
     this.trackedSoFar = this.navParams.data['tracked'];
 
     if(!('tracked' in this.navParams.data)) {
       this.navParams.data['tracked'] = {};
     }
+
     this.calculateGoalProgresses();
   }
 
@@ -136,8 +137,10 @@ export class TrackDataPage {
     if(!(Object.keys(this.tracked).length == 0)){
       this.navParams.data.tracked[this.dataType] = this.tracked;
     }
-    this.navParams.data['leftToTrack'].splice(0,1);
-    if (this.navParams.data['leftToTrack'].length > 0){
+
+    let newIndex = this.navParams.data['allDataTypes'].indexOf(this.dataType)+1;
+    if(newIndex < this.navParams.data['allDataTypes'].length){
+      this.navParams.data['currentDataType'] = this.navParams.data['allDataTypes'][newIndex];
       this.navCtrl.push(TrackDataPage, this.navParams.data);
     }
     else {

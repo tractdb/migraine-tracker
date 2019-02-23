@@ -27,6 +27,19 @@ export class DataDetailsServiceProvider {
 
   }
 
+  getDisplayName(name){
+    for(let i=0; i<this.configData.length; i++){
+      if(this.configData[i].name === name){
+        if(this.configData[i].toDisplay){
+          return this.configData[i].toDisplay;
+        }
+        else{
+          return name;
+        }
+      }
+    }
+  }
+
   openDataConfig() {
     this.http.get('assets/dataConfig.json', {},).subscribe(configData => {
         this.configData = configData;
@@ -65,6 +78,22 @@ export class DataDetailsServiceProvider {
 
   getConfigData() {
     return this.configData;
+  }
+
+  getDataList(goals) {
+    let dataList = [];
+    for(let i=0; i<this.configData.length; i++){
+      let condGoal = this.configData[i].conditionalGoal;
+      if(condGoal){
+        if(goals.indexOf(condGoal) > -1){
+          dataList.push(this.configData[i].name);
+        }
+      }
+      else{
+        dataList.push(this.configData[i].name);
+      }
+    }
+    return dataList;
   }
 
   getSupportedFields() {
