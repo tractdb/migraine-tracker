@@ -8,7 +8,8 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Migraine Tracking App</h3>
+  <h3>Migraine Tracking Home</h3>
+
   <ion-card *ngIf="activeGoals['goals']===undefined">
     <ion-card-header>No Goals Configured</ion-card-header>
     <ion-card-content>
@@ -19,14 +20,42 @@
       </button>
     </ion-card-content>
   </ion-card>
-  <ion-card *ngIf="activeGoals['goals']!==undefined">
-    <ion-card-header>You have goals!</ion-card-header>
-    <ion-card-content>
 
+
+  <ion-card *ngIf="quickTrackerKeys.length > 0">
+    <ion-card-header>Quick Trackers:</ion-card-header>
+    <ion-card-content >
+      <ng-container *ngFor="let trackerType of quickTrackerKeys">
+        <ng-container *ngFor="let tracker of quickTrackers[trackerType]">
+          <button class="button quickTrackerButton" ion-button full icon-start (click)="trackedData(tracker)">
+              {{tracker.name}}
+          </button>
+        </ng-container>
+      </ng-container>
+    </ion-card-content>
+  </ion-card>
+
+
+  <ion-card *ngIf="activeGoals['goals']!==undefined">
+    <ion-card-content>
       <button class="button" ion-button full icon-start (click)="trackData()">
         <ion-icon name="book"></ion-icon>
-        Track data
+        Track more data
       </button>
     </ion-card-content>
   </ion-card>
+
+  <!--<ion-card *ngIf="activeGoals['goals']!==undefined">-->
+    <!--<ion-card-header>Your Goals:</ion-card-header>-->
+    <!--<ion-card-content>-->
+      <!--<ion-item text-wrap *ngFor="let goal of goalTypes">-->
+        <!--{{goal}}-->
+        <!--<ion-item *ngFor="let subgoal of goalHierarchy[goal]">-->
+          <!--{{subgoal}}-->
+        <!--</ion-item>-->
+      <!--</ion-item>-->
+    <!--</ion-card-content>-->
+  <!--</ion-card>-->
+
+
 </ion-content>

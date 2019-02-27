@@ -4,19 +4,20 @@ import {GoalDetailsServiceProvider} from "../../../providers/goal-details-servic
 import {SelectSubgoalsPage} from "../select-subgoals/select-subgoals";
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
 import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
-import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
-
+import { ViewChild } from '@angular/core';
+import { Slides } from 'ionic-angular';
 
 @Component({
   selector: 'page-goal-type',
   templateUrl: 'goal-type.html',
 })
+
 export class GoalTypePage {
 
+  @ViewChild('slides') slides: Slides;
 
   private goalList;
   private selectedGoals;
-
 
   constructor(public navCtrl: NavController,
               public goalDetailsServiceProvider: GoalDetailsServiceProvider,
@@ -52,6 +53,16 @@ export class GoalTypePage {
     }
     goal.colors = this.globalFunctions.buttonColors(false);
   }
+
+  // prev(){
+  //   this.slides.slidePrev();
+  //   // console.log(this.slides.lockSwipeToPrev())
+  // }
+  //
+  // next(){
+  //   // console.log(this.slides.lockSwipeToNext())
+  //   this.slides.slideNext();
+  // }
 
 
   continueSetup() {

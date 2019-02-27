@@ -25,6 +25,11 @@ import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
 import {TrackDataPage} from "../pages/track-data/track-data";
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
 import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
+import {DataCalendarPage} from "../pages/data-calendar/data-calendar";
+import {DataSummaryPage} from "../pages/data-summary/data-summary";
+import {FaqPage} from "../pages/faq/faq";
+import {UsedQuickTrackPage} from "../pages/used-quick-track/used-quick-track";
+import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
 
 @NgModule({
   declarations: [
@@ -42,7 +47,12 @@ import {TrackingModificationPage} from "../pages/tracking-modification/tracking-
     EditDataPage,
     TrackDataPage,
     GoalModificationPage,
-    TrackingModificationPage
+    TrackingModificationPage,
+    DataCalendarPage,
+    DataSummaryPage,
+    FaqPage,
+    UsedQuickTrackPage,
+    BreakFromTrackingPage
   ],
   imports: [
     BrowserModule,
@@ -65,7 +75,12 @@ import {TrackingModificationPage} from "../pages/tracking-modification/tracking-
     EditDataPage,
     TrackDataPage,
     GoalModificationPage,
-    TrackingModificationPage
+    TrackingModificationPage,
+    DataCalendarPage,
+    DataSummaryPage,
+    FaqPage,
+    UsedQuickTrackPage,
+    BreakFromTrackingPage
   ],
   providers: [
     StatusBar,

@@ -55,6 +55,7 @@
             "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
             "fieldDescription": "Number of pills you took",
             "field": "calculated medication use",
+            "condition": true,
             "goal": {
                 "freq": "Less",
                 "threshold": 2,

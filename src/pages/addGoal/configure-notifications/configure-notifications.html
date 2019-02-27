@@ -15,57 +15,72 @@
 
 <ion-content padding>
 
-  <h3>When would you like your notifications</h3>
+  <h3>When would you like tracking notifications?</h3>
 
   <ion-card>
     <ion-card-content>
 
       <ion-item>
         <ion-label>Set frequency:</ion-label>
-        <ion-select [(ngModel)]="timescale">
-          <ion-option [value]="day">Daily</ion-option>
-          <ion-option [value]="week">Weekly</ion-option>
-          <ion-option [value]="month">Monthly</ion-option>
+        <ion-select [(ngModel)]="notificationData['timescale']">
+          <ion-option value="Daily"
+                      [selected]="notificationData.timescale && notificationData.timescale === 'Daily'">
+            Daily
+          </ion-option>
+          <ion-option value="Weekly"
+                      [selected]="notificationData.timescale && notificationData.timescale === 'Weekly'">
+            Weekly
+          </ion-option>
+          <ion-option value="Monthly"
+                      [selected]="notificationData.timescale && notificationData.timescale === 'Monthly'">
+            Monthly
+          </ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="timescale==='Weekly'">
+      <ion-item *ngIf="notificationData['timescale']==='Weekly'">
         <ion-label>Set day(s) of week:</ion-label>
-        <ion-select multiple="true" [(ngModel)]="dayOfWeek">
-          <ion-option [value]="mon">Monday</ion-option>
-          <ion-option [value]="tues">Tuesday</ion-option>
-          <ion-option [value]="wed">Wednesday</ion-option>
-          <ion-option [value]="thurs">Thursday</ion-option>
-          <ion-option [value]="fri">Friday</ion-option>
-          <ion-option [value]="sat">Saturday</ion-option>
-          <ion-option [value]="sun">Sunday</ion-option>
+        <ion-select multiple="true" [(ngModel)]="notificationData['dayOfWeek']">
+          <ion-option *ngFor="let day of days" [value]="day"
+                      [selected]="notificationData.dayOfWeek && notificationData.dayOfWeek === day">
+            {{day}}
+          </ion-option>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="timescale==='Monthly'">
+      <ion-item *ngIf="notificationData['timescale']==='Monthly'">
         <ion-label>Set day(s) of month:</ion-label>
-        <ion-select multiple="true" [(ngModel)]="dayOfMonth">
-          <ion-option *ngFor="let day of days" [value]=day>{{day}}</ion-option>
+        <ion-select multiple="true" [(ngModel)]="notificationData['dayOfMonth']">
+          <ion-option *ngFor="let date of dates" [value]=date>{{date}}</ion-option>
         </ion-select>
       </ion-item>
 
       <ion-item>
         <ion-label>Set time of day:</ion-label>
-        <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="timeOfDay"></ion-datetime>
+        <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" hourValues="12"
+                      [(ngModel)]="notificationData['timeOfDay']"></ion-datetime>
       </ion-item>
 
 
       <ion-item>
         <ion-label>Set start date:</ion-label>
-        <ion-datetime min="{{minDate}}" displayFormat="MM/DD/YY" placeholder="Select Date" [(ngModel)]="startdate"></ion-datetime>
+        <ion-datetime min="{{minDate}}" displayFormat="MM/DD/YY"
+                      placeholder="Select Date" [(ngModel)]="notificationData['startdate']"></ion-datetime>
       </ion-item>
 
 
     </ion-card-content>
   </ion-card>
 
-  <button full ion-button (click)="finish()">
-    Complete configuration
+  <button float-left ion-button (click)="cancel()">
+  I don't want notifications
+</button>
+
+  <button float-right ion-button (click)="finish()"
+          [disabled]="(notificationData['timescale']==='Monthly' && notificationData['dayOfMonth'] === undefined) ||
+            (notificationData['timescale']==='Weekly' && notificationData['dayOfWeek'] === undefined) ||
+            (notificationData['timeOfDay'] === undefined)">
+    Save
   </button>
 
 </ion-content>
