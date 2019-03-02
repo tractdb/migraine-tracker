@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
+import {GeneralInfoServiceProvider} from "../../providers/general-info-service/general-info-service";
 
 /**
  * Generated class for the FaqPage page.
@@ -14,11 +15,26 @@ import { NavController, NavParams } from 'ionic-angular';
 })
 export class FaqPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  faqList;
+
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              public generalInfoService: GeneralInfoServiceProvider) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad FaqPage');
+    this.faqList = this.generalInfoService.getFaqData();
+  }
+
+  expndOrHide(question){
+    console.log(question);
+    if(question['expanded'] === undefined){
+      question['expanded'] = true;
+    }
+    else{
+      question['expanded'] = !question['expanded'];
+    }
+    console.log(question);
   }
 
 }

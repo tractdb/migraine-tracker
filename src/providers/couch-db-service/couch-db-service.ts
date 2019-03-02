@@ -15,11 +15,11 @@ export class CouchDbServiceProvider {
   }
 
   getCurrentBreak(){
-    // todo: pull from db
+    // todo: pull from db, make sure it's current
     // return undefined;
     return {
       "reasonForBreak": "I want to",
-      "notifyDate": "2019-02-28",
+      "notifyDate": "2020-02-28",
       "started": "2019-02-27T01:07:42.495Z"
     }
   }
@@ -65,11 +65,11 @@ export class CouchDbServiceProvider {
         {
           "name": "As-needed medications today",
           "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
-          "fieldDescription": "Number of pills you took",
-          "field": "number",
+          "fieldDescription": "Whether you took any as-needed medication today",
+          "field": "binary",
           "goal": {
             "freq": "Less",
-            "threshold": 1,
+            "threshold": 2,
             "timespan": "Week"
           },
 
@@ -183,7 +183,7 @@ export class CouchDbServiceProvider {
           "Migraine duration_end": "12:43"
         },
         "Treatments": {
-          "As-needed medications today": "1",
+          "As-needed medications today": true,
           "Minutes exercised today": ""
         },
         "Triggers": {
@@ -209,7 +209,7 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 3
         },
         "Treatments": {
-          "As-needed medications today": "2"
+          "As-needed medications today": true
         },
         "Triggers": {
           "Stress today": "Some"
@@ -244,7 +244,7 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 2
         },
         "Treatments": {
-          "As-needed medications today": "1"
+          "As-needed medications today": true
         },
         "Triggers": {
           "Stress today": "Some"
@@ -327,11 +327,11 @@ export class CouchDbServiceProvider {
           {
             "name": "As-needed medications today",
             "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
-            "fieldDescription": "Number of pills you took",
-            "field": "number",
+            "fieldDescription": "Whether you took any as-needed medication today",
+            "field": "binary",
             "goal": {
               "freq": "Less",
-              "threshold": 1,
+              "threshold": 2,
               "timespan": "Week"
             },
             "recommendingGoal": [
@@ -354,6 +354,7 @@ export class CouchDbServiceProvider {
               "threshold": 120,
               "timespan": "Week"
             },
+            "significance": "Regular exercise can help guard against migraines",
             "opts": {
               "showBackdrop": true,
               "enableBackdropDismiss": true
@@ -381,6 +382,7 @@ export class CouchDbServiceProvider {
               "showBackdrop": true,
               "enableBackdropDismiss": true
             },
+            "significance": "High stress levels can lead to more migraines",
             "selected": true
           },
           // {
@@ -393,6 +395,7 @@ export class CouchDbServiceProvider {
           //     "threshold": 2,
           //     "timespan": "Week"
           //   },
+          //   "significance": "If you use as-needed medications too frequently, they can start causing more migraines.",
           //   "recommendingGoal": [
           //     "Learn what factors may affect my migraines",
           //     "Monitor for my doctor"

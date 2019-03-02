@@ -30,6 +30,7 @@ import {DataSummaryPage} from "../pages/data-summary/data-summary";
 import {FaqPage} from "../pages/faq/faq";
 import {UsedQuickTrackPage} from "../pages/used-quick-track/used-quick-track";
 import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
+import { GeneralInfoServiceProvider } from '../providers/general-info-service/general-info-service';
 
 @NgModule({
   declarations: [
@@ -89,7 +90,8 @@ import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tra
     CouchDbServiceProvider,
     GoalDetailsServiceProvider,
     GlobalFunctionsServiceProvider,
-    DataDetailsServiceProvider
+    DataDetailsServiceProvider,
+    GeneralInfoServiceProvider
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

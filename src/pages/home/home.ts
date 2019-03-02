@@ -7,6 +7,7 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 import {TrackDataPage} from "../track-data/track-data";
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
 import {UsedQuickTrackPage} from "../used-quick-track/used-quick-track";
+import {GeneralInfoServiceProvider} from "../../providers/general-info-service/general-info-service";
 
 @Component({
   selector: 'page-home',
@@ -24,7 +25,8 @@ export class HomePage {
               public navParams: NavParams,
               private globalFunctions: GlobalFunctionsServiceProvider,
               private modalCtrl: ModalController,
-              private dataDetailsService: DataDetailsServiceProvider){
+              private dataDetailsService: DataDetailsServiceProvider,
+              private generalInfoService: GeneralInfoServiceProvider){
   }
 
   login() {
@@ -64,14 +66,14 @@ export class HomePage {
     this.isTrackingMeds = this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']);
     this.quickTrackers = this.couchDbService.getQuickTrackers();
     this.quickTrackerKeys = Object.keys(this.couchDbService.getQuickTrackers());
-    console.log(this.quickTrackers)
-    console.log(this.quickTrackerKeys)
+
   }
 
 
 
   ionViewDidEnter(){
     this.dataDetailsService.initData();
+    this.generalInfoService.initData();
     if(this.navParams.data.configPath){ //todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
     }

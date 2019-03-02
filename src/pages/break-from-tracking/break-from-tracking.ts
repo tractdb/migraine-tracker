@@ -18,9 +18,8 @@ export class BreakFromTrackingPage {
   currentBreak;
   currentBreakStarted;
 
-  wantsNotification;
-  doesntWantNotification;
-  unsureAboutNotification;
+  selected = '';
+
 
   dateToSnoozeTo;
   dateToCheckIn;
@@ -40,6 +39,7 @@ export class BreakFromTrackingPage {
     else {
       monthFromNow = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     }
+    console.log(monthFromNow)
     this.dateToCheckIn = monthFromNow.toISOString();
   }
 
@@ -62,10 +62,10 @@ export class BreakFromTrackingPage {
     console.log("wants to take break!");
     let newBreak = {};
     newBreak['reasonForBreak'] = this.reasonForBreak;
-    if(this.wantsNotification && this.dateToSnoozeTo){
+    if(this.selected==='Yes' && this.dateToSnoozeTo){
       newBreak['notifyDate'] = this.dateToSnoozeTo;
     }
-    else if(this.unsureAboutNotification && this.dateToCheckIn){
+    else if(this.selected ==='Unsure' && this.dateToCheckIn){
       newBreak['checkInDate'] = this.dateToCheckIn;
     }
     else{
@@ -73,6 +73,7 @@ export class BreakFromTrackingPage {
     }
     newBreak['started'] = new Date();
     this.couchDBProvider.setBreak(newBreak);
+    this.currentBreak = newBreak;
   }
 
   updateBreak(){
@@ -86,6 +87,9 @@ export class BreakFromTrackingPage {
     this.currentBreak['ended'] = new Date();
     this.couchDBProvider.updateBreak(this.currentBreak);
     this.currentBreak = undefined;
+    this.dateToSnoozeTo = undefined;
+    this.dateToCheckIn = undefined;
+    this.setDates();
   }
 
 }
