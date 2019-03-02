@@ -20,6 +20,9 @@ export class TrackDataPage {
   private trackedSoFar;
   private numList;
   private previouslyTracked;
+  somethingTracked;
+  durationItemStart = {};
+  durationItemEnd ={};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -119,22 +122,27 @@ export class TrackDataPage {
     }
     this.buttonColors[data.name][value] = 'primary';
     this.tracked[data.name] = value;
+    this.itemTracked();
   }
 
-  nothingTracked() {
-    if (Object.keys(this.tracked).length == 0) {
-      if (this.dataToTrack.length !== 1) {
-        return true;
+  itemTracked() {
+    this.somethingTracked = true;
+  }
+
+  addDurationItems(dict, endPoint){
+    let dataNames = Object.keys(dict);
+    for(let i=0; i<dataNames.length; i++){
+      if(!this.tracked[dataNames[i]]){
+        this.tracked[dataNames[i]] = {};
       }
-      else if(this.dataToTrack[0].field !== 'calculated medication use') {
-        return true;
-      }
+      this.tracked[dataNames[i]][endPoint] = dict[dataNames[i]];
     }
-    return false;
   }
 
   continueTracking() {
-    if(!(Object.keys(this.tracked).length == 0)){
+    if(this.somethingTracked){
+      this.addDurationItems(this.durationItemStart, 'start');
+      this.addDurationItems(this.durationItemEnd, 'end');
       this.navParams.data.tracked[this.dataType] = this.tracked;
     }
 

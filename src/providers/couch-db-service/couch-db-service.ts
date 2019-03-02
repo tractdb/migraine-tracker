@@ -169,7 +169,13 @@ export class CouchDbServiceProvider {
 
 
   getTrackedData() {
-    return this.trackedData;
+    // todo!
+    if(this.trackedData.length > 0){
+      return this.trackedData;
+    }
+    else{
+      return this.getExamplePreviouslyTracked();
+    }
   }
 
 
@@ -179,8 +185,7 @@ export class CouchDbServiceProvider {
         "Symptoms": {
           "Migraine today": true,
           "Peak migraine severity": 9,
-          "Migraine duration_start": "19:42",
-          "Migraine duration_end": "12:43"
+          "Migraine duration": {'start': "19:42", 'end': "12:43"}
         },
         "Treatments": {
           "As-needed medications today": true,

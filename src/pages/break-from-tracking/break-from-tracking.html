@@ -109,7 +109,7 @@
       </ion-card-content>
     </ion-card>
     <button float-right ion-button (click)="takeBrake()"
-            [disabled]="((!wantsNotification || !dateToSnoozeTo) && !doesntWantNotification && !unsureAboutNotification)">
+            [disabled]="((selected!=='Yes' || !dateToSnoozeTo) && selected!=='No' && selected!=='Unsure')">
       Start Break
     </button>
   </ng-container>
