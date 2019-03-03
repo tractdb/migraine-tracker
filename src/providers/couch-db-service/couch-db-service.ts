@@ -14,6 +14,26 @@ export class CouchDbServiceProvider {
   constructor(public http: HttpClient, private globalFunctions: GlobalFunctionsServiceProvider) {
   }
 
+  getCurrentBreak(){
+    // todo: pull from db, make sure it's current
+    return undefined;
+    // return {
+    //   "reasonForBreak": "I want to",
+    //   "notifyDate": "2020-02-28",
+    //   "started": "2019-02-27T01:07:42.495Z"
+    // }
+  }
+
+  updateBreak(currentBreak){
+    // todo: push to db
+    console.log(currentBreak);
+  }
+
+  setBreak(newBreak){
+    //todo: push to db
+    console.log(newBreak);
+  }
+
 
   login(credentials) {
     // log the user in based on the credentials
@@ -23,6 +43,41 @@ export class CouchDbServiceProvider {
   userLoggedIn() {
     // see if we're logged in; response gives account
     return this.http.get(this.baseUrl + '/authenticated', this.options);
+  }
+
+  getQuickTrackers() {
+    // todo: database, of course
+    let defaultTrackers = {
+      "Symptoms": [
+        {
+          "name": "Migraine today",
+          "explanation": "Whether you had a migraine.",
+          "fieldDescription": "Whether you had a migraine (yes/no)",
+          "field": "binary",
+          "goal": {
+            "freq": "Less",
+            "threshold": 1,
+            "timespan": "Week"
+          }
+        }
+      ],
+      "Treatments": [
+        {
+          "name": "As-needed medications today",
+          "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
+          "fieldDescription": "Whether you took any as-needed medication today",
+          "field": "binary",
+          "goal": {
+            "freq": "Less",
+            "threshold": 2,
+            "timespan": "Week"
+          },
+
+        }
+      ]
+    };
+    let quickTrackers = defaultTrackers;
+    return quickTrackers;
   }
 
 
@@ -60,14 +115,21 @@ export class CouchDbServiceProvider {
                       'dataToTrack':
                         this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['dataToTrack']),
                       'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
-                      'dateAdded': new Date()};
+                      'dateAdded': new Date(),
+                      'notifications': setupDict.notificationSettings ?
+                                          setupDict.notificationSettings : this.activeUserGoals['notifications'],
+
+                      'trackingFreq': setupDict.notificationSettings ?
+                        setupDict.notificationSettings : this.activeUserGoals['trackingFreq']};
       this.activeUserGoals = newGoal; // push
     }
     else{
       this.activeUserGoals = {'goals': goalsOnly,
                               'dataToTrack': setupDict.dataToTrack,
                               'textGoals': [setupDict.textGoals],
-                              'dateAdded': new Date()};
+                              'dateAdded': new Date(),
+                              'notifications': setupDict.notificationSettings,
+                              'trackingFreq': setupDict.notificationSettings};
     }
     console.log(this.activeUserGoals);
     return this.activeUserGoals;
@@ -102,12 +164,18 @@ export class CouchDbServiceProvider {
       return this.activeUserGoals;
     }
     return this.getExampleGoal(); //todo: will leave
-  //  return {};
+   // return {};
   }
 
 
   getTrackedData() {
-    return this.trackedData;
+    // todo!
+    if(this.trackedData.length > 0){
+      return this.trackedData;
+    }
+    else{
+      return this.getExamplePreviouslyTracked();
+    }
   }
 
 
@@ -117,11 +185,10 @@ export class CouchDbServiceProvider {
         "Symptoms": {
           "Migraine today": true,
           "Peak migraine severity": 9,
-          "Migraine duration_start": "19:42",
-          "Migraine duration_end": "12:43"
+          "Migraine duration": {'start': "19:42", 'end': "12:43"}
         },
         "Treatments": {
-          "As-needed medications today": "1",
+          "As-needed medications today": true,
           "Minutes exercised today": ""
         },
         "Triggers": {
@@ -147,7 +214,7 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 3
         },
         "Treatments": {
-          "As-needed medications today": "2"
+          "As-needed medications today": true
         },
         "Triggers": {
           "Stress today": "Some"
@@ -182,7 +249,7 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 2
         },
         "Treatments": {
-          "As-needed medications today": "1"
+          "As-needed medications today": true
         },
         "Triggers": {
           "Stress today": "Some"
@@ -224,20 +291,20 @@ export class CouchDbServiceProvider {
             },
             "selected": true
           },
-          // {
-          //   "name": "Headache today",
-          //   "explanation": "Whether you had a (non-migraine) headache.",
-          //   "fieldDescription": "Whether you had a headache (yes/no)",
-          //   "field": "binary",
-          //   "recommendingGoal": [
-          //     "Monitor for my doctor"
-          //   ],
-          //   "opts": {
-          //     "showBackdrop": true,
-          //     "enableBackdropDismiss": true
-          //   },
-          //   "selected": true
-          // },
+          {
+            "name": "Headache today",
+            "explanation": "Whether you had a (non-migraine) headache.",
+            "fieldDescription": "Whether you had a headache (yes/no)",
+            "field": "binary",
+            "recommendingGoal": [
+              "Monitor for my doctor"
+            ],
+            "opts": {
+              "showBackdrop": true,
+              "enableBackdropDismiss": true
+            },
+            "selected": true
+          },
           {
             "name": "Peak migraine severity",
             "explanation": "How bad your migraine was at its worst point.",
@@ -265,11 +332,11 @@ export class CouchDbServiceProvider {
           {
             "name": "As-needed medications today",
             "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
-            "fieldDescription": "Number of pills you took",
-            "field": "number",
+            "fieldDescription": "Whether you took any as-needed medication today",
+            "field": "binary",
             "goal": {
               "freq": "Less",
-              "threshold": 1,
+              "threshold": 2,
               "timespan": "Week"
             },
             "recommendingGoal": [
@@ -292,6 +359,7 @@ export class CouchDbServiceProvider {
               "threshold": 120,
               "timespan": "Week"
             },
+            "significance": "Regular exercise can help guard against migraines",
             "opts": {
               "showBackdrop": true,
               "enableBackdropDismiss": true
@@ -299,7 +367,7 @@ export class CouchDbServiceProvider {
             "selected": true
           },
           {
-            "name": "Time I took advil",
+            "name": "Time took advil",
             "field": "time",
             "goal": {},
             "selected": true,
@@ -319,28 +387,30 @@ export class CouchDbServiceProvider {
               "showBackdrop": true,
               "enableBackdropDismiss": true
             },
+            "significance": "High stress levels can lead to more migraines",
             "selected": true
           },
-          {
-            "name": "Frequent Use of Medications",
-            "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
-            "fieldDescription": "Number of pills you took",
-            "field": "calculated medication use",
-            "goal": {
-              "freq": "Less",
-              "threshold": 2,
-              "timespan": "Week"
-            },
-            "recommendingGoal": [
-              "Learn what factors may affect my migraines",
-              "Monitor for my doctor"
-            ],
-            "opts": {
-              "showBackdrop": true,
-              "enableBackdropDismiss": true
-            },
-            "selected": true
-          }
+          // {
+          //   "name": "Frequent Use of Medications",
+          //   "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
+          //   "fieldDescription": "Number of pills you took",
+          //   "field": "calculated medication use",
+          //   "goal": {
+          //     "freq": "Less",
+          //     "threshold": 2,
+          //     "timespan": "Week"
+          //   },
+          //   "significance": "If you use as-needed medications too frequently, they can start causing more migraines.",
+          //   "recommendingGoal": [
+          //     "Learn what factors may affect my migraines",
+          //     "Monitor for my doctor"
+          //   ],
+          //   "opts": {
+          //     "showBackdrop": true,
+          //     "enableBackdropDismiss": true
+          //   },
+          //   "selected": true
+          // }
         ],
         "Other": [
           {
@@ -354,7 +424,17 @@ export class CouchDbServiceProvider {
       },
       "textGoals": [
         "Have fewer migraines"
-      ]
+      ],
+      "notifications": {
+        "timescale": "Weekly",
+        "timeOfDay": "18:16",
+        "startDate": "2019-02-25T18:16:48.727Z",
+        "dayOfWeek": [
+          "Monday",
+          "Wednesday",
+          "Friday"
+        ]
+      }
     };
     this.activeUserGoals = exGoal;
     return exGoal;

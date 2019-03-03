@@ -46,6 +46,41 @@ export class GlobalFunctionsServiceProvider {
     return goals;
   }
 
+  dateToPrettyDate(dateString){
+    let date = new Date(dateString);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+
+  timeTo12Hour(time){
+    let niceTime = '';
+    let postFix = '';
+    let timeChunks = time.split(':');
+    if(Number(timeChunks[0]) > 12){
+      niceTime = String(Number(timeChunks[0]) - 12);
+      postFix = ' pm';
+    }
+    else if(Number(timeChunks[0]) == 0){
+      niceTime = '12';
+      postFix = ' am';
+    }
+    else{
+      niceTime = timeChunks[0];
+      postFix = ' am';
+    }
+    return niceTime + ":" + timeChunks[1] + postFix;
+  }
+
+  getWhetherTrackingMeds(treatmentList){
+    if(treatmentList !== undefined){
+      for(let i=0; i<treatmentList.length; i++){
+        if(treatmentList[i]['name'] === 'As-needed medications today'){
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
 
   findNextConfigData(configPath, configDataList, currentlyConfiguring) {
     let newDataIndex = configDataList.indexOf(currentlyConfiguring) + 1;

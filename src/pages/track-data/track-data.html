@@ -39,12 +39,13 @@
 
         <ion-item text-wrap *ngIf="data.field === 'number'">
           <ion-label>{{data.name}}</ion-label>
-          <ion-input type="number" text-right placeholder="---" [(ngModel)]="tracked[data.name]"></ion-input>
+          <ion-input type="number" text-right placeholder="---"
+                     (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"></ion-input>
         </ion-item>
 
         <ion-item text-wrap *ngIf="data.field === 'numeric scale'">
           <ion-label>{{data.name}}</ion-label>
-          <ion-select [(ngModel)]="tracked[data.name]" placeholder="---">
+          <ion-select [(ngModel)]="tracked[data.name]" (ngModelChange)="itemTracked()" placeholder="---">
             <ion-option *ngFor="let num of numList" [value]="num">
               {{num}}
             </ion-option>
@@ -77,13 +78,15 @@
 
         <ion-item text-wrap *ngIf="data.field === 'note'">
           <ion-label>{{data.name}}</ion-label>
-          <ion-input [(ngModel)]="tracked[data.name]" placeholder="Enter note here"></ion-input>
+          <ion-input (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"
+                     placeholder="Enter note here"></ion-input>
         </ion-item>
 
 
         <ion-item text-wrap *ngIf="data.field === 'time'">
           <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Select Time" [(ngModel)]="tracked[data.name]">
+          <ion-datetime displayFormat="h:mm a" placeholder="Select Time"
+                        (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]">
           </ion-datetime>
         </ion-item>
 
@@ -92,12 +95,14 @@
       <ng-container *ngIf="data.field === 'time range'">
         <ion-item>
           <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Start Time" [(ngModel)]="tracked[data.name + '_start']">
+          <ion-datetime displayFormat="h:mm a" placeholder="Start Time"
+                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemStart[data.name]">
           </ion-datetime>
         </ion-item>
         <ion-item>
           <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="End Time" [(ngModel)]="tracked[data.name + '_end']">
+          <ion-datetime displayFormat="h:mm a" placeholder="End Time"
+                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemEnd[data.name]">
           </ion-datetime>
         </ion-item>
       </ng-container>
@@ -153,8 +158,8 @@
   </ion-card>
 
   <button float-right ion-button (click)="continueTracking()">
-    <ng-container *ngIf="nothingTracked()">Skip Tracking {{dataType}}</ng-container>
-    <ng-container *ngIf="!nothingTracked()">Continue</ng-container>
+    <ng-container *ngIf="!somethingTracked">Skip Tracking {{dataType}}</ng-container>
+    <ng-container *ngIf="somethingTracked">Continue</ng-container>
   </button>
 
 </ion-content>

@@ -19,6 +19,7 @@ export class DataConfigPage {
   private dataObject;
   private displayName;
   private alreadyTracking = [];
+  activeGoals;
   private customData = [];
   private recommendedData = [];
   private otherData = [];
@@ -34,7 +35,7 @@ export class DataConfigPage {
   }
 
   ionViewDidLoad() {
-    let activeGoals = this.couchDBService.getActiveGoals();
+    this.activeGoals = this.couchDBService.getActiveGoals();
 
 
     let goals;
@@ -46,7 +47,7 @@ export class DataConfigPage {
       this.dataDesc = this.navParams.data['dataPage'].description;
     }
     else{ // we're not adding another goal
-      goals = activeGoals['goals'];
+      goals = this.activeGoals['goals'];
       this.dataType = this.navParams.data['dataPage'];
       this.dataDesc = this.navParams.data['dataDesc'];
     }
@@ -54,7 +55,8 @@ export class DataConfigPage {
     this.displayName = this.dataDetailsServiceProvider.getDisplayName(this.dataType);
     this.customData[this.dataType] = [];
 
-    this.alreadyTracking = activeGoals['dataToTrack'][this.dataType] ? activeGoals['dataToTrack'][this.dataType] : [];
+    this.alreadyTracking = this.activeGoals['dataToTrack'] && this.activeGoals['dataToTrack'][this.dataType] ?
+                            this.activeGoals['dataToTrack'][this.dataType] : [];
     this.getAllRecs(goals);
   }
 
@@ -74,6 +76,20 @@ export class DataConfigPage {
     for(let data in commonData){
       if(this.dataInList(commonData[data], this.alreadyTracking)){
         delete commonData[data];
+      }
+      else if(commonData[data]['condition']) {
+        if(commonData[data]['name'] === 'Frequent Use of Medications'){
+          let alreadyTracking = this.activeGoals['dataToTrack'] ?
+            this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']) : false;
+          let selectedInConfig = this.navParams.data['selectedData'] ?
+            this.globalFunctions.getWhetherTrackingMeds(this.navParams.data['selectedData']['Treatments']) : false;
+          if(!alreadyTracking && ! selectedInConfig){
+            delete commonData[data];
+          }
+        }
+        else{
+          console.log('Conditional case not defined');
+        }
       }
     }
     // @ts-ignore

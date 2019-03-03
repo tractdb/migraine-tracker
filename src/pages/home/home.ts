@@ -6,6 +6,8 @@ import {LoginPage} from "../login/login";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {TrackDataPage} from "../track-data/track-data";
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
+import {UsedQuickTrackPage} from "../used-quick-track/used-quick-track";
+import {GeneralInfoServiceProvider} from "../../providers/general-info-service/general-info-service";
 
 @Component({
   selector: 'page-home',
@@ -14,13 +16,17 @@ import {DataDetailsServiceProvider} from "../../providers/data-details-service/d
 export class HomePage {
 
   private activeGoals = {};
+  isTrackingMeds = false;
+  quickTrackers = {};
+  quickTrackerKeys = [];
 
   constructor(public navCtrl: NavController,
               private couchDbService: CouchDbServiceProvider,
               public navParams: NavParams,
               private globalFunctions: GlobalFunctionsServiceProvider,
               private modalCtrl: ModalController,
-              private dataDetailsService: DataDetailsServiceProvider){
+              private dataDetailsService: DataDetailsServiceProvider,
+              private generalInfoService: GeneralInfoServiceProvider){
   }
 
   login() {
@@ -31,26 +37,50 @@ export class HomePage {
     customDataModal.present();
   }
 
+  trackedData(dataTracked) {
+    let trackedDataModal = this.modalCtrl.create(UsedQuickTrackPage);
+    trackedDataModal.onDidDismiss(newData => {
+      if(newData !== 'cancel'){
+        let dataToPush = {};
+        dataToPush['dateTracked'] = new Date();
+        dataToPush[dataTracked.name] = true;
+        this.couchDbService.trackData(dataToPush);
+      }
+    });
+    trackedDataModal.present();
+  }
+
   addGoal() {
     this.navCtrl.push(GoalTypePage);
   }
 
   trackData() {
-    let dataToTrack = Object.keys(this.activeGoals['dataToTrack'])
+    let dataToTrack = Object.keys(this.activeGoals['dataToTrack']);
     this.navCtrl.push(TrackDataPage, {'dataDict': this.activeGoals['dataToTrack'],
                                       'allDataTypes': dataToTrack,
                                         'currentDataType': dataToTrack[0]});
   }
 
+  setVars() {
+    this.activeGoals = this.couchDbService.getActiveGoals();
+    this.isTrackingMeds = this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']);
+    this.quickTrackers = this.couchDbService.getQuickTrackers();
+    this.quickTrackerKeys = Object.keys(this.couchDbService.getQuickTrackers());
+
+  }
+
+
+
   ionViewDidEnter(){
     this.dataDetailsService.initData();
-    if(this.navParams.data.configPath){ //todo: notification stuff, text goals
+    this.generalInfoService.initData();
+    if(this.navParams.data.configPath){ //todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
     }
     else{
       this.couchDbService.userLoggedIn().subscribe(
         resp => {
-          this.activeGoals = this.couchDbService.getActiveGoals();
+          this.setVars();
         }, error => {
           this.login();
         });

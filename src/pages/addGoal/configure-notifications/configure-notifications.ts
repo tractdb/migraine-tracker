@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {HomePage} from "../../home/home";
 import {GoalModificationPage} from "../../goal-modification/goal-modification";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
@@ -17,19 +17,18 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 })
 export class ConfigureNotificationsPage {
 
-  dayOfMonth;
-  dayOfWeek;
-  timescale;
-  timeOfDay;
-  startdate;
   minDate;
+  dates;
   days;
+  notificationData;
 
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
-    this.startdate = new Date().toISOString();
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController,
+              public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
     this.minDate = new Date().toISOString();
-    this.days = Array.from(new Array(31), (x,i) => i + 1)
+    this.dates = Array.from(new Array(31), (x,i) => i + 1);
+    this.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    this.notificationData = this.navParams.data;
+    this.notificationData['startdate'] = new Date().toISOString();
   }
 
 
@@ -37,25 +36,12 @@ export class ConfigureNotificationsPage {
 
   }
 
+  cancel() {
+    this.viewCtrl.dismiss({});
+  }
+
   finish(){
-    let notificationData = {"timescale": this.timescale,
-                            "timeOfDay": this.timeOfDay,
-                            "startDate": this.startdate};
-    if(this.dayOfMonth){
-      notificationData['dayOfMonth'] = this.dayOfMonth;
-    }
-    if(this.dayOfWeek){
-      notificationData['dayOfWeek'] = this.dayOfWeek;
-    }
-
-    this.navParams.data['notificationSettings'] = notificationData;
-
-    if(this.couchDBService.getActiveGoals()){
-      this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
-    }
-    else{
-      this.navCtrl.setRoot(HomePage, this.navParams.data);
-    }
+    this.viewCtrl.dismiss(this.notificationData);
   }
 
 }

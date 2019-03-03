@@ -29,7 +29,7 @@ export class GoalModificationPage {
   }
 
   ionViewDidLoad() {
-    if(this.navParams.data.configPath){ //todo: notification stuff, text goals
+    if(this.navParams.data.configPath){ //todo: notification stuff
       this.activeGoals = this.couchDBService.addGoalFromSetup(this.navParams.data);
     }
     else{

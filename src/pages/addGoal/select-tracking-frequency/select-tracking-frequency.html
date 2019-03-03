@@ -15,7 +15,8 @@
 
 <ion-content padding>
 
-  <h3>How frequently do you want to track?</h3>
+  <h3 *ngIf="activeGoals === {} || isModal">How frequently do you want to track?</h3>
+  <h3 *ngIf="activeGoals !== {} && !isModal">Do you want to modify your tracking frequency?</h3>
 
   <ion-card>
     <ion-card-header>Regular Tracking</ion-card-header>
@@ -26,7 +27,8 @@
 
       <p *ngIf="recommended === 'regular'">Recommended for your goals!</p>
 
-      <button full ion-button (click)="configureNotifications()">
+      <button full ion-button [ngClass]="selected === 'regularly'? 'selectedSlider' : 'unselectedSlider'"
+              (click)="configureNotifications()">
         Track regularly<br>(can configure tracking notifications)
       </button>
 
@@ -41,11 +43,37 @@
 
       <p *ngIf="recommended === 'post symptoms'">Recommended for your goals!</p>
 
-      <button full ion-button (click)="finish()">
+      <button full ion-button [ngClass]="selected === 'postSymptoms'? 'selectedSlider' : 'unselectedSlider'"
+              (click)="changeSelected('postSymptoms')">
         Only track after symptoms occur<br>(don't enable notifications)
       </button>
 
     </ion-card-content>
   </ion-card>
+
+
+  <ng-container *ngIf="isModal">
+
+    <button ion-button (click)="cancelChange()">
+      Cancel
+    </button>
+
+    <button float-right ion-button [disabled]="selected===''" (click)="continue()">
+      Save Changes
+    </button>
+
+  </ng-container>
+
+
+
+
+  <button float-right ion-button *ngIf="hasActiveGoals && !isModal" (click)="continue()">
+    <ng-container *ngIf="selected === ''">Keep my current routine</ng-container>
+    <ng-container *ngIf="selected !== ''">Continue</ng-container>
+  </button>
+
+  <button float-right ion-button *ngIf="!hasActiveGoals && !isModal" [disabled]="selected===''" (click)="continue()">
+    Continue
+  </button>
 
 </ion-content>

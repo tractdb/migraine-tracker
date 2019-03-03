@@ -8,6 +8,10 @@ import { HomePage } from '../pages/home/home';
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
 import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
 import {CouchDbServiceProvider} from "../providers/couch-db-service/couch-db-service";
+import {FaqPage} from "../pages/faq/faq";
+import {DataSummaryPage} from "../pages/data-summary/data-summary";
+import {DataCalendarPage} from "../pages/data-calendar/data-calendar";
+import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
 
 @Component({
   templateUrl: 'app.html'
@@ -28,13 +32,18 @@ export class MyApp {
       // todo: add FAQ page
       this.pages = [
         { title: 'Home', component: HomePage},
+        { title: 'About Migraine', component: FaqPage}
       ];
     }
     else{
       this.pages = [
         { title: 'Home', component: HomePage},
+        { title: 'About Migraine', component: FaqPage},
+        { title: 'Data Summary', component: DataSummaryPage},
+        { title: 'Data Calendar', component: DataCalendarPage},
         { title: 'Goals', component: GoalModificationPage},
         { title: 'Tracking Routine', component: TrackingModificationPage},
+        { title: 'Take a Break from Tracking', component: BreakFromTrackingPage},
       ];
     }
 

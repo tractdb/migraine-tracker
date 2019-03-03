@@ -1,0 +1,65 @@
+<!--
+  Generated template for the DataSummaryPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Data Summary</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+
+  <ion-item>
+    <ion-label>
+      <h2>Showing data since:</h2>
+      <p>(defaults to 1 month ago)</p>
+    </ion-label>
+    <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
+                  (ngModelChange)="filterData($event, 'early')" [max]="today" [(ngModel)]="earliestDateFilter"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label>
+      <h2>Showing data until:</h2>
+      <p>(defaults to today)</p>
+    </ion-label>
+    <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
+                  [min]="earliestDateFilter" (ngModelChange)="filterData($event, 'late')"
+                  [max]="today" [(ngModel)]="latestDateFilter"></ion-datetime>
+  </ion-item>
+
+  <ion-card *ngFor="let dataType of dataTypes">
+    <ion-card-header>{{dataType}}</ion-card-header>
+    <ion-card-content *ngFor="let data of currentlyTracking[dataType]">
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <ion-text>
+              <h2>
+                {{data.name}}
+              </h2>
+
+              <ng-container *ngIf="filteredDataByName[data.name]">
+                <h3 text-wrap>
+                  {{filteredDataByName[data.name]['toReport']}}
+                </h3>
+
+              </ng-container>
+
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
+
+</ion-content>

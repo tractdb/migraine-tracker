@@ -1,0 +1,35 @@
+[
+    {"category": "Symptoms", "questions":
+        [
+            {"question": "What causes migraine?",
+            "answer": "The exact mechanism for migraine is still being investigated, but research suggests that people with migraine are more sensitive to stimuli and have lower serotonin levels."},
+
+            {"question": "How do I stop having migraines?",
+            "answer": "Unfortunately, no 'cure' for migraine currently exists.  However, certain lifestyle changes can help guard against symptoms (see Treatments section)."}
+        ]
+    },
+    {"category": "Treatments", "questions":
+        [
+            {"question": "What lifestyle changes can help me guard against migraine?",
+            "answer": "We recommend lifestyle changes that can increase serotonin levels, such as exercising regularly; minimizing sugar and other carbohydrates; getting enough sleep; and practicing stress reduction techniques."},
+
+            {"question": "Why should I minimize as-needed medications?",
+            "answer": "When people with migraine take too many as-needed medications, they can end up being more susceptible to migraines in the future, causing a cycle in which people take more medications, which cause more migraines, which prompt more medication use.  This cycle is one of the most common reasons people develop chronic migraine. We therefore encourage people to try to minimize their as-needed medication use."}
+        ]
+    },
+    {"category": "Contributing Factors (aka 'Triggers')", "questions":
+        [
+            {"question": "Why do you call them 'contributing factors'?",
+            "answer": "Despite the common terminology, for most people, no single factor will always 'trigger' a migraine.  Instead, people who are susceptible to migraine may be more likely to get one when exposed to a large number of factors they may be sensitive to. As those factors often need to accumulate for a migraine to occur, we say they 'contribute' to migraines"},
+
+            {"question": "Why is it so hard to identify contributing factors?",
+            "answer": "A number of reasons.  For one, different people have different contributing factors, so providing a comprehensive list of possible contributing factors is difficult.  In addition, as factors often must accumulate to cause a migraine, it can be hard to determine exactly what set of things may have caused the migraine and what were just coincidental.  We therefore strongly recommend lifestyle changes that can help guard against symptoms, instead of trying to identify every possible contributing factor (see Treatments section)."},
+
+            {"question": "If I think something is a contributing factor, do I need to cut it out of my life?",
+            "answer": "No.  Instead of always trying to avoid contributing factors (which can be unpleasant or infeasible), we recommend lifestyle changes that can help guard against symptoms even when exposed to contributing factors (see Treatments section).  However, if you have an important event coming up or you feel like you may have been exposed to more contributing factors than usual, you may want to minimize further exposure."},
+
+            {"question": "Why is frequent use of as-needed medications listed as a contributing factor?",
+            "answer": "When people with migraine take too many as-needed medications, they can end up being more susceptible to migraines in the future, causing a cycle in which people take more medications, which cause more migraines, which prompt more medication use.  This cycle is one of the most common reasons people develop chronic migraine. We therefore encourage people to try to minimize their as-needed medication use."}
+        ]
+    }
+]

@@ -29,11 +29,11 @@
         "acuteMedication": {
             "name": "As-needed medications today",
             "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
-            "fieldDescription": "Number of pills you took",
-            "field": "number",
+            "fieldDescription": "Whether you took any as-needed medication today",
+            "field": "binary",
             "goal": {
                 "freq": "Less",
-                "threshold": 1,
+                "threshold": 2,
                 "timespan": "Week"
             }
         },
@@ -46,27 +46,31 @@
                 "freq": "More",
                 "threshold": 120,
                 "timespan": "Week"
-            }
+            },
+            "significance": "Regular exercise can help guard against migraines"
         }
     },
     "Triggers": {
         "frequentMedUse": {
             "name": "Frequent Use of Medications",
-            "explanation": "If you use as-needed medications too frequently, they can start causing more migraines.  We will calculate how many you take and let you know if you might want to think about cutting back.",
+            "explanation": "Calculated medication use, to let you know if you might want to think about cutting back.",
             "fieldDescription": "Number of pills you took",
             "field": "calculated medication use",
+            "condition": true,
             "goal": {
                 "freq": "Less",
                 "threshold": 2,
                 "timespan": "Week"
-            }
+            },
+            "significance": "If you use as-needed medications too frequently, they can start causing more migraines."
         },
         "stress": {
             "name": "Stress today",
             "explanation": "How stressed you were today.",
             "fieldDescription": "3-point stress rating",
             "field": "category scale"
-        }
+        },
+            "significance": "High stress levels can lead to more migraines"
     },
     "Other": {
     },
