@@ -46,6 +46,11 @@ export class GlobalFunctionsServiceProvider {
     return goals;
   }
 
+  dateToPrettyDate(dateString){
+    let date = new Date(dateString);
+    return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+  }
+
   timeTo12Hour(time){
     let niceTime = '';
     let postFix = '';

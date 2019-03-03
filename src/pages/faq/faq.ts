@@ -27,14 +27,12 @@ export class FaqPage {
   }
 
   expndOrHide(question){
-    console.log(question);
     if(question['expanded'] === undefined){
       question['expanded'] = true;
     }
     else{
       question['expanded'] = !question['expanded'];
     }
-    console.log(question);
   }
 
 }

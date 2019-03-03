@@ -39,8 +39,13 @@ export class BreakFromTrackingPage {
     else {
       monthFromNow = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     }
-    console.log(monthFromNow)
     this.dateToCheckIn = monthFromNow.toISOString();
+  }
+
+  getStartDate(){
+    let dateStarted = new Date(this.currentBreak.started);
+    this.currentBreakStarted = dateStarted.getMonth() + "/" + dateStarted.getDate()
+      + "/" + dateStarted.getFullYear();
   }
 
   ionViewDidLoad() {
@@ -49,9 +54,7 @@ export class BreakFromTrackingPage {
       this.setDates();
     }
     else{
-      let dateStarted = new Date(this.currentBreak.started);
-      this.currentBreakStarted = dateStarted.getMonth() + "/" + dateStarted.getDate()
-                                  + "/" + dateStarted.getFullYear();
+      this.getStartDate();
       this.dateToSnoozeTo = this.currentBreak.notifyDate;
       this.dateToCheckIn = this.currentBreak.dateToCheckIn;
     }
@@ -72,8 +75,11 @@ export class BreakFromTrackingPage {
       newBreak['noDates'] = true;
     }
     newBreak['started'] = new Date();
+    console.log(newBreak);
     this.couchDBProvider.setBreak(newBreak);
     this.currentBreak = newBreak;
+    this.dateToCheckIn = newBreak['checkInDate'];
+    this.getStartDate();
   }
 
   updateBreak(){

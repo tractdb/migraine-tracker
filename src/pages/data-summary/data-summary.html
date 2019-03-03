@@ -40,7 +40,25 @@
   <ion-card *ngFor="let dataType of dataTypes">
     <ion-card-header>{{dataType}}</ion-card-header>
     <ion-card-content *ngFor="let data of currentlyTracking[dataType]">
-      {{data.name}}
+      <ion-list>
+        <ion-item>
+          <ion-label>
+            <ion-text>
+              <h2>
+                {{data.name}}
+              </h2>
+
+              <ng-container *ngIf="filteredDataByName[data.name]">
+                <h3 text-wrap>
+                  {{filteredDataByName[data.name]['toReport']}}
+                </h3>
+
+              </ng-container>
+
+            </ion-text>
+          </ion-label>
+        </ion-item>
+      </ion-list>
     </ion-card-content>
   </ion-card>
 

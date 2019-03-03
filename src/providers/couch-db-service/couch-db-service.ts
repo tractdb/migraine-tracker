@@ -16,12 +16,12 @@ export class CouchDbServiceProvider {
 
   getCurrentBreak(){
     // todo: pull from db, make sure it's current
-    // return undefined;
-    return {
-      "reasonForBreak": "I want to",
-      "notifyDate": "2020-02-28",
-      "started": "2019-02-27T01:07:42.495Z"
-    }
+    return undefined;
+    // return {
+    //   "reasonForBreak": "I want to",
+    //   "notifyDate": "2020-02-28",
+    //   "started": "2019-02-27T01:07:42.495Z"
+    // }
   }
 
   updateBreak(currentBreak){
@@ -367,7 +367,7 @@ export class CouchDbServiceProvider {
             "selected": true
           },
           {
-            "name": "Time I took advil",
+            "name": "Time took advil",
             "field": "time",
             "goal": {},
             "selected": true,
