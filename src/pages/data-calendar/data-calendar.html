@@ -18,4 +18,26 @@
 
 <ion-content padding>
 
+  <!--<ng-template #template let-displayEvent="displayEvent">-->
+    <!--<div class="calendar-event-inner">{{displayEvent.event.title}}</div>-->
+  <!--</ng-template>-->
+
+  <!--<ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">-->
+    <!--<div class="calendar-event-inner" *ngIf="selectedDate">{{selectedDate}}</div>-->
+  <!--</ng-template>-->
+
+  <calendar [eventSource]="eventSource"
+            [calendarMode]="calendar.mode"
+            [currentDate]="calendar.currentDate"
+            [noEventsLabel] = "noEventsLabel"
+            [allDayLabel] = "allDayLabel"
+            (onCurrentDateChanged)="onCurrentDateChanged($event)"
+            (onEventSelected)="onEventSelected($event)"
+            (onTitleChanged)="onViewTitleChanged($event)"
+            (onTimeSelected)="onTimeSelected($event)"
+            step="30">
+  </calendar>
+
+  <!--[monthviewEventDetailTemplate]="template"-->
+
 </ion-content>
