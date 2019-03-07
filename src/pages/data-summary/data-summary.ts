@@ -136,6 +136,7 @@ export class DataSummaryPage {
       trackedDict[dataNames[i]]['toReport'] = report;
     }
 
+
     this.filteredDataByName = trackedDict;
 
   }
@@ -187,7 +188,8 @@ export class DataSummaryPage {
       let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
       for(let t=0; t<trackingOfType.length; t++){
         if(!trackedDict[trackingOfType[t].name])
-          trackedDict[trackingOfType[t].name] = {'field': trackingOfType[t].field, 'vals': []};
+          trackedDict[trackingOfType[t].name] = {'field': trackingOfType[t].field,
+                                                  'vals': [], 'goal': trackingOfType[t].goal};
       }
     }
 

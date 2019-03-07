@@ -53,6 +53,12 @@
                   {{filteredDataByName[data.name]['toReport']}}
                 </h3>
 
+                <p text-wrap *ngIf="filteredDataByName[data.name]['goal'] && filteredDataByName[data.name]['goal'].freq">
+                  Your goal is <span text-lowercase>{{filteredDataByName[data.name]['goal'].freq}}
+                  than {{filteredDataByName[data.name]['goal'].threshold}}
+                  times per {{filteredDataByName[data.name]['goal'].timespan}}.</span>
+                </p>
+
               </ng-container>
 
             </ion-text>
