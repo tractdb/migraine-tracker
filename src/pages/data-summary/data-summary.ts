@@ -170,7 +170,7 @@ export class DataSummaryPage {
       fakeDate2.setHours(lateTime.split(":")[0]);
       fakeDate2.setMinutes(lateTime.split(":")[1]);
 
-      if(fakeDate1 > fakeDate2){ // that's an assumption but whatever ...
+      if(fakeDate1 > fakeDate2){ // that's an assumption; maybe we shouldn't allow it??
         fakeDate2.setDate(fakeDate2.getDate()+1);
       }
 

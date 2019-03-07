@@ -194,7 +194,7 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Some"
         },
-        "dateTracked": "2019-02-18T19:43:20.103Z"
+        "dateTracked": "2019-03-06T19:04:49.572Z"
       },
       {
         "Symptoms": {
@@ -206,7 +206,7 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Lots"
         },
-        "dateTracked": "2019-02-18T19:43:32.452Z"
+        "dateTracked": "2019-02-12T19:05:05.582Z"
       },
       {
         "Symptoms": {
@@ -219,7 +219,7 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Some"
         },
-        "dateTracked": "2019-02-18T19:43:51.225Z"
+        "dateTracked": "2019-02-07T19:05:05.582Z"
       },
       {
         "Treatments": {
@@ -228,7 +228,7 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "None"
         },
-        "dateTracked": "2019-02-18T19:44:06.425Z"
+        "dateTracked": "2019-02-05T19:44:06.425Z"
       },
       {
         "Symptoms": {
@@ -380,6 +380,7 @@ export class CouchDbServiceProvider {
             "explanation": "How stressed you were today.",
             "fieldDescription": "3-point stress rating",
             "field": "category scale",
+            "significance": "High stress levels can lead to more migraines",
             "recommendingGoal": [
               "Learn what factors may affect my migraines"
             ],
@@ -387,7 +388,6 @@ export class CouchDbServiceProvider {
               "showBackdrop": true,
               "enableBackdropDismiss": true
             },
-            "significance": "High stress levels can lead to more migraines",
             "selected": true
           },
           // {

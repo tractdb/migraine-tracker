@@ -18,26 +18,38 @@
 
 <ion-content padding>
 
-  <!--<ng-template #template let-displayEvent="displayEvent">-->
-    <!--<div class="calendar-event-inner">{{displayEvent.event.title}}</div>-->
-  <!--</ng-template>-->
+  <h3 align-items-center>
+    <button ion-button icon-only (click)="changeMonth('subtract')" [disabled]="isMinMonth">
+      <ion-icon name="md-arrow-dropleft"></ion-icon>
+    </button>
+    {{currentMonth}}
+    <button ion-button icon-only (click)="changeMonth('add')" [disabled]="isMaxMonth">
+      <ion-icon item-right name="md-arrow-dropright"></ion-icon>
+    </button>
+  </h3>
+
+
+  <ng-template #template let-view="view" let-row="row" let-col="col">
+    <div class="calendar-event-inner" [ngClass]="getClass(view.dates[row*7+col])">
+      {{view.dates[row*7+col].label}}
+    </div>
+  </ng-template>
 
   <!--<ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">-->
     <!--<div class="calendar-event-inner" *ngIf="selectedDate">{{selectedDate}}</div>-->
   <!--</ng-template>-->
 
   <calendar [eventSource]="eventSource"
-            [calendarMode]="calendar.mode"
             [currentDate]="calendar.currentDate"
             [noEventsLabel] = "noEventsLabel"
             [allDayLabel] = "allDayLabel"
+            [lockSwipes]="lockSwipes"
+            [monthviewDisplayEventTemplate]="template"
             (onCurrentDateChanged)="onCurrentDateChanged($event)"
             (onEventSelected)="onEventSelected($event)"
-            (onTitleChanged)="onViewTitleChanged($event)"
-            (onTimeSelected)="onTimeSelected($event)"
             step="30">
   </calendar>
 
-  <!--[monthviewEventDetailTemplate]="template"-->
+  <!---->
 
 </ion-content>
