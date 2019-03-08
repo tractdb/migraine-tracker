@@ -1,5 +1,13 @@
 page-data-calendar {
 
+  .center{
+    text-align: center;
+  }
+
+  .scroll-content{
+    overflow:hidden;
+  }
+
   .migraineDay{
     color: #e50000 !important;
     font-weight:bold;

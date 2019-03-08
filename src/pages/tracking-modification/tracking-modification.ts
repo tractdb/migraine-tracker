@@ -6,6 +6,7 @@ import {EditDataPage} from "../addGoal/edit-data/edit-data";
 import {DataConfigPage} from "../addGoal/data-config/data-config";
 import {SelectTrackingFrequencyPage} from "../addGoal/select-tracking-frequency/select-tracking-frequency";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 
 /**
  * Generated class for the TrackingModificationPage page.
@@ -33,7 +34,8 @@ export class TrackingModificationPage {
               private couchDBService: CouchDbServiceProvider,
               private dataDetailsService: DataDetailsServiceProvider,
               private modalCtrl: ModalController,
-              private globalFuns: GlobalFunctionsServiceProvider) {
+              private globalFuns: GlobalFunctionsServiceProvider,
+              private dateFuns: DateFunctionServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -43,7 +45,7 @@ export class TrackingModificationPage {
     this.notifications = activeGoals['notifications'];
     this.trackingFreq = activeGoals['trackingFreq'];
     this.currentData = activeGoals['dataToTrack'];
-    this.timeToDisplay = this.globalFuns.timeTo12Hour(this.notifications.timeOfDay);
+    this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications.timeOfDay);
     this.allDataTypes = this.dataDetailsService.getDataList(activeGoals['goals']);
     for(let i=0; i<this.allDataTypes.length; i++){
       this.displayNames[this.allDataTypes[i]] = this.dataDetailsService.getDisplayName(this.allDataTypes[i]);
@@ -64,6 +66,7 @@ export class TrackingModificationPage {
 
         else{
           this.notifications = newData;
+          this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications.timeOfDay);
         }
 
       }

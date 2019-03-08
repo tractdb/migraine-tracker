@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {HomePage} from "../home/home";
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 
 
 
@@ -26,6 +27,7 @@ export class TrackDataPage {
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
+              public dateFunctionservice: DateFunctionServiceProvider,
               private couchDBService: CouchDbServiceProvider, private globalFunctions: GlobalFunctionsServiceProvider) {
     this.numList = Array.from(new Array(10),(val,index)=>index+1);
     this.previouslyTracked = couchDBService.getTrackedData();
@@ -139,6 +141,7 @@ export class TrackDataPage {
     }
   }
 
+
   continueTracking() {
     if(this.somethingTracked){
       this.addDurationItems(this.durationItemStart, 'start');
@@ -152,7 +155,7 @@ export class TrackDataPage {
       this.navCtrl.push(TrackDataPage, this.navParams.data);
     }
     else {
-      this.navParams.data['tracked']['dateTracked'] = new Date();
+      this.navParams.data['tracked'] = this.dateFunctionservice.formatForCalendar(this.navParams.data['tracked']);
       this.couchDBService.trackData(this.navParams.data['tracked']);
       this.navCtrl.setRoot(HomePage, {'trackedData': this.navParams.data['tracked']});
     }

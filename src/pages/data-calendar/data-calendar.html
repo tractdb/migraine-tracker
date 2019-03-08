@@ -18,15 +18,16 @@
 
 <ion-content padding>
 
-  <h3 align-items-center>
-    <button ion-button icon-only (click)="changeMonth('subtract')" [disabled]="isMinMonth">
+  <h3 style="text-align: center;">
+    <button float-left ion-button icon-only (click)="changeMonth('subtract')" [disabled]="isMinMonth">
       <ion-icon name="md-arrow-dropleft"></ion-icon>
     </button>
     {{currentMonth}}
-    <button ion-button icon-only (click)="changeMonth('add')" [disabled]="isMaxMonth">
+    <button ion-button float-right icon-only (click)="changeMonth('add')" [disabled]="isMaxMonth">
       <ion-icon item-right name="md-arrow-dropright"></ion-icon>
     </button>
   </h3>
+
 
 
   <ng-template #template let-view="view" let-row="row" let-col="col">
@@ -35,9 +36,34 @@
     </div>
   </ng-template>
 
-  <!--<ng-template #template let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">-->
-    <!--<div class="calendar-event-inner" *ngIf="selectedDate">{{selectedDate}}</div>-->
-  <!--</ng-template>-->
+
+  <ng-template #template2 let-showEventDetail="showEventDetail" let-selectedDate="selectedDate" let-noEventsLabel="noEventsLabel">
+
+
+
+    <ion-list class="event-detail-container list">
+      <ion-item class="item item-block" *ngFor="let event of selectedDate.events">
+        <ion-label>
+          <span class="monthview-eventdetail-timecolumn">Data Tracked</span>
+          <span class="event-detail">  |  {{event.title}}</span>
+          <button item-right ion-button icon-only (click)="seeDataDetails(event)">
+            <ion-icon name="information-circle-outline"></ion-icon>
+          </button>
+        </ion-label>
+
+      </ion-item>
+
+      <ion-item *ngIf="selectedDate.events.length === 0">
+        <ion-label>
+          <div class="no-events-label">{{noEventsLabel}}</div>
+        </ion-label>
+      </ion-item>
+
+    </ion-list>
+
+  </ng-template>
+
+
 
   <calendar [eventSource]="eventSource"
             [currentDate]="calendar.currentDate"
@@ -45,6 +71,7 @@
             [allDayLabel] = "allDayLabel"
             [lockSwipes]="lockSwipes"
             [monthviewDisplayEventTemplate]="template"
+            [monthviewEventDetailTemplate]="template2"
             (onCurrentDateChanged)="onCurrentDateChanged($event)"
             (onEventSelected)="onEventSelected($event)"
             step="30">

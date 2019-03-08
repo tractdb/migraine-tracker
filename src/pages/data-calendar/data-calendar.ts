@@ -1,7 +1,11 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams } from 'ionic-angular';
+import {ModalController, NavController, NavParams} from 'ionic-angular';
 import * as moment from 'moment';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {TrackDataPage} from "../track-data/track-data";
+import {SelectTrackingFrequencyPage} from "../addGoal/select-tracking-frequency/select-tracking-frequency";
+import {ViewDatapointPage} from "../view-datapoint/view-datapoint";
 
 
 /**
@@ -16,6 +20,7 @@ export class DataCalendarPage {
 
   lockSwipes = false;
   currentMonth;
+  minMonth;
   isMaxMonth = true;
   isMinMonth = false;
 
@@ -29,8 +34,8 @@ export class DataCalendarPage {
 
   eventSource = [];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
-              public couchDBService: CouchDbServiceProvider) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
+              public couchDBService: CouchDbServiceProvider, public dateFunctions: DateFunctionServiceProvider) {
   }
 
   setSwipesToLock(){
@@ -47,32 +52,19 @@ export class DataCalendarPage {
   }
 
 
-  getOTCDate(date){
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-  }
-
-
-  formatEvents(events) {
-    for(var i=0; i<events.length; i++){
-      let event = events[i];
-      let dateTracked = new Date(event['dateTracked']);
-      dateTracked.setHours(0,0,0,0);
-      let nextDay = moment(dateTracked).add(1, "day").toDate();
-      event['startTime'] = this.getOTCDate(dateTracked);
-      event['endTime'] =this.getOTCDate(nextDay);
-      event['allDay'] = true;
-      event['calendarClass'] = 'migraineDay';
-      event['title'] = (event['Symptoms'] && event['Symptoms']['Migraine today']) ? 'Migraine Day' : 'No Migraine';
-      this.eventSource.push(event);
-
-    }
-    this.calendar.currentDate = new Date();
-  }
-
 
   ionViewDidLoad() {
+    let dateFuns = this.dateFunctions;
     this.currentMonth = moment(this.calendar.currentDate).format("MMMM");
-    this.formatEvents(this.couchDBService.getTrackedData());
+    let events = this.couchDBService.getTrackedData();
+    events.map(function(event){
+      event.startTime = dateFuns.getOTCDate(event.startTime);
+      event.endTime = dateFuns.getOTCDate(event.endTime);
+    });
+    this.eventSource = events;
+    this.minMonth = dateFuns.getMinMonth(events);
+    console.log(this.minMonth);
+    this.calendar.currentDate = new Date();
   }
 
   getClass(view){
@@ -102,14 +94,26 @@ export class DataCalendarPage {
   }
 
   onEventSelected(event){
-    console.log(event);
+    // console.log(event);
+  }
+
+
+
+  seeDataDetails(event){
+    let dataDetailsModal = this.modalCtrl.create(ViewDatapointPage, event);
+    dataDetailsModal.onDidDismiss(newData => {
+      if(newData){
+        console.log(newData);
+      }
+    });
+    dataDetailsModal.present();
   }
 
 
   checkMinAndMax(){
     this.currentMonth = moment(this.calendar.currentDate).format("MMMM");
     this.isMaxMonth = moment().isSame(this.calendar.currentDate, 'month');
-    this.isMinMonth = false; //todo
+    this.isMinMonth = this.minMonth.isSame(this.calendar.currentDate, 'month');
   }
 
   changeMonth(direction){

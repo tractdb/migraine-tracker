@@ -187,6 +187,9 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 9,
           "Migraine duration": {'start': "19:42", 'end': "12:43"}
         },
+        'title': "Migraine",
+        'endTime': "2019-03-07T00:00:00.000Z",
+        'startTime': "2019-03-06T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true,
           "Minutes exercised today": ""
@@ -194,6 +197,7 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Some"
         },
+        'allDay': true,
         "dateTracked": "2019-03-06T19:04:49.572Z"
       },
       {
@@ -206,6 +210,10 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Lots"
         },
+        'title': "No Migraine",
+        'allDay': true,
+        'endTime': "2019-02-13T00:00:00.000Z",
+        'startTime': "2019-02-12T00:00:00.000Z",
         "dateTracked": "2019-02-12T19:05:05.582Z"
       },
       {
@@ -213,6 +221,10 @@ export class CouchDbServiceProvider {
           "Migraine today": true,
           "Peak migraine severity": 3
         },
+        'allDay': true,
+        'title': "Migraine",
+        'endTime': "2019-02-08T00:00:00.000Z",
+        'startTime': "2019-02-07T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true
         },
@@ -225,6 +237,10 @@ export class CouchDbServiceProvider {
         "Treatments": {
           "Minutes exercised today": "45"
         },
+        'title': "Migraine",
+        'endTime': "2019-02-06T00:00:00.000Z",
+        'startTime': "2019-02-05T00:00:00.000Z",
+        'allDay': true,
         "Triggers": {
           "Stress today": "None"
         },
@@ -234,6 +250,10 @@ export class CouchDbServiceProvider {
         "Symptoms": {
           "Headache today": true
         },
+        'allDay': true,
+        'title': "No Migraine",
+        'endTime': "2019-02-18T00:00:00.000Z",
+        'startTime': "2019-02-17T00:00:00.000Z",
         "Treatments": {
           "Minutes exercised today": "15"
         },
@@ -248,6 +268,10 @@ export class CouchDbServiceProvider {
           "Headache today": true,
           "Peak migraine severity": 2
         },
+        'allDay': true,
+        'title': "Migraine",
+        'endTime': "2019-02-18T00:00:00.000Z",
+        'startTime': "2019-02-17T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true
         },

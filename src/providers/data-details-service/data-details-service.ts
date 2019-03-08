@@ -80,6 +80,14 @@ export class DataDetailsServiceProvider {
     return this.configData;
   }
 
+  getAllDataTypes(){
+    let allDataTypes = [];
+    for(let i=0; i<this.configData.length; i++){
+      allDataTypes.push(this.configData[i].name);
+    }
+    return allDataTypes;
+  }
+
   getDataList(goals) {
     let dataList = [];
     for(let i=0; i<this.configData.length; i++){
