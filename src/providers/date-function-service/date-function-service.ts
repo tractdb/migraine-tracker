@@ -19,10 +19,35 @@ export class DateFunctionServiceProvider {
     // return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
   }
 
+  getMonthAgo(date){
+    return moment(date).subtract(1, 'month');
+  }
+
 
   timeTo12Hour(time) {
     return moment(time, 'hh:mm').format("h:mma");
   }
+
+
+  milisecondsToPrettyTime(durationInMS){
+    let duration = moment.duration(durationInMS);
+    let hours = duration.hours();
+    let minutes = duration.minutes();
+    return hours + " hour" + (hours>1? 's' : '') +  ", " + minutes + " minute" + (minutes>1? 's' : '');
+  }
+
+
+  getDuration(time1, time2){
+    let t1 = moment(time1, 'hh:mm');
+    let t2 = moment(time2, 'hh:mm');
+    if(t2.isBefore(t1)){ //bad assumption :(
+      t2 = t2.add(1, "day");
+    }
+    return t2.diff(t1);
+  }
+
+
+
 
 
   getMinMonth(events){
