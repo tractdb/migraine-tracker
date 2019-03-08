@@ -68,9 +68,9 @@
             "name": "Stress today",
             "explanation": "How stressed you were today.",
             "fieldDescription": "3-point stress rating",
-            "field": "category scale"
-        },
+            "field": "category scale",
             "significance": "High stress levels can lead to more migraines"
+        }  
     },
     "Other": {
     },

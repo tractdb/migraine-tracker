@@ -25,7 +25,8 @@
       <p>(defaults to 1 month ago)</p>
     </ion-label>
     <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
-                  (ngModelChange)="filterData($event, 'early')" [max]="today" [(ngModel)]="earliestDateFilter"></ion-datetime>
+                  (ngModelChange)="filterData($event, 'early')" [max]="today"
+                  [(ngModel)]="earliestDateFilter"></ion-datetime>
   </ion-item>
   <ion-item>
     <ion-label>
@@ -52,6 +53,13 @@
                 <h3 text-wrap>
                   {{filteredDataByName[data.name]['toReport']}}
                 </h3>
+
+                <p text-wrap *ngIf="filteredDataByName[data.name]['goal'] &&
+                                                                       filteredDataByName[data.name]['goal'].freq">
+                  Your goal is <span text-lowercase>{{filteredDataByName[data.name]['goal'].freq}}
+                  than {{filteredDataByName[data.name]['goal'].threshold}}
+                  times per {{filteredDataByName[data.name]['goal'].timespan}}.</span>
+                </p>
 
               </ng-container>
 

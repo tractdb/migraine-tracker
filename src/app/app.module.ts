@@ -4,7 +4,11 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import {HttpClientModule} from "@angular/common/http";
 
 import { MyApp } from './app.component';
+import { NgCalendarModule  } from 'ionic2-calendar';
+
 import { HomePage } from '../pages/home/home';
+
+
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -31,6 +35,8 @@ import {FaqPage} from "../pages/faq/faq";
 import {UsedQuickTrackPage} from "../pages/used-quick-track/used-quick-track";
 import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
 import { GeneralInfoServiceProvider } from '../providers/general-info-service/general-info-service';
+import { DateFunctionServiceProvider } from '../providers/date-function-service/date-function-service';
+import {ViewDatapointPage} from "../pages/view-datapoint/view-datapoint";
 
 @NgModule({
   declarations: [
@@ -53,10 +59,12 @@ import { GeneralInfoServiceProvider } from '../providers/general-info-service/ge
     DataSummaryPage,
     FaqPage,
     UsedQuickTrackPage,
-    BreakFromTrackingPage
+    BreakFromTrackingPage,
+    ViewDatapointPage
   ],
   imports: [
     BrowserModule,
+    NgCalendarModule,
     IonicModule.forRoot(MyApp),
     HttpClientModule
   ],
@@ -81,7 +89,8 @@ import { GeneralInfoServiceProvider } from '../providers/general-info-service/ge
     DataSummaryPage,
     FaqPage,
     UsedQuickTrackPage,
-    BreakFromTrackingPage
+    BreakFromTrackingPage,
+    ViewDatapointPage
   ],
   providers: [
     StatusBar,
@@ -91,7 +100,8 @@ import { GeneralInfoServiceProvider } from '../providers/general-info-service/ge
     GoalDetailsServiceProvider,
     GlobalFunctionsServiceProvider,
     DataDetailsServiceProvider,
-    GeneralInfoServiceProvider
+    GeneralInfoServiceProvider,
+    DateFunctionServiceProvider
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

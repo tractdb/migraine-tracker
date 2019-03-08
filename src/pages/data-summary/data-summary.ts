@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
-import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 
 /**
  * Generated class for the DataSummaryPage page.
@@ -25,7 +25,7 @@ export class DataSummaryPage {
   today;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public couchDBService: CouchDbServiceProvider, public globalFunctions: GlobalFunctionsServiceProvider) {
+              public couchDBService: CouchDbServiceProvider, public dateFunctions: DateFunctionServiceProvider) {
 
   }
 
@@ -54,8 +54,8 @@ export class DataSummaryPage {
 
 
   getPrettifiedDates(){
-    let prettyEarlyDate = this.globalFunctions.dateToPrettyDate(this.earliestDateFilter);
-    let prettyLateDate = this.globalFunctions.dateToPrettyDate(this.latestDateFilter);
+    let prettyEarlyDate = this.dateFunctions.dateToPrettyDate(this.earliestDateFilter);
+    let prettyLateDate = this.dateFunctions.dateToPrettyDate(this.latestDateFilter);
     return "between " + prettyEarlyDate + " and " + prettyLateDate + ".";
   }
 
@@ -136,6 +136,7 @@ export class DataSummaryPage {
       trackedDict[dataNames[i]]['toReport'] = report;
     }
 
+
     this.filteredDataByName = trackedDict;
 
   }
@@ -169,7 +170,7 @@ export class DataSummaryPage {
       fakeDate2.setHours(lateTime.split(":")[0]);
       fakeDate2.setMinutes(lateTime.split(":")[1]);
 
-      if(fakeDate1 > fakeDate2){ // that's an assumption but whatever ...
+      if(fakeDate1 > fakeDate2){ // that's an assumption; maybe we shouldn't allow it??
         fakeDate2.setDate(fakeDate2.getDate()+1);
       }
 
@@ -187,7 +188,8 @@ export class DataSummaryPage {
       let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
       for(let t=0; t<trackingOfType.length; t++){
         if(!trackedDict[trackingOfType[t].name])
-          trackedDict[trackingOfType[t].name] = {'field': trackingOfType[t].field, 'vals': []};
+          trackedDict[trackingOfType[t].name] = {'field': trackingOfType[t].field,
+                                                  'vals': [], 'goal': trackingOfType[t].goal};
       }
     }
 

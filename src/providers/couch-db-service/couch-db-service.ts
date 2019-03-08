@@ -187,6 +187,9 @@ export class CouchDbServiceProvider {
           "Peak migraine severity": 9,
           "Migraine duration": {'start': "19:42", 'end': "12:43"}
         },
+        'title': "Migraine",
+        'endTime': "2019-03-07T00:00:00.000Z",
+        'startTime': "2019-03-06T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true,
           "Minutes exercised today": ""
@@ -194,7 +197,8 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Some"
         },
-        "dateTracked": "2019-02-18T19:43:20.103Z"
+        'allDay': true,
+        "dateTracked": "2019-03-06T19:04:49.572Z"
       },
       {
         "Symptoms": {
@@ -206,34 +210,50 @@ export class CouchDbServiceProvider {
         "Triggers": {
           "Stress today": "Lots"
         },
-        "dateTracked": "2019-02-18T19:43:32.452Z"
+        'title': "No Migraine",
+        'allDay': true,
+        'endTime': "2019-02-13T00:00:00.000Z",
+        'startTime': "2019-02-12T00:00:00.000Z",
+        "dateTracked": "2019-02-12T19:05:05.582Z"
       },
       {
         "Symptoms": {
           "Migraine today": true,
           "Peak migraine severity": 3
         },
+        'allDay': true,
+        'title': "Migraine",
+        'endTime': "2019-02-08T00:00:00.000Z",
+        'startTime': "2019-02-07T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true
         },
         "Triggers": {
           "Stress today": "Some"
         },
-        "dateTracked": "2019-02-18T19:43:51.225Z"
+        "dateTracked": "2019-02-07T19:05:05.582Z"
       },
       {
         "Treatments": {
           "Minutes exercised today": "45"
         },
+        'title': "Migraine",
+        'endTime': "2019-02-06T00:00:00.000Z",
+        'startTime': "2019-02-05T00:00:00.000Z",
+        'allDay': true,
         "Triggers": {
           "Stress today": "None"
         },
-        "dateTracked": "2019-02-18T19:44:06.425Z"
+        "dateTracked": "2019-02-05T19:44:06.425Z"
       },
       {
         "Symptoms": {
           "Headache today": true
         },
+        'allDay': true,
+        'title': "No Migraine",
+        'endTime': "2019-02-18T00:00:00.000Z",
+        'startTime': "2019-02-17T00:00:00.000Z",
         "Treatments": {
           "Minutes exercised today": "15"
         },
@@ -248,6 +268,10 @@ export class CouchDbServiceProvider {
           "Headache today": true,
           "Peak migraine severity": 2
         },
+        'allDay': true,
+        'title': "Migraine",
+        'endTime': "2019-02-18T00:00:00.000Z",
+        'startTime': "2019-02-17T00:00:00.000Z",
         "Treatments": {
           "As-needed medications today": true
         },
@@ -380,6 +404,7 @@ export class CouchDbServiceProvider {
             "explanation": "How stressed you were today.",
             "fieldDescription": "3-point stress rating",
             "field": "category scale",
+            "significance": "High stress levels can lead to more migraines",
             "recommendingGoal": [
               "Learn what factors may affect my migraines"
             ],
@@ -387,7 +412,6 @@ export class CouchDbServiceProvider {
               "showBackdrop": true,
               "enableBackdropDismiss": true
             },
-            "significance": "High stress levels can lead to more migraines",
             "selected": true
           },
           // {
