@@ -67,11 +67,20 @@ export class DataCalendarPage {
     this.calendar.currentDate = new Date();
   }
 
+
+  isMigraineEvent(event){
+    // todo: make smarter (like if they only have duration); probably put in service
+    if(event['Symptoms'] && event['Symptoms']['Migraine today']){
+      return true
+    }
+    return false;
+  }
+
+
   getClass(view){
     if(view.events.length > 0){
       for(let i=0; i<view.events.length; i++){
-        let event = view.events[i];
-        if(event['Symptoms'] && event['Symptoms']['Migraine today']){
+        if(this.isMigraineEvent(view.events[i])){
           return 'migraineDay';
         }
       }

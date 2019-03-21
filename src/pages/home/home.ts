@@ -80,6 +80,7 @@ export class HomePage {
     else{
       this.couchDbService.userLoggedIn().subscribe(
         resp => {
+          // console.log("logged in")
           this.setVars();
         }, error => {
           this.login();

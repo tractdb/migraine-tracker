@@ -181,6 +181,7 @@ export class DataSummaryPage {
         }
       }
     }
+    console.log(trackedDict);
     this.getDataToReport(trackedDict);
   }
 
