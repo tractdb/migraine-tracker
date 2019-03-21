@@ -12,6 +12,7 @@ import {FaqPage} from "../pages/faq/faq";
 import {DataSummaryPage} from "../pages/data-summary/data-summary";
 import {DataCalendarPage} from "../pages/data-calendar/data-calendar";
 import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
+import {DataVisPage} from "../pages/data-vis/data-vis";
 
 @Component({
   templateUrl: 'app.html'
@@ -41,6 +42,7 @@ export class MyApp {
         { title: 'About Migraine', component: FaqPage},
         { title: 'Data Summary', component: DataSummaryPage},
         { title: 'Data Calendar', component: DataCalendarPage},
+        { title: 'Data Visualizations', component: DataVisPage},
         { title: 'Goals', component: GoalModificationPage},
         { title: 'Tracking Routine', component: TrackingModificationPage},
         { title: 'Take a Break from Tracking', component: BreakFromTrackingPage},

@@ -184,382 +184,32 @@ export class CouchDbServiceProvider {
     return [
       {
         "allDay": "true",
-        "dateTracked": "2019-01-18T14:51:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "00:11",
-          "Screen time": 16,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "01:21",
-            "end": "11:41"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 6,
-          "Time took advil": "05:40",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "05:12",
-            "end": "20:39"
-          },
-          "Peak migraine severity": 10,
-          "Migraine today": false,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-18T00:00:00.000Z",
-        "endTime": "2019-01-19T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-23T01:21:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "15:25",
-          "Screen time": 8,
-          "Cups of Coffee": 1,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "17:20",
-            "end": "21:29"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 9,
-          "Time took advil": "22:27",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "07:39",
-            "end": "19:48"
-          },
-          "Peak migraine severity": 3,
-          "Migraine today": true,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-23T00:00:00.000Z",
-        "endTime": "2019-02-24T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-15T22:33:00.000Z",
-        "Triggers": {
-          "Stress": 9,
-          "Went to bed": "00:40",
-          "Screen time": 16,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "22:20",
-            "end": "23:44"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 2,
-          "Time took advil": "19:02",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "12:34",
-            "end": "20:56"
-          },
-          "Peak migraine severity": 5,
-          "Migraine today": false,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-15T00:00:00.000Z",
-        "endTime": "2019-03-16T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-27T07:54:00.000Z",
-        "Triggers": {
-          "Stress": 1,
-          "Went to bed": "13:46",
-          "Screen time": 6,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "22:36",
-            "end": "22:48"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 15,
-          "Time took advil": "19:23",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "07:03",
-            "end": "17:17"
-          },
-          "Peak migraine severity": 5,
-          "Migraine today": true,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-27T00:00:00.000Z",
-        "endTime": "2019-01-28T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-27T18:29:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "20:46",
-          "Screen time": 7,
-          "Cups of Coffee": 2,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "06:20",
-            "end": "08:43"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 0,
-          "Time took advil": "04:13",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "17:36",
-            "end": "18:39"
-          },
-          "Peak migraine severity": 2,
-          "Migraine today": true,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-27T00:00:00.000Z",
-        "endTime": "2019-01-28T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-02T20:38:00.000Z",
-        "Triggers": {
-          "Stress": 8,
-          "Went to bed": "21:20",
-          "Screen time": 7,
-          "Cups of Coffee": 0,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "14:15",
-            "end": "21:21"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 13,
-          "Time took advil": "23:18",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "23:10",
-            "end": "23:40"
-          },
-          "Peak migraine severity": 9,
-          "Migraine today": false,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-02T00:00:00.000Z",
-        "endTime": "2019-02-03T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-04T19:33:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "22:27",
-          "Screen time": 16,
-          "Cups of Coffee": 3,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "09:21",
-            "end": "23:58"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 17,
-          "Time took advil": "05:56",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "10:25",
-            "end": "21:45"
-          },
-          "Peak migraine severity": 4,
-          "Migraine today": false,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-04T00:00:00.000Z",
-        "endTime": "2019-03-05T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-14T21:49:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "11:13",
-          "Screen time": 12,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "08:51",
-            "end": "16:57"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 6,
-          "Time took advil": "04:11",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "06:46",
-            "end": "17:56"
-          },
-          "Peak migraine severity": 3,
-          "Migraine today": false,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-14T00:00:00.000Z",
-        "endTime": "2019-02-15T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-20T05:01:00.000Z",
-        "Triggers": {
-          "Stress": 1,
-          "Went to bed": "19:21",
-          "Screen time": 5,
-          "Cups of Coffee": 0,
-          "Menstruating": true,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "17:53",
-            "end": "19:58"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 16,
-          "Time took advil": "07:26",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "20:14",
-            "end": "22:49"
-          },
-          "Peak migraine severity": 5,
-          "Migraine today": false,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-20T00:00:00.000Z",
-        "endTime": "2019-03-21T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-16T20:40:00.000Z",
+        "dateTracked": "2019-02-26T05:54:00.000Z",
         "Triggers": {
           "Stress": 3,
-          "Went to bed": "10:24",
-          "Screen time": 14,
+          "Went to bed": "18:32",
+          "Screen time": 13,
           "Cups of Coffee": 0,
           "Menstruating": false,
           "Sugar": "None",
           "Sleep": {
-            "start": "22:00",
-            "end": "23:19"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 12,
-          "Time took advil": "10:52",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "22:01",
-            "end": "22:36"
-          },
-          "Peak migraine severity": 5,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-16T00:00:00.000Z",
-        "endTime": "2019-01-17T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-26T22:40:00.000Z",
-        "Triggers": {
-          "Stress": 2,
-          "Went to bed": "14:53",
-          "Screen time": 19,
-          "Cups of Coffee": 1,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "20:39",
-            "end": "20:57"
+            "start": "04:49",
+            "end": "05:56"
           }
         },
         "Treatments": {
           "Minutes exercised today": 10,
-          "Time took advil": "20:29",
-          "As-needed medications today": true
+          "Time took advil": "21:55",
+          "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "07:30",
-            "end": "19:40"
+            "start": "18:03",
+            "end": "21:13"
           },
-          "Peak migraine severity": 4,
-          "Migraine today": false,
-          "Headache today": false
+          "Peak migraine severity": 8,
+          "Migraine today": true,
+          "Headache today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
@@ -569,102 +219,454 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-03-04T22:58:00.000Z",
+        "dateTracked": "2019-02-09T06:43:00.000Z",
         "Triggers": {
-          "Stress": 2,
-          "Went to bed": "03:39",
-          "Screen time": 13,
-          "Cups of Coffee": 0,
-          "Menstruating": true,
+          "Stress": 10,
+          "Went to bed": "13:13",
+          "Screen time": 17,
+          "Cups of Coffee": 1,
+          "Menstruating": false,
           "Sugar": "None",
           "Sleep": {
-            "start": "21:35",
-            "end": "22:40"
+            "start": "18:06",
+            "end": "23:40"
           }
         },
         "Treatments": {
-          "Minutes exercised today": 3,
-          "Time took advil": "13:26",
+          "Time took advil": "15:00",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "05:41",
-            "end": "20:50"
+            "start": "03:25",
+            "end": "11:27"
           },
-          "Peak migraine severity": 4,
-          "Migraine today": true,
-          "Headache today": false
+          "Peak migraine severity": 3,
+          "Headache today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-03-04T00:00:00.000Z",
-        "endTime": "2019-03-05T00:00:00.000Z"
+        "startTime": "2019-02-09T00:00:00.000Z",
+        "endTime": "2019-02-10T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-01-03T16:31:00.000Z",
+        "dateTracked": "2019-01-10T19:54:00.000Z",
         "Triggers": {
-          "Stress": 10,
-          "Went to bed": "01:05",
-          "Screen time": 18,
-          "Cups of Coffee": 0,
-          "Menstruating": true,
+          "Stress": 9,
+          "Screen time": 7,
+          "Cups of Coffee": 1,
+          "Menstruating": false,
           "Sugar": "None",
           "Sleep": {
-            "start": "10:12",
-            "end": "21:24"
+            "start": "22:38",
+            "end": "22:43"
           }
         },
         "Treatments": {
-          "Minutes exercised today": 1,
-          "Time took advil": "11:52",
+          "Time took advil": "17:08"
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "05:07",
+            "end": "08:35"
+          },
+          "Migraine today": false,
+          "Headache today": true
+        },
+        "Other": {},
+        "startTime": "2019-01-10T00:00:00.000Z",
+        "endTime": "2019-01-11T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-22T19:33:00.000Z",
+        "Triggers": {
+          "Stress": 5,
+          "Went to bed": "06:49",
+          "Screen time": 3,
+          "Cups of Coffee": 1,
+          "Menstruating": false,
+          "Sugar": "None",
+          "Sleep": {
+            "start": "08:03",
+            "end": "19:38"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 0,
+          "Time took advil": "19:21",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Peak migraine severity": 3,
+          "Migraine today": true,
+          "Headache today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-22T00:00:00.000Z",
+        "endTime": "2019-02-23T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-01-28T17:27:00.000Z",
+        "Triggers": {
+          "Stress": 3,
+          "Went to bed": "15:15",
+          "Cups of Coffee": 3,
+          "Menstruating": true,
+          "Sugar": "Some",
+          "Sleep": {
+            "start": "04:58",
+            "end": "14:59"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 18,
+          "Time took advil": "14:02",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "04:07",
+            "end": "12:30"
+          },
+          "Migraine today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-01-28T00:00:00.000Z",
+        "endTime": "2019-01-29T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-01-24T03:38:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 3,
+          "Sleep": {
+            "start": "11:08",
+            "end": "23:31"
+          },
+          "Stress": 8,
+          "Screen time": 2,
+          "Sugar": "None"
+        },
+        "Treatments": {
+          "Minutes exercised today": 12,
+          "Time took advil": "22:43"
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "22:19",
+            "end": "23:55"
+          },
+          "Peak migraine severity": 5,
+          "Migraine today": false,
+          "Headache today": true
+        },
+        "Other": {},
+        "startTime": "2019-01-24T00:00:00.000Z",
+        "endTime": "2019-01-25T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-22T12:19:00.000Z",
+        "Triggers": {
+          "Stress": 8,
+          "Went to bed": "07:22",
+          "Screen time": 5,
+          "Cups of Coffee": 1,
+          "Menstruating": true,
+          "Sugar": "Some",
+          "Sleep": {
+            "start": "17:17",
+            "end": "18:29"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 5,
+          "Time took advil": "01:25",
           "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "06:54",
-            "end": "12:58"
+            "start": "22:23",
+            "end": "22:56"
           },
-          "Peak migraine severity": 4,
+          "Migraine today": false,
+          "Headache today": false
+        },
+        "Other": {},
+        "startTime": "2019-02-22T00:00:00.000Z",
+        "endTime": "2019-02-23T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-15T19:22:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 2,
+          "Stress": 5,
+          "Menstruating": true,
+          "Sleep": {
+            "start": "16:00",
+            "end": "19:23"
+          },
+          "Sugar": "None"
+        },
+        "Treatments": {
+          "Minutes exercised today": 15,
+          "Time took advil": "00:42",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "04:40",
+            "end": "11:47"
+          },
+          "Migraine today": false,
+          "Headache today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-15T00:00:00.000Z",
+        "endTime": "2019-02-16T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-21T02:33:00.000Z",
+        "Triggers": {
+          "Stress": 4,
+          "Went to bed": "06:14",
+          "Screen time": 11,
+          "Cups of Coffee": 1,
+          "Sugar": "Some",
+          "Sleep": {
+            "start": "16:33",
+            "end": "21:39"
+          }
+        },
+        "Treatments": {
+          "Time took advil": "23:04",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "21:55",
+            "end": "21:56"
+          },
+          "Peak migraine severity": 6,
+          "Migraine today": false
+        },
+        "Other": {},
+        "startTime": "2019-02-21T00:00:00.000Z",
+        "endTime": "2019-02-22T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-01-24T02:09:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 3,
+          "Went to bed": "14:10",
+          "Menstruating": false,
+          "Sleep": {
+            "start": "16:07",
+            "end": "22:50"
+          },
+          "Sugar": "None"
+        },
+        "Treatments": {
+          "Minutes exercised today": 15,
+          "Time took advil": "14:13",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "00:58",
+            "end": "23:58"
+          },
+          "Peak migraine severity": 8,
           "Migraine today": true,
           "Headache today": false
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-01-03T00:00:00.000Z",
-        "endTime": "2019-01-04T00:00:00.000Z"
+        "startTime": "2019-01-24T00:00:00.000Z",
+        "endTime": "2019-01-25T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-03-20T01:11:00.000Z",
+        "dateTracked": "2019-01-23T22:27:00.000Z",
         "Triggers": {
-          "Stress": 4,
-          "Went to bed": "02:05",
-          "Screen time": 4,
-          "Cups of Coffee": 3,
+          "Stress": 3,
+          "Went to bed": "13:47",
+          "Screen time": 9,
+          "Cups of Coffee": 2,
           "Menstruating": false,
           "Sugar": "Some",
           "Sleep": {
-            "start": "17:01",
-            "end": "18:32"
+            "start": "10:30",
+            "end": "13:39"
           }
         },
         "Treatments": {
-          "Minutes exercised today": 7,
-          "Time took advil": "17:05",
           "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "04:51",
-            "end": "21:59"
+            "start": "06:44",
+            "end": "21:47"
           },
-          "Peak migraine severity": 8,
+          "Peak migraine severity": 7,
           "Migraine today": false,
           "Headache today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-01-23T00:00:00.000Z",
+        "endTime": "2019-01-24T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-01T09:43:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 3,
+          "Went to bed": "14:39",
+          "Menstruating": true,
+          "Screen time": 17,
+          "Sugar": "Some"
+        },
+        "Treatments": {
+          "Minutes exercised today": 0,
+          "Time took advil": "21:00",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "07:17",
+            "end": "17:54"
+          },
+          "Peak migraine severity": 1,
+          "Migraine today": false,
+          "Headache today": false
+        },
+        "Other": {},
+        "startTime": "2019-02-01T00:00:00.000Z",
+        "endTime": "2019-02-02T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-06T22:08:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 2,
+          "Stress": 8,
+          "Menstruating": true,
+          "Sleep": {
+            "start": "21:02",
+            "end": "21:33"
+          },
+          "Went to bed": "15:27"
+        },
+        "Treatments": {
+          "Minutes exercised today": 4,
+          "Time took advil": "11:26",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Peak migraine severity": 7,
+          "Migraine today": false,
+          "Headache today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-06T00:00:00.000Z",
+        "endTime": "2019-02-07T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-03-22T18:14:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 1,
+          "Went to bed": "15:25",
+          "Menstruating": true,
+          "Screen time": 9,
+          "Sugar": "Some"
+        },
+        "Treatments": {
+          "Minutes exercised today": 18,
+          "Time took advil": "13:50",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Peak migraine severity": 3,
+          "Migraine today": false
+        },
+        "Other": {},
+        "startTime": "2019-03-22T00:00:00.000Z",
+        "endTime": "2019-03-23T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-05T18:19:00.000Z",
+        "Triggers": {
+          "Stress": 1,
+          "Went to bed": "15:04",
+          "Screen time": 9,
+          "Menstruating": false,
+          "Sugar": "None",
+          "Sleep": {
+            "start": "16:13",
+            "end": "20:37"
+          }
+        },
+        "Treatments": {
+          "Time took advil": "16:12",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "01:12",
+            "end": "20:23"
+          },
+          "Peak migraine severity": 10,
+          "Migraine today": false,
+          "Headache today": false
+        },
+        "Other": {},
+        "startTime": "2019-02-05T00:00:00.000Z",
+        "endTime": "2019-02-06T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-03-20T03:44:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 0,
+          "Stress": 7,
+          "Menstruating": false,
+          "Sleep": {
+            "start": "21:10",
+            "end": "22:38"
+          },
+          "Sugar": "None"
+        },
+        "Treatments": {
+          "Minutes exercised today": 4,
+          "Time took advil": "16:04"
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "19:22",
+            "end": "23:28"
+          },
+          "Peak migraine severity": 5,
+          "Migraine today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
@@ -674,100 +676,56 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-02-14T16:00:00.000Z",
+        "dateTracked": "2019-02-03T13:53:00.000Z",
         "Triggers": {
           "Stress": 4,
-          "Went to bed": "10:59",
-          "Screen time": 18,
-          "Cups of Coffee": 3,
+          "Screen time": 17,
+          "Cups of Coffee": 1,
           "Menstruating": true,
-          "Sugar": "Some",
+          "Sugar": "None",
           "Sleep": {
-            "start": "12:58",
-            "end": "15:59"
+            "start": "23:43",
+            "end": "23:44"
           }
         },
         "Treatments": {
-          "Minutes exercised today": 15,
-          "Time took advil": "09:30",
+          "Time took advil": "04:35",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "20:42",
-            "end": "21:52"
+            "start": "05:24",
+            "end": "17:26"
           },
-          "Peak migraine severity": 10,
-          "Migraine today": true,
-          "Headache today": false
+          "Peak migraine severity": 2,
+          "Migraine today": false
         },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-14T00:00:00.000Z",
-        "endTime": "2019-02-15T00:00:00.000Z"
+        "Other": {},
+        "startTime": "2019-02-03T00:00:00.000Z",
+        "endTime": "2019-02-04T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-02-02T18:43:00.000Z",
+        "dateTracked": "2019-02-16T15:08:00.000Z",
         "Triggers": {
-          "Stress": 9,
-          "Went to bed": "05:43",
-          "Screen time": 2,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "Some",
+          "Cups of Coffee": 0,
+          "Stress": 7,
+          "Menstruating": false,
           "Sleep": {
-            "start": "01:05",
-            "end": "06:29"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 17,
-          "Time took advil": "17:22",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "17:06",
-            "end": "17:13"
+            "start": "05:18",
+            "end": "12:43"
           },
-          "Peak migraine severity": 5,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-02T00:00:00.000Z",
-        "endTime": "2019-02-03T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-16T12:32:00.000Z",
-        "Triggers": {
-          "Stress": 3,
-          "Went to bed": "14:07",
-          "Screen time": 3,
-          "Cups of Coffee": 2,
-          "Menstruating": true,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "18:47",
-            "end": "20:48"
-          }
+          "Sugar": "None"
         },
         "Treatments": {
-          "Minutes exercised today": 8,
-          "Time took advil": "04:39",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "07:00",
-            "end": "12:21"
+            "start": "21:07",
+            "end": "22:43"
           },
-          "Peak migraine severity": 9,
+          "Peak migraine severity": 7,
           "Migraine today": false,
           "Headache today": true
         },
@@ -779,98 +737,220 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-03-07T21:11:00.000Z",
+        "dateTracked": "2019-01-27T04:07:00.000Z",
         "Triggers": {
-          "Stress": 6,
-          "Went to bed": "16:02",
-          "Screen time": 12,
-          "Cups of Coffee": 1,
-          "Menstruating": false,
-          "Sugar": "Some",
           "Sleep": {
-            "start": "04:53",
-            "end": "13:53"
-          }
+            "start": "08:47",
+            "end": "15:51"
+          },
+          "Stress": 6,
+          "Menstruating": false,
+          "Screen time": 5,
+          "Went to bed": "06:23"
         },
         "Treatments": {
           "Minutes exercised today": 13,
-          "Time took advil": "21:14",
+          "Time took advil": "05:21",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "11:20",
-            "end": "20:26"
+            "start": "08:42",
+            "end": "12:51"
           },
-          "Peak migraine severity": 7,
+          "Peak migraine severity": 4,
+          "Migraine today": true,
+          "Headache today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-01-27T00:00:00.000Z",
+        "endTime": "2019-01-28T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-19T13:06:00.000Z",
+        "Triggers": {
+          "Stress": 4,
+          "Went to bed": "13:49",
+          "Screen time": 1,
+          "Cups of Coffee": 3,
+          "Sugar": "Some",
+          "Sleep": {
+            "start": "15:35",
+            "end": "22:57"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 8,
+          "Time took advil": "23:20",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "09:36",
+            "end": "10:43"
+          },
+          "Peak migraine severity": 3,
+          "Migraine today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-19T00:00:00.000Z",
+        "endTime": "2019-02-20T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-22T06:31:00.000Z",
+        "Triggers": {
+          "Stress": 8,
+          "Went to bed": "01:27",
+          "Screen time": 9,
+          "Cups of Coffee": 2,
+          "Menstruating": false,
+          "Sugar": "Some",
+          "Sleep": {
+            "start": "20:48",
+            "end": "23:53"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 11,
+          "Time took advil": "23:48",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "00:53",
+            "end": "22:56"
+          },
+          "Peak migraine severity": 2,
+          "Migraine today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-22T00:00:00.000Z",
+        "endTime": "2019-02-23T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-26T03:34:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 3,
+          "Went to bed": "03:19",
+          "Screen time": 0,
+          "Sugar": "Some"
+        },
+        "Treatments": {
+          "Minutes exercised today": 1,
+          "Time took advil": "08:06",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "13:51",
+            "end": "22:53"
+          },
+          "Headache today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-26T00:00:00.000Z",
+        "endTime": "2019-02-27T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-25T19:16:00.000Z",
+        "Triggers": {
+          "Stress": 1,
+          "Went to bed": "14:04",
+          "Screen time": 16,
+          "Cups of Coffee": 1,
+          "Menstruating": false,
+          "Sleep": {
+            "start": "14:51",
+            "end": "23:51"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 2,
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "20:32",
+            "end": "20:41"
+          },
+          "Peak migraine severity": 1,
+          "Migraine today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-25T00:00:00.000Z",
+        "endTime": "2019-02-26T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-03-06T07:06:00.000Z",
+        "Triggers": {
+          "Stress": 1,
+          "Went to bed": "12:36",
+          "Screen time": 4,
+          "Cups of Coffee": 2,
+          "Menstruating": false,
+          "Sleep": {
+            "start": "01:43",
+            "end": "07:45"
+          }
+        },
+        "Treatments": {
+          "Minutes exercised today": 12,
+          "Time took advil": "13:20",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "19:14",
+            "end": "20:55"
+          },
+          "Peak migraine severity": 1,
           "Migraine today": false,
           "Headache today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-03-07T00:00:00.000Z",
-        "endTime": "2019-03-08T00:00:00.000Z"
+        "startTime": "2019-03-06T00:00:00.000Z",
+        "endTime": "2019-03-07T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-02-13T07:28:00.000Z",
+        "dateTracked": "2019-01-16T16:04:00.000Z",
         "Triggers": {
-          "Stress": 3,
-          "Went to bed": "16:10",
-          "Screen time": 8,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "None",
+          "Stress": 1,
+          "Went to bed": "21:13",
+          "Screen time": 2,
+          "Cups of Coffee": 0,
+          "Menstruating": true,
           "Sleep": {
-            "start": "03:17",
-            "end": "16:27"
+            "start": "17:36",
+            "end": "18:55"
           }
         },
         "Treatments": {
-          "Minutes exercised today": 16,
-          "Time took advil": "01:27",
+          "Minutes exercised today": 19,
+          "Time took advil": "09:33",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "22:09",
-            "end": "22:59"
-          },
-          "Peak migraine severity": 4,
-          "Migraine today": true,
-          "Headache today": true
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-13T00:00:00.000Z",
-        "endTime": "2019-02-14T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-14T18:04:00.000Z",
-        "Triggers": {
-          "Stress": 2,
-          "Went to bed": "04:56",
-          "Screen time": 9,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "13:56",
-            "end": "17:56"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 18,
-          "Time took advil": "11:08",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "09:51",
-            "end": "18:54"
+            "start": "09:27",
+            "end": "15:55"
           },
           "Peak migraine severity": 10,
           "Migraine today": false,
@@ -879,245 +959,182 @@ export class CouchDbServiceProvider {
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-03-14T00:00:00.000Z",
-        "endTime": "2019-03-15T00:00:00.000Z"
+        "startTime": "2019-01-16T00:00:00.000Z",
+        "endTime": "2019-01-17T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-02-08T18:25:00.000Z",
+        "dateTracked": "2019-02-28T09:00:00.000Z",
         "Triggers": {
-          "Stress": 2,
-          "Went to bed": "23:09",
-          "Screen time": 1,
-          "Cups of Coffee": 2,
+          "Cups of Coffee": 3,
+          "Stress": 6,
           "Menstruating": false,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "21:16",
-            "end": "22:33"
-          }
+          "Screen time": 12,
+          "Sugar": "Some"
         },
         "Treatments": {
-          "Minutes exercised today": 14,
-          "Time took advil": "00:54",
-          "As-needed medications today": true
+          "Minutes exercised today": 18,
+          "Time took advil": "03:54",
+          "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "04:50",
-            "end": "10:55"
+            "start": "04:44",
+            "end": "21:57"
           },
-          "Peak migraine severity": 9,
+          "Peak migraine severity": 5,
           "Migraine today": false,
           "Headache today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-02-08T00:00:00.000Z",
-        "endTime": "2019-02-09T00:00:00.000Z"
+        "startTime": "2019-02-28T00:00:00.000Z",
+        "endTime": "2019-03-01T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-01-02T20:46:00.000Z",
+        "dateTracked": "2019-01-24T05:33:00.000Z",
         "Triggers": {
-          "Stress": 6,
-          "Went to bed": "03:41",
-          "Screen time": 10,
-          "Cups of Coffee": 1,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "00:01",
-            "end": "20:37"
-          }
+          "Stress": 2,
+          "Went to bed": "01:57",
+          "Screen time": 18,
+          "Cups of Coffee": 3,
+          "Menstruating": true,
+          "Sugar": "Some"
         },
         "Treatments": {
-          "Minutes exercised today": 16,
-          "Time took advil": "00:35",
+          "Minutes exercised today": 17,
+          "Time took advil": "02:50",
           "As-needed medications today": true
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "19:14",
-            "end": "22:23"
+            "start": "09:27",
+            "end": "12:47"
           },
-          "Peak migraine severity": 5,
-          "Migraine today": true,
-          "Headache today": true
+          "Peak migraine severity": 4,
+          "Migraine today": false
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-01-02T00:00:00.000Z",
-        "endTime": "2019-01-03T00:00:00.000Z"
+        "startTime": "2019-01-24T00:00:00.000Z",
+        "endTime": "2019-01-25T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-01-25T07:32:00.000Z",
+        "dateTracked": "2019-01-28T21:53:00.000Z",
         "Triggers": {
-          "Stress": 2,
-          "Went to bed": "19:37",
-          "Screen time": 6,
           "Cups of Coffee": 2,
-          "Menstruating": true,
-          "Sugar": "Some",
           "Sleep": {
-            "start": "11:54",
-            "end": "11:55"
-          }
+            "start": "01:14",
+            "end": "14:33"
+          },
+          "Stress": 1,
+          "Went to bed": "14:41",
+          "Screen time": 6
         },
         "Treatments": {
           "Minutes exercised today": 16,
-          "Time took advil": "21:04",
+          "Time took advil": "05:15",
           "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "23:17",
-            "end": "23:43"
+            "start": "09:13",
+            "end": "13:37"
           },
-          "Peak migraine severity": 6,
-          "Migraine today": true,
+          "Peak migraine severity": 4,
+          "Migraine today": true
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-01-28T00:00:00.000Z",
+        "endTime": "2019-01-29T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-02-21T14:43:00.000Z",
+        "Triggers": {
+          "Cups of Coffee": 3,
+          "Stress": 6,
+          "Menstruating": true,
+          "Went to bed": "14:10",
+          "Sugar": "None"
+        },
+        "Treatments": {
+          "Minutes exercised today": 2,
+          "Time took advil": "20:40",
+          "As-needed medications today": true
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "03:49",
+            "end": "23:57"
+          },
+          "Peak migraine severity": 4,
+          "Migraine today": false,
+          "Headache today": false
+        },
+        "Other": {
+          "abnormalities": "note contents moot"
+        },
+        "startTime": "2019-02-21T00:00:00.000Z",
+        "endTime": "2019-02-22T00:00:00.000Z"
+      },
+      {
+        "allDay": "true",
+        "dateTracked": "2019-03-01T03:28:00.000Z",
+        "Triggers": {
+          "Stress": 7,
+          "Went to bed": "13:49",
+          "Screen time": 0,
+          "Cups of Coffee": 1,
+          "Menstruating": false,
+          "Sugar": "Some"
+        },
+        "Treatments": {
+          "Minutes exercised today": 6,
+          "Time took advil": "01:12",
+          "As-needed medications today": false
+        },
+        "Symptoms": {
+          "Migraine duration": {
+            "start": "05:45",
+            "end": "07:51"
+          },
+          "Migraine today": false,
           "Headache today": true
         },
         "Other": {
           "abnormalities": "note contents moot"
         },
-        "startTime": "2019-01-25T00:00:00.000Z",
-        "endTime": "2019-01-26T00:00:00.000Z"
+        "startTime": "2019-03-01T00:00:00.000Z",
+        "endTime": "2019-03-02T00:00:00.000Z"
       },
       {
         "allDay": "true",
-        "dateTracked": "2019-03-21T19:10:00.000Z",
+        "dateTracked": "2019-03-19T07:48:00.000Z",
         "Triggers": {
-          "Stress": 4,
-          "Went to bed": "15:37",
-          "Screen time": 4,
-          "Cups of Coffee": 1,
-          "Menstruating": false,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "21:56",
-            "end": "22:56"
-          }
+          "Cups of Coffee": 0,
+          "Stress": 2,
+          "Went to bed": "04:46",
+          "Screen time": 15,
+          "Sugar": "None"
         },
         "Treatments": {
-          "Minutes exercised today": 8,
-          "Time took advil": "10:05",
-          "As-needed medications today": true
+          "Minutes exercised today": 0,
+          "Time took advil": "21:13",
+          "As-needed medications today": false
         },
         "Symptoms": {
           "Migraine duration": {
-            "start": "22:30",
-            "end": "22:41"
+            "start": "22:56",
+            "end": "22:57"
           },
-          "Peak migraine severity": 6,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-21T00:00:00.000Z",
-        "endTime": "2019-03-22T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-19T13:44:00.000Z",
-        "Triggers": {
-          "Stress": 7,
-          "Went to bed": "23:27",
-          "Screen time": 19,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "21:07",
-            "end": "21:54"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 12,
-          "Time took advil": "17:26",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "16:49",
-            "end": "18:52"
-          },
-          "Peak migraine severity": 4,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-19T00:00:00.000Z",
-        "endTime": "2019-01-20T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-05T09:34:00.000Z",
-        "Triggers": {
-          "Stress": 6,
-          "Went to bed": "07:12",
-          "Screen time": 17,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "12:22",
-            "end": "20:43"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 8,
-          "Time took advil": "17:11",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "10:11",
-            "end": "12:46"
-          },
-          "Peak migraine severity": 7,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-05T00:00:00.000Z",
-        "endTime": "2019-01-06T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-19T09:32:00.000Z",
-        "Triggers": {
-          "Stress": 6,
-          "Went to bed": "20:26",
-          "Screen time": 0,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "13:12",
-            "end": "23:33"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 8,
-          "Time took advil": "17:21",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "14:04",
-            "end": "23:28"
-          },
-          "Peak migraine severity": 2,
+          "Peak migraine severity": 3,
           "Migraine today": false,
           "Headache today": true
         },
@@ -1126,146 +1143,6 @@ export class CouchDbServiceProvider {
         },
         "startTime": "2019-03-19T00:00:00.000Z",
         "endTime": "2019-03-20T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-01-22T23:53:00.000Z",
-        "Triggers": {
-          "Stress": 2,
-          "Went to bed": "10:20",
-          "Screen time": 8,
-          "Cups of Coffee": 3,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "22:10",
-            "end": "22:28"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 0,
-          "Time took advil": "13:12",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "16:10",
-            "end": "16:40"
-          },
-          "Peak migraine severity": 10,
-          "Migraine today": true,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-01-22T00:00:00.000Z",
-        "endTime": "2019-01-23T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-21T18:18:00.000Z",
-        "Triggers": {
-          "Stress": 6,
-          "Went to bed": "17:37",
-          "Screen time": 8,
-          "Cups of Coffee": 1,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "20:44",
-            "end": "22:45"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 19,
-          "Time took advil": "19:14",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "08:51",
-            "end": "12:57"
-          },
-          "Peak migraine severity": 2,
-          "Migraine today": false,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-21T00:00:00.000Z",
-        "endTime": "2019-03-22T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-02-12T02:46:00.000Z",
-        "Triggers": {
-          "Stress": 2,
-          "Went to bed": "20:56",
-          "Screen time": 4,
-          "Cups of Coffee": 3,
-          "Menstruating": true,
-          "Sugar": "None",
-          "Sleep": {
-            "start": "20:12",
-            "end": "21:15"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 2,
-          "Time took advil": "08:10",
-          "As-needed medications today": true
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "09:41",
-            "end": "18:49"
-          },
-          "Peak migraine severity": 1,
-          "Migraine today": false,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-02-12T00:00:00.000Z",
-        "endTime": "2019-02-13T00:00:00.000Z"
-      },
-      {
-        "allDay": "true",
-        "dateTracked": "2019-03-23T21:30:00.000Z",
-        "Triggers": {
-          "Stress": 3,
-          "Went to bed": "23:35",
-          "Screen time": 2,
-          "Cups of Coffee": 2,
-          "Menstruating": false,
-          "Sugar": "Some",
-          "Sleep": {
-            "start": "10:47",
-            "end": "18:53"
-          }
-        },
-        "Treatments": {
-          "Minutes exercised today": 4,
-          "Time took advil": "14:15",
-          "As-needed medications today": false
-        },
-        "Symptoms": {
-          "Migraine duration": {
-            "start": "10:08",
-            "end": "19:45"
-          },
-          "Peak migraine severity": 7,
-          "Migraine today": false,
-          "Headache today": false
-        },
-        "Other": {
-          "abnormalities": "note contents moot"
-        },
-        "startTime": "2019-03-23T00:00:00.000Z",
-        "endTime": "2019-03-24T00:00:00.000Z"
       }
     ]
     // return [
@@ -1433,10 +1310,10 @@ export class CouchDbServiceProvider {
           },
           {
             "name": "Migraine duration",
+            "explanation": "When your migraine started and ended",
+            "fieldDescription": "the time it started and ended",
             "field": "time range",
-            "goal": {},
-            "selected": true,
-            "custom": true
+            "selected": true
           }
         ],
         "Treatments": [
@@ -1487,18 +1364,45 @@ export class CouchDbServiceProvider {
         ],
         "Triggers": [
           {
-            "name": "Stress today",
-            "explanation": "How stressed you were today.",
+            "name": "Sugar",
             "fieldDescription": "3-point stress rating",
             "field": "category scale",
-            "significance": "High stress levels can lead to more migraines",
-            "recommendingGoal": [
-              "Learn what factors may affect my migraines"
-            ],
-            "opts": {
-              "showBackdrop": true,
-              "enableBackdropDismiss": true
-            },
+            "selected": true
+          },
+          {
+            "name": "Menstruating",
+            "fieldDescription": "binary",
+            "field": "binary",
+            "selected": true
+          },
+          {
+            "name": "Cups of Coffee",
+            "fieldDescription": "number small",
+            "field": "number",
+            "selected": true
+          },
+          {
+            "name": "Screen time",
+            "fieldDescription": "number large",
+            "field": "number",
+            "selected": true
+          },
+          {
+            "name": "Stress",
+            "fieldDescription": "a rating from 1-10",
+            "field": "numeric scale",
+            "selected": true
+          },
+          {
+            "name": "Went to bed",
+            "fieldDescription": "time",
+            "field": "time",
+            "selected": true
+          },
+          {
+            "name": "Sleep",
+            "fieldDescription": "start and end times",
+            "field": "time range",
             "selected": true
           },
           // {

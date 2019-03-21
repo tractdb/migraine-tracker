@@ -22,7 +22,18 @@
             "explanation": "How bad your migraine was at its worst point.",
             "fieldDescription": "Pain level from 1-10",
             "field": "numeric scale",
-            "condition": "migraineToday"
+        },
+        "migraineDuration": {
+            "name": "Migraine duration",
+            "explanation": "When your migraine started and ended",
+            "fieldDescription": "the time it started and ended",
+            "field": "time range"
+        },
+        "migraineStartTime": {
+            "name": "Migraine start time",
+            "explanation": "When your migraine started",
+            "fieldDescription": "the time it started",
+            "field": "time"
         }
     },
     "Treatments": {

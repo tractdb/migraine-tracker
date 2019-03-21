@@ -8,6 +8,23 @@ export class GlobalFunctionsServiceProvider {
   constructor(private goalDetails: GoalDetailsServiceProvider) {
   }
 
+
+  getWhetherMigraine(symptomDict){
+    // todo: maybe have it be true/false/null?  Right now no indication means false in this
+    if(symptomDict === undefined) return false;
+    if('Migraine today' in symptomDict) return symptomDict['Migraine today'];
+    else if('peakMigraineSeverity' in symptomDict && Number(symptomDict['peakMigraineSeverity']) > 0){
+      return true;
+    }
+    else if('migraineDuration' in symptomDict){
+      return true;
+    }
+    else if('migraineStartTime' in symptomDict){
+      return true;
+    }
+    return false;
+  }
+
   getGoalHierarchy(goals){
     let allGoals = {};
     let allSubgoals = this.goalDetails.getSubgoalList();

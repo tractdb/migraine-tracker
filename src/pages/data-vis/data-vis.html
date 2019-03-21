@@ -1,0 +1,48 @@
+<!--
+  Generated template for the DataVisPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+
+  See https://github.com/donothingloop/ng2-charts-x for the chart format stuff
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Data Visualizations</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card *ngIf="correlationCharts.length > 0">
+    <ion-card-header>
+      <h3>Trends in Triggers and Treatments</h3>
+      <p>Generated because of these current goals:</p>
+      <p *ngFor="let goal of currentCorrelationGoals">{{goal}}</p>
+    </ion-card-header>
+    <ion-card-content>
+      <div *ngFor="let chart of correlationCharts">
+        <h5>Number of Migraines vs {{chart.title}}</h5>
+        <div style="display: block">
+          <canvas baseChart
+                  [data]="chart.data"
+                  [labels]="chart.labels"
+                  [options]="chart.options"
+                  [legend]="chart.legend"
+                  [chartType]="chart.type"
+                  (chartHover)="chartHovered($event)"
+                  (chartClick)="chartClicked($event)">
+          </canvas>
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <!--<section class="chart-wrapper">-->
+    <!--<canvas #barChart></canvas>-->
+  <!--</section>-->
+
+</ion-content>
