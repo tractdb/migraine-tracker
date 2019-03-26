@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, Type} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 
 // import { Chart } from 'chart.js';
@@ -6,6 +6,7 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import * as moment from "moment";
 import _date = moment.unitOfTime._date;
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 
 /**
  * Generated class for the DataVisPage page.
@@ -40,13 +41,48 @@ export class DataVisPage {
   triggers:any = {};
   treatments:any = {};
 
-  correlationCharts = [];
-  lineCharts = {};
+  correlationCharts = {'title': 'Trends in Triggers and Treatments', 'charts': []};
+  beforeAfterCharts = {'title': 'Trends Since Making a Change', 'charts': []};
+  overTimeCharts = {'title': 'Trends Over Time', 'charts': []};
+
+
+  allCurrentCharts = [this.beforeAfterCharts, this.overTimeCharts, this.correlationCharts];
+
+  chartOptions = {
+    scaleShowVerticalLines: false,
+    responsive: true,
+    scales: {
+      yAxes: [{
+        ticks: {
+          beginAtZero: true,
+          stepSize: 1,
+        }
+      }],
+      xAxes: [{
+        ticks: {
+          maxTicksLimit: 10,
+          beginAtZero: true,
+          precision: 0,
+          autoSkip: false,
+        }
+      }]
+    }
+  };
+
+  chartColors = [{ // dark grey
+    backgroundColor: '#547688',
+    borderColor: '#547688',
+    pointBackgroundColor: '#547688',
+    pointBorderColor: '#fff',
+    pointHoverBackgroundColor: '#fff',
+    pointHoverBorderColor: '#547688'
+  }];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider,
-              public globalFuns: GlobalFunctionsServiceProvider) {
+              public globalFuns: GlobalFunctionsServiceProvider,
+              public dateFuns: DateFunctionServiceProvider) {
   }
 
 
@@ -62,82 +98,189 @@ export class DataVisPage {
   }
 
 
+  accumulateData(dataType){
+    let dataDict = {};
+
+    for(let i=0; i<dataType['data'].length; i++){
+      let dataVal = dataType['data'][i];
+      if(dataVal in dataDict){
+        dataDict[dataVal] += (this.symptoms[i] ? 1 : 0);
+      }
+      else{
+        dataDict[dataVal] = (this.symptoms[i] ? 1 : 0);
+      }
+    }
+    return dataDict;
+  }
+
+
   makeCorrelationChart(dataType, name){
     let field = dataType['field'];
+    let dateFuns = this.dateFuns;
+
     if(field === 'category scale' || field === 'binary' || field === 'numeric scale'){
-
-      let dataDict = {};
-
-      for(let i=0; i<dataType['data'].length; i++){
-        let dataVal = dataType['data'][i];
-        if(dataVal in dataDict){
-         dataDict[dataVal] += (this.symptoms[i] ? 1 : 0);
-        }
-        else{
-          dataDict[dataVal] = (this.symptoms[i] ? 1 : 0);
-        }
-      }
-
-      let labels = Object.keys(dataDict);
-      let data = [];
+      let accumulatedData = this.accumulateData(dataType);
+      let labels = Object.keys(accumulatedData),
+        data = [];
       for(let j=0; j<labels.length; j++){
-        data.push(dataDict[labels[j]]);
+        data.push(accumulatedData[labels[j]]);
       }
-
-      console.log(labels);
-      console.log(labels.indexOf("null"))
-
       var nullIndex = labels.indexOf("null");
       if (nullIndex !== -1) {
-        labels[nullIndex] = '(Not Reported)';
+        labels[nullIndex] = '(Not Reported)'; // maybe just remove?
       }
 
-      this.correlationCharts.push(
+      this.correlationCharts.charts.push(
         {'title': name,
           'labels': labels,
-          'data': data,
-          'options': {
-            scaleShowVerticalLines: false,
-            responsive: true,
-            scales: {
-              yAxes: [{
-                ticks: {
-                  beginAtZero:true,
-                  stepSize: 1,
-                  // max : 100
-                }
-              }],
-              xAxes: [{
-                ticks: {
-                  beginAtZero:true,
-                  autoSkip: false
-                }
-              }]
-            }
-          },
+          'data': [{'data': data}],
+          'options': this.chartOptions,
           'legend': false,
           'type': 'bar'
         });
-      console.log(this.barCharts);
-    }
 
+    }
     else if(field === 'number'){
+      let accumulatedData = this.accumulateData(dataType);
+      let labels = Object.keys(accumulatedData),
+          data = [];
+      for(let j=0; j<labels.length; j++){
+        data.push(accumulatedData[labels[j]]);
+      }
+      let filteredLabels = labels.filter(function (el) { // gets rid of nulls
+        return (el != "null" && el!=null);
+      });
+      let numericLabels = filteredLabels.map(Number); // needed to get min and max
+
+      let scatterData = [];
+
+      // they ignore points for which they don't have labels.  So not having an 8 means it's just skipped
+      for(let i=Math.min.apply(Math, numericLabels); i<Math.max.apply(Math, numericLabels)+1; i++){
+        let oldIndex = labels.indexOf(String(i));
+        let newData = null;
+        if(oldIndex > -1){
+          newData = data[oldIndex];
+        }
+        scatterData.push({'x': i, 'y': newData})
+      }
+
+      this.correlationCharts.charts.push(
+        {'title': name,
+          'data': [{'data': scatterData}],
+          'options': this.chartOptions,
+          'legend': false,
+          'type': 'scatter',
+        });
 
     }
-
-
-
     else if(field === 'time'){
 
+      dataType.data = dataType.data.map(function(unformattedTime){
+        if(unformattedTime === null){
+          return '(Not Reported)';
+        }
+        let time = dateFuns.getTime(unformattedTime);
+        let timeString = time.format('ha');
+        time.add(1, 'hour');
+        return timeString + '--' + time.format('ha');
+      });
+
+      let accumulatedData = this.accumulateData(dataType);
+      let labels = Object.keys(accumulatedData),
+          data = [];
+
+      labels.sort(function(time1, time2){
+        if(time1 === '(Not Reported)'){
+          return 1;
+        }
+        if(time2==='(Not Reported)'){
+          return -1;
+        }
+        let time1Time = time1.split("--")[0],
+            time2Time = time2.split("--")[0];
+
+        time1Time = time1Time.substring(0, time1Time.length-1);
+        time2Time = time2Time.substring(0, time2Time.length-1);
+
+        let time1Hour = time1Time.substring(0, time1Time.length-1),
+            time1Period = time1Time.substring(time1Time.length-1, time1Time.length),
+            time2Hour = time2Time.substring(0, time2Time.length -1),
+            time2Period = time2Time.substring(time2Time.length -1, time2Time.length);
+        if(time1Period === 'a' && time2Period === 'p'){
+          return -1;
+        }
+        if(time2Period === 'a' && time1Period === 'p'){
+          return 1;
+        }
+        return Number(time1Hour) > Number(time2Hour) ? 1 : -1;
+      });
+
+      for(let j=0; j<labels.length; j++){
+        data.push(accumulatedData[labels[j]]);
+      }
+
+      this.correlationCharts.charts.push(
+        {'title': name,
+          'labels': labels,
+          'data': [{'data': data}],
+          'options': this.chartOptions,
+          'legend': false,
+          'type': 'bar'
+        });
+
     }
+    else if(field === 'time range'){ // just make it a duration
+      dataType.data = dataType.data.map(function(timeDict){
+        if(timeDict === null){
+          return '(Not Reported)';
+        }
+        return dateFuns.getDuration(timeDict['start'], timeDict['end']);
+      });
 
-    else if(field === 'time range'){
+      let accumulatedData = this.accumulateData(dataType);
+      let labels = Object.keys(accumulatedData);
+      labels.sort(function(d1, d2){
+        if(d1 === '(Not Reported)'){
+          return 1;
+        }
+        if(d2==='(Not Reported)'){
+          return -1;
+        }
+        return Number(d1) > Number(d2) ? 1 : -1;
+      });
+
+      console.log(labels);
+
+      let scatterData = [];
+      let newLabels = [];
+      for(let j=0; j<labels.length; j++){
+        scatterData.push({'x': Number(labels[j]),
+                          'y': accumulatedData[labels[j]]});
+        if(labels[j]!=='(Not Reported)'){
+          newLabels.push(dateFuns.milisecondsToTime(Number(labels[j])));
+        }
+        else{
+          newLabels.push('(Not Reported)');
+        }
+      }
+
+      console.log(scatterData);
+      console.log(newLabels);
+
+      this.correlationCharts.charts.push(
+        {'title': name,
+          'labels': newLabels,
+          'data': [{'data': scatterData, 'showLine': false}],
+          'options': this.chartOptions,
+          'legend': false,
+          'type': 'line',
+        });
 
     }
-
-    else if(field === 'number'){
+    else{
       console.log("Field not supported" + field);
     }
+
   }
 
   makeCorrelationCharts(dataDict){
@@ -188,7 +331,6 @@ export class DataVisPage {
     this.initializeDict(this.triggers, this.currentGoals['dataToTrack']['Triggers']);
     for(let i=0; i<this.allTrackedData.length; i++){
       let datapoint = this.allTrackedData[i];
-      console.log(datapoint);
       this.dates.push(datapoint['dateTracked']);
       this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptoms']));
       this.addDatapointToDict(datapoint['Treatments'], this.treatments);

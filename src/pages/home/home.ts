@@ -61,27 +61,28 @@ export class HomePage {
                                         'currentDataType': dataToTrack[0]});
   }
 
-  setVars() {
-    this.activeGoals = this.couchDbService.getActiveGoals();
+  addQuickTrackers(){
     this.isTrackingMeds = this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']);
     this.quickTrackers = this.couchDbService.getQuickTrackers();
-    this.quickTrackerKeys = Object.keys(this.couchDbService.getQuickTrackers());
-
+    this.quickTrackerKeys = Object.keys(this.quickTrackers);
   }
-
 
 
   ionViewDidEnter(){
     this.dataDetailsService.initData();
-    this.generalInfoService.initData();
+    this.generalInfoService.initData(); // todo: remove somehow?
     if(this.navParams.data.configPath){ //todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
+      this.addQuickTrackers();
     }
     else{
       this.couchDbService.userLoggedIn().subscribe(
         resp => {
           // console.log("logged in")
-          this.setVars();
+          this.activeGoals = this.couchDbService.getActiveGoals();
+          if('dataToTrack' in this.activeGoals){
+            this.addQuickTrackers();
+          }
         }, error => {
           this.login();
         });

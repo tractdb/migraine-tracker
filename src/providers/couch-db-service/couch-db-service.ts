@@ -72,7 +72,6 @@ export class CouchDbServiceProvider {
             "threshold": 2,
             "timespan": "Week"
           },
-
         }
       ]
     };

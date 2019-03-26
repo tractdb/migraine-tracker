@@ -23,9 +23,23 @@ export class DateFunctionServiceProvider {
     return moment(date).subtract(1, 'month');
   }
 
+  getTime(time){
+    return moment(time, 'hh:mm');
+  }
+
 
   timeTo12Hour(time) {
     return moment(time, 'hh:mm').format("h:mma");
+  }
+
+  milisecondsToTime(durationInMS){
+    let duration = moment.duration(durationInMS);
+    let hours = duration.hours();
+    let minutes = duration.minutes();
+    if(hours > 0){
+      return hours + " hr" + (hours>1? 's' : '') +  ", " + minutes + " min" + (minutes>1? 's' : '');
+    }
+    return minutes + " min" + (minutes>1? 's' : '');
   }
 
 
@@ -36,11 +50,10 @@ export class DateFunctionServiceProvider {
     return hours + " hour" + (hours>1? 's' : '') +  ", " + minutes + " minute" + (minutes>1? 's' : '');
   }
 
-
   getDuration(time1, time2){
     let t1 = moment(time1, 'hh:mm');
     let t2 = moment(time2, 'hh:mm');
-    if(t2.isBefore(t1)){ //bad assumption :(
+    if(t2.isBefore(t1)){ //TODO: bad assumption :(
       t2 = t2.add(1, "day");
     }
     return t2.diff(t1);

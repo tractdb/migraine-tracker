@@ -21,7 +21,7 @@
             "name": "Peak migraine severity",
             "explanation": "How bad your migraine was at its worst point.",
             "fieldDescription": "Pain level from 1-10",
-            "field": "numeric scale",
+            "field": "numeric scale"
         },
         "migraineDuration": {
             "name": "Migraine duration",
