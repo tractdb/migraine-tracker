@@ -93,7 +93,7 @@ export class DataVisPage {
 
   }
 
-  makeBeforeAfterCharts(){
+  makeBeforeAfterCharts(){ // todo: do we ask for a date with this goal??
 
   }
 
@@ -249,8 +249,6 @@ export class DataVisPage {
         return Number(d1) > Number(d2) ? 1 : -1;
       });
 
-      console.log(labels);
-
       let scatterData = [];
       let newLabels = [];
       for(let j=0; j<labels.length; j++){
@@ -263,9 +261,6 @@ export class DataVisPage {
           newLabels.push('(Not Reported)');
         }
       }
-
-      console.log(scatterData);
-      console.log(newLabels);
 
       this.correlationCharts.charts.push(
         {'title': name,
