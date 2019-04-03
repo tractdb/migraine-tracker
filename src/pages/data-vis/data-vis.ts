@@ -28,7 +28,7 @@ export class DataVisPage {
 
   allOverTimeGoals = ["Learn how frequently I get migraines",
                                "Monitoring my migraines",];
-  allBeforeAfterGoals = ["Learn whether a specific change affects my migraines"]
+  allBeforeAfterGoals = ["Learn whether a specific change affects my migraines"];
   allCorrelationVisGoals = ["Learn what factors may affect my migraines",
                               "Predicting future migraines"];
 
@@ -64,10 +64,16 @@ export class DataVisPage {
           beginAtZero: true,
           precision: 0,
           autoSkip: false,
+          distribution: 'linear'
         }
       }]
     }
   };
+
+
+  timeOptions = this.makeTimeOptions();
+
+
 
   chartColors = [{ // dark grey
     backgroundColor: '#547688',
@@ -87,14 +93,114 @@ export class DataVisPage {
 
 
 
+  makeTimeOptions(){
+    let chartOptions = this.chartOptions;
+    let timeOptions = {'scales': {'xAxes': {}}};
+
+    Object.keys(chartOptions).forEach(function(key) {
+      timeOptions[ key ] = chartOptions[ key ];
+    });
+
+    timeOptions['scales']['xAxes']['type'] = 'time';
+    timeOptions['scales']['xAxes']['distribution'] = 'linear';
+    timeOptions['scales']['xAxes']['time'] = {
+      displayFormats: {
+        day: 'MMM D YY'
+      }
+    };
+
+    return timeOptions;
+  }
+
+
+
+
+
 
   makeChartsOverTime(){
 
+    let prettyDates = [];
+    let daysOfWeek = [];
+
+    // they ignore points for which they don't have labels.  So not having an 8 means it's just skipped
+    for(let i=0; i<this.dates.length; i++){
+      prettyDates.push(this.dateFuns.dateToPrettyDate(this.dates[i]));
+      daysOfWeek.push(this.dateFuns.getDayOfWeek(this.dates[i]));
+    }
+
+
+    this.overTimeCharts.charts.push(
+      {'title': 'Date',
+        'labels': prettyDates,
+        'data': [{'data': this.symptoms, 'showLine': false}],
+        'options': this.timeOptions,
+        'legend': false,
+        'type': 'line',
+      });
+
+    let accumulatedData = this.accumulateData({'data': daysOfWeek});
+    let labels = Object.keys(accumulatedData),
+         data = [];
+
+    var sorter = {
+      "Mon": 1,
+      "Tue": 2,
+      "Wed": 3,
+      "Thu": 4,
+      "Fri": 5,
+      "Sat": 6,
+      "Sun": 7
+    };
+
+    labels.sort(function(d1, d2){
+      return sorter[d1] > sorter[d2] ? 1 : -1;
+    });
+    for(let j=0; j<labels.length; j++){
+      data.push(accumulatedData[labels[j]]);
+    }
+
+    this.overTimeCharts.charts.push(
+      {'title': 'Day of Week',
+        'labels': labels,
+        'data': [{'data': data}],
+        'options': this.chartOptions,
+        'legend': false,
+        'type': 'bar'
+      });
 
   }
 
-  makeBeforeAfterCharts(){ // todo: do we ask for a date with this goal??
+  makeBeforeAfterCharts(){
+    // todo: do we ask for a date with this goal??  Or just via date added ... that's awful with additive model
+    // todo: do we want anything more interesting?  Like looking at a specific change??
 
+    let cutoffDate = new Date(this.currentGoals['dateAdded']); //todo: needs to change
+    let prettyDate = this.dateFuns.dateToPrettyDate(cutoffDate);
+    let beforeOrAfter = [];
+    for(let i=0; i<this.dates.length; i++) {
+      if (new Date(this.dates[i]) < cutoffDate) {
+        beforeOrAfter.push('Before ' + prettyDate);
+      } else {
+        beforeOrAfter.push('After ' + prettyDate);
+      }
+    }
+
+    let accumulatedData = this.accumulateData({'data': beforeOrAfter});
+    let labels = Object.keys(accumulatedData),
+      data = [];
+
+    for(let j=0; j<labels.length; j++){
+      data.push(accumulatedData[labels[j]]);
+    }
+
+    this.beforeAfterCharts.charts.push(
+      {'title': 'Date of Change',
+        'labels': labels,
+        'data': [{'data': data}],
+        'options': this.chartOptions,
+        'legend': false,
+        'type': 'bar'
+      });
   }
 
 
@@ -121,7 +227,7 @@ export class DataVisPage {
     if(field === 'category scale' || field === 'binary' || field === 'numeric scale'){
       let accumulatedData = this.accumulateData(dataType);
       let labels = Object.keys(accumulatedData),
-        data = [];
+           data = [];
       for(let j=0; j<labels.length; j++){
         data.push(accumulatedData[labels[j]]);
       }
@@ -141,32 +247,19 @@ export class DataVisPage {
 
     }
     else if(field === 'number'){
+
       let accumulatedData = this.accumulateData(dataType);
       let labels = Object.keys(accumulatedData),
           data = [];
       for(let j=0; j<labels.length; j++){
-        data.push(accumulatedData[labels[j]]);
-      }
-      let filteredLabels = labels.filter(function (el) { // gets rid of nulls
-        return (el != "null" && el!=null);
-      });
-      let numericLabels = filteredLabels.map(Number); // needed to get min and max
-
-      let scatterData = [];
-
-      // they ignore points for which they don't have labels.  So not having an 8 means it's just skipped
-      for(let i=Math.min.apply(Math, numericLabels); i<Math.max.apply(Math, numericLabels)+1; i++){
-        let oldIndex = labels.indexOf(String(i));
-        let newData = null;
-        if(oldIndex > -1){
-          newData = data[oldIndex];
+        if(labels[j] !== 'null'){
+          data.push({'x': Number(labels[j]), 'y': accumulatedData[labels[j]]})
         }
-        scatterData.push({'x': i, 'y': newData})
       }
 
       this.correlationCharts.charts.push(
         {'title': name,
-          'data': [{'data': scatterData}],
+          'data': [{'data': data}],
           'options': this.chartOptions,
           'legend': false,
           'type': 'scatter',
@@ -321,7 +414,10 @@ export class DataVisPage {
     }
   }
 
+
+
   organizeData(){
+    // todo: add changes??
     this.initializeDict(this.treatments, this.currentGoals['dataToTrack']['Treatments']);
     this.initializeDict(this.triggers, this.currentGoals['dataToTrack']['Triggers']);
     for(let i=0; i<this.allTrackedData.length; i++){
@@ -353,8 +449,17 @@ export class DataVisPage {
   }
 
 
+  sortByDate(allData){
+    console.log(allData);
+    allData.sort(function(d1, d2){
+      return new Date(d1.dateTracked) > new Date(d2.dateTracked) ? 1: -1;
+    });
+    return allData;
+  }
+
+
   ionViewDidLoad() {
-    this.allTrackedData = this.couchDBService.getTrackedData();
+    this.allTrackedData = this.sortByDate(this.couchDBService.getTrackedData());
     this.currentGoals = this.couchDBService.getActiveGoals();
     this.setVisTypes();
   }

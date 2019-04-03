@@ -1253,7 +1253,8 @@ export class CouchDbServiceProvider {
         "Learning about my migraines",
         "Monitoring my migraines",
         "Learn what factors may affect my migraines",
-        "Monitor for my doctor"
+        "Monitor for my doctor",
+        "Learn whether a specific change affects my migraines"
       ],
       "dateAdded": "2019-02-13T03:19:26.639Z",
       "dataToTrack": {

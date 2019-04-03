@@ -15,7 +15,7 @@ export class DateFunctionServiceProvider {
   }
 
   dateToPrettyDate(dateString){
-    return moment(dateString).format("DD/MM/YYYY");
+    return moment(dateString).format("MM/DD/YYYY");
     // return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
   }
 
@@ -27,6 +27,12 @@ export class DateFunctionServiceProvider {
     return moment(time, 'hh:mm');
   }
 
+
+
+
+  getDayOfWeek(date){
+    return moment(date).format('ddd')
+  }
 
   timeTo12Hour(time) {
     return moment(time, 'hh:mm').format("h:mma");
