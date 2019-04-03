@@ -1,0 +1,55 @@
+<!--
+  Generated template for the DataVisPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+
+  See https://github.com/donothingloop/ng2-charts-x for the chart format stuff
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Data Visualizations</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ng-container *ngFor="let chartType of allCurrentCharts">
+
+    <ion-card *ngIf="chartType.charts.length > 0">
+      <ion-card-header>
+        <h2>{{chartType.title}}</h2>
+        <p>Generated because of these current goals:</p>
+        <p *ngFor="let goal of currentCorrelationGoals">{{goal}}</p>
+      </ion-card-header>
+      <ion-card-content>
+        <div *ngFor="let chart of chartType.charts">
+          <h5>Number of Migraines vs {{chart.title}}</h5>
+          <div style="display: block">
+            <canvas baseChart
+                    [datasets]="chart.data"
+                    [labels]="chart.labels"
+                    [options]="chart.options"
+                    [legend]="chart.legend"
+                    [chartType]="chart.type"
+                    [colors]="chartColors"
+                    (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)">
+            </canvas>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </ng-container>
+
+  <!--<section class="chart-wrapper">-->
+    <!--<canvas #barChart></canvas>-->
+  <!--</section>-->
+
+</ion-content>

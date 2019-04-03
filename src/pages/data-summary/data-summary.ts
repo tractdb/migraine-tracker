@@ -33,14 +33,7 @@ export class DataSummaryPage {
     let today = new Date();
     this.today = today.toISOString();
     this.latestDateFilter = new Date().toISOString();
-    let monthAgo;
-    if(today.getMonth() == 1) { // seriously??
-      monthAgo = new Date(today.getFullYear() - 1, 12, today.getDate());
-    }
-    else {
-      monthAgo = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
-    }
-    this.earliestDateFilter = monthAgo.toISOString();
+    this.earliestDateFilter = this.dateFunctions.getMonthAgo(today).toISOString();
     this.filterData();
   }
 
@@ -130,7 +123,8 @@ export class DataSummaryPage {
       else if(trackedDict[dataNames[i]]['field'] === 'time range') {
         let addedDurations = this.getSum(trackedDict[dataNames[i]]['vals']);
         let averageDuration = addedDurations / trackedDict[dataNames[i]]['vals'].length;
-        report = timesTrackedStatement +" Your average duration was " + this.getReadableDuration(averageDuration) + ".";
+        report = timesTrackedStatement +" Your average duration was " +
+          this.dateFunctions.milisecondsToPrettyTime(averageDuration) + ".";
       }
 
       trackedDict[dataNames[i]]['toReport'] = report;
@@ -141,42 +135,15 @@ export class DataSummaryPage {
 
   }
 
-
-  getReadableDuration(miliseconds: number) { // like seriously
-    // @ts-ignore
-    var seconds = parseInt((miliseconds / 1000) % 60),
-      // @ts-ignore
-      minutes = parseInt((miliseconds / (1000 * 60)) % 60),
-      // @ts-ignore
-      hours = parseInt((miliseconds / (1000 * 60 * 60)) % 24);
-
-    return hours + " hour" + (hours>1? 's' : '') +  ", " + minutes + " minute" + (minutes>1? 's' : '');
-  }
-
-
-
   getDuration(timeRangeDict){
     let earlyTime = timeRangeDict['start'];
     let lateTime = timeRangeDict['end'];
     if(earlyTime===undefined || lateTime === undefined){
       return 0;
     }
-    else{ //javascript is the worse
-      let fakeDate1 = new Date();
-      let fakeDate2 = new Date();
-      fakeDate1.setHours(earlyTime.split(":")[0]);
-      fakeDate1.setMinutes(earlyTime.split(":")[1]);
-
-      fakeDate2.setHours(lateTime.split(":")[0]);
-      fakeDate2.setMinutes(lateTime.split(":")[1]);
-
-      if(fakeDate1 > fakeDate2){ // that's an assumption; maybe we shouldn't allow it??
-        fakeDate2.setDate(fakeDate2.getDate()+1);
-      }
-
-      // @ts-ignore
-      let diff = fakeDate2 - fakeDate1;
-      return diff;
+    else{
+      let duration = this.dateFunctions.getDuration(earlyTime, lateTime);
+      return duration;
     }
   }
 
@@ -214,6 +181,7 @@ export class DataSummaryPage {
         }
       }
     }
+    console.log(trackedDict);
     this.getDataToReport(trackedDict);
   }
 

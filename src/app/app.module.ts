@@ -37,6 +37,8 @@ import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tra
 import { GeneralInfoServiceProvider } from '../providers/general-info-service/general-info-service';
 import { DateFunctionServiceProvider } from '../providers/date-function-service/date-function-service';
 import {ViewDatapointPage} from "../pages/view-datapoint/view-datapoint";
+import {DataVisPage} from "../pages/data-vis/data-vis";
+import { ChartsModule } from 'ng2-charts-x';
 
 @NgModule({
   declarations: [
@@ -60,13 +62,15 @@ import {ViewDatapointPage} from "../pages/view-datapoint/view-datapoint";
     FaqPage,
     UsedQuickTrackPage,
     BreakFromTrackingPage,
-    ViewDatapointPage
+    ViewDatapointPage,
+    DataVisPage
   ],
   imports: [
     BrowserModule,
     NgCalendarModule,
     IonicModule.forRoot(MyApp),
-    HttpClientModule
+    HttpClientModule,
+    ChartsModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -90,7 +94,8 @@ import {ViewDatapointPage} from "../pages/view-datapoint/view-datapoint";
     FaqPage,
     UsedQuickTrackPage,
     BreakFromTrackingPage,
-    ViewDatapointPage
+    ViewDatapointPage,
+    DataVisPage
   ],
   providers: [
     StatusBar,

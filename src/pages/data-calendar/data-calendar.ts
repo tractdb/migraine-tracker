@@ -6,6 +6,7 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 import {TrackDataPage} from "../track-data/track-data";
 import {SelectTrackingFrequencyPage} from "../addGoal/select-tracking-frequency/select-tracking-frequency";
 import {ViewDatapointPage} from "../view-datapoint/view-datapoint";
+import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 
 
 /**
@@ -35,7 +36,8 @@ export class DataCalendarPage {
   eventSource = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
-              public couchDBService: CouchDbServiceProvider, public dateFunctions: DateFunctionServiceProvider) {
+              public couchDBService: CouchDbServiceProvider, public globalFuns: GlobalFunctionsServiceProvider,
+              public dateFunctions: DateFunctionServiceProvider) {
   }
 
   setSwipesToLock(){
@@ -67,11 +69,17 @@ export class DataCalendarPage {
     this.calendar.currentDate = new Date();
   }
 
+
+  isMigraineEvent(event){
+    // todo: make smarter (like if they only have duration); probably put in service
+    return this.globalFuns.getWhetherMigraine(event['Symptoms']);
+  }
+
+
   getClass(view){
     if(view.events.length > 0){
       for(let i=0; i<view.events.length; i++){
-        let event = view.events[i];
-        if(event['Symptoms'] && event['Symptoms']['Migraine today']){
+        if(this.isMigraineEvent(view.events[i])){
           return 'migraineDay';
         }
       }

@@ -45,7 +45,7 @@
       <ion-item class="item item-block" *ngFor="let event of selectedDate.events">
         <ion-label>
           <span class="monthview-eventdetail-timecolumn">Data Tracked</span>
-          <span class="event-detail">  |  {{event.title}}</span>
+          <span class="event-detail">  |  {{isMigraineEvent(event) ? 'Migraine' : 'No Migraine'}}</span>
           <button item-right ion-button icon-only (click)="seeDataDetails(event)">
             <ion-icon name="information-circle-outline"></ion-icon>
           </button>
