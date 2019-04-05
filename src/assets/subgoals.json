@@ -16,7 +16,7 @@
             {
                 "subgoalName": "Learn what factors may affect my migraines",
                 "goodChoiceIf": [
-                    "You want to identify potential contributing factors (\"triggers\")"
+                    "You want to identify potential contributers (\"triggers\")"
                 ],
                 "examples": [
                     "I want to track my stress and sleep to see if they seem to affect my migraines"

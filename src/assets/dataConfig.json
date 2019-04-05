@@ -8,7 +8,7 @@
     {"name": "Treatments"},
 
     {"name": "Triggers",
-    "toDisplay": "Contributing Factors ('Triggers')"},
+    "toDisplay": "Contributers (\"Triggers\")"},
 
     {"name": "Other",
     "description": "Is there anything else you want to track?"}

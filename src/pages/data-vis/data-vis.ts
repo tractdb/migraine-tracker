@@ -450,7 +450,6 @@ export class DataVisPage {
 
 
   sortByDate(allData){
-    console.log(allData);
     allData.sort(function(d1, d2){
       return new Date(d1.dateTracked) > new Date(d2.dateTracked) ? 1: -1;
     });
