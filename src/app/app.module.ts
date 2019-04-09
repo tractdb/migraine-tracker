@@ -22,7 +22,6 @@ import {EnterTextGoalPage} from "../pages/addGoal/enter-text-goal/enter-text-goa
 import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
 import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
-import {ViewDataDetailsPage} from "../pages/addGoal/view-data-details/view-data-details";
 import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
 import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notifications/configure-notifications";
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
@@ -49,7 +48,6 @@ import { ChartsModule } from 'ng2-charts-x';
     LoginPage,
     EnterTextGoalPage,
     DataConfigPage,
-    ViewDataDetailsPage,
     AddCustomDataPage,
     SelectTrackingFrequencyPage,
     ConfigureNotificationsPage,
@@ -81,7 +79,6 @@ import { ChartsModule } from 'ng2-charts-x';
     SelectSubgoalsPage,
     EnterTextGoalPage,
     DataConfigPage,
-    ViewDataDetailsPage,
     AddCustomDataPage,
     SelectTrackingFrequencyPage,
     ConfigureNotificationsPage,

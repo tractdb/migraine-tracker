@@ -10,12 +10,9 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GeneralInfoServiceProvider {
 
-  private faqData;
+  private faqData : any;
 
   constructor(public http: HttpClient) {
-  }
-
-  initData(){
     this.readFaqData();
   }
 
@@ -28,7 +25,7 @@ export class GeneralInfoServiceProvider {
       });
   }
 
-  getFaqData() {
+  getFaqData() : [{[section: string] : any}] {
     return this.faqData;
   }
 

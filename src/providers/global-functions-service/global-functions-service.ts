@@ -28,7 +28,7 @@ export class GlobalFunctionsServiceProvider {
   getGoalHierarchy(goals){
     let allGoals = {};
     let allSubgoals = this.goalDetails.getSubgoalList();
-    let allGoalTypes = this.goalDetails.getAllGoals();
+    let allGoalTypes = this.goalDetails.getGoalList();
     for(let i=0; i<goals.length; i++){
       if(goals[i] in allSubgoals){
         let possibleSubgoals = allSubgoals[goals[i]].subgoals;
@@ -64,11 +64,14 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  getWhetherTrackingMeds(treatmentList){
-    if(treatmentList !== undefined){
-      for(let i=0; i<treatmentList.length; i++){
-        if(treatmentList[i]['name'] === 'As-needed medications today'){
-          return true;
+  getWhetherTrackingMeds(dataToTrack){
+    if(dataToTrack !== undefined){
+      let treatmentList = dataToTrack['Treatments'];
+      if(treatmentList !== undefined) {
+        for (let i = 0; i < treatmentList.length; i++) {
+          if (treatmentList[i]['name'] === 'As-needed medications today') {
+            return true;
+          }
         }
       }
     }

@@ -27,7 +27,7 @@
     <ion-card-content >
       <ng-container *ngFor="let trackerType of quickTrackerKeys">
         <ng-container *ngFor="let tracker of quickTrackers[trackerType]">
-          <button class="button quickTrackerButton" ion-button full icon-start (click)="trackedData(tracker)">
+          <button class="button quickTrackerButton" ion-button full icon-start (click)="quickTrack(tracker)">
               {{tracker.name}}
           </button>
         </ng-container>

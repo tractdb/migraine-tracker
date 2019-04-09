@@ -5,9 +5,14 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GoalDetailsServiceProvider {
 
-  private allGoalData;
-  private goalList;
-  private subgoals;
+  private goalList : any;
+  private subgoals : {[subgoalDetails:string]: any;};
+
+
+  constructor(public http: HttpClient) {
+    this.getSubgoals();
+    this.loadGoalList();
+  }
 
 
   getSubgoals() {
@@ -19,65 +24,33 @@ export class GoalDetailsServiceProvider {
       });
   }
 
-  getGoalList() {
-    this.allGoalData = this.http.get('assets/supportedGoals.json', {},);
-  }
-
-  getGoals() {
-    this.allGoalData.subscribe(goalData => {
-      this.goalList = goalData;
-    },
+  loadGoalList() {
+    this.http.get('assets/supportedGoals.json', {},).subscribe(goalData => {
+        this.goalList = goalData;
+      },
       error => {
-      console.log(error);
+        console.log(error);
       });
   }
 
-  constructor(public http: HttpClient) {
-    this.getGoalList();
-    this.getSubgoals();
-    this.getGoals();
 
-  }
 
-  getSubgoalList(){
+  getSubgoalList() : {[subgoalDetails:string]: any;} {
     return this.subgoals;
   }
 
-  getGoalData() {
-    return this.allGoalData;
-  }
 
-  setGoalList(goalList) {
-    this.goalList = goalList;
-  }
-
-  getAllGoals() {
+  getGoalList() : [{[goalDetails:string]: any;}] {
     return this.goalList;
   }
 
 
-  getSubgoalByName(name) {
-
-    let fullName = null;
-
-    if(name in this.subgoals){ // full name was used
-      fullName = name;
-    }
-
-    else { //used only "learning", for ex
-      Object.keys(this.subgoals).forEach(function(subgoal) {
-        if(subgoal.includes(name)){
-          fullName = subgoal;
-        }
-      });
-    }
-
-    if(fullName !== null){
-      return this.subgoals[fullName];
+  getSubgoalByName(name: string) : {[subgoalDetails:string]: any;}  {
+    if(name in this.subgoals){
+      return this.subgoals[name];
     }
 
     return null;
-
   }
 
 }

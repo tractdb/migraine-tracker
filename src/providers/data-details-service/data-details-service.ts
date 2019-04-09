@@ -10,24 +10,20 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DataDetailsServiceProvider {
 
-  private recommendationData;
-  private supportedFields;
-  private commonData;
-  private configData;
+  private recommendationData : {[goal: string] : any};
+  private supportedFields : any;
+  private commonData : {[dataType: string] : any};
+  private configData : any;
 
   constructor(public http: HttpClient) {
-
-  }
-
-  initData() {
     this.openDataConfig();
     this.openSupportedFields();
     this.oepnDataRecommendations();
     this.openCommonData();
-
   }
 
-  getDisplayName(name){
+
+  getDisplayName(name : string) : string{
     for(let i=0; i<this.configData.length; i++){
       if(this.configData[i].name === name){
         if(this.configData[i].toDisplay){
@@ -76,11 +72,11 @@ export class DataDetailsServiceProvider {
       });
   }
 
-  getConfigData() {
+  getConfigData() : [{[dataProperty: string] : any}]{
     return this.configData;
   }
 
-  getAllDataTypes(){
+  getAllDataTypes() : string[]{
     let allDataTypes = [];
     for(let i=0; i<this.configData.length; i++){
       allDataTypes.push(this.configData[i].name);
@@ -88,7 +84,7 @@ export class DataDetailsServiceProvider {
     return allDataTypes;
   }
 
-  getDataList(goals) {
+  getDataList(goals) : any[]{
     let dataList = [];
     for(let i=0; i<this.configData.length; i++){
       let condGoal = this.configData[i].conditionalGoal;
@@ -104,16 +100,16 @@ export class DataDetailsServiceProvider {
     return dataList;
   }
 
-  getSupportedFields() {
+  getSupportedFields() : [{[fieldProp : string]:any}] {
     return this.supportedFields;
   }
 
 
-  getCommonData(dataType) {
+  getCommonData(dataType : string) : {[commonData : string]:any}{
     return this.commonData[dataType];
   }
 
-  getRecommendations(name, dataType) {
+  getRecommendations(name : string, dataType : string) : string[] {
     let fullName = null;
 
     if(name in this.recommendationData){ // full name was used

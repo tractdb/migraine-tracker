@@ -6,17 +6,17 @@ import {GlobalFunctionsServiceProvider} from "../global-functions-service/global
 @Injectable()
 export class CouchDbServiceProvider {
 
-  private baseUrl = 'https://tractdb.org/api';
-  private activeUserGoals = {}; // only ONE entry is active at a given time; "goals" lists all current goals
-  private trackedData = [];
-  private options = {withCredentials: true};
+  private baseUrl : string = 'https://tractdb.org/api';
+  private activeUserGoals : {[goalAspect:string]: any;} = {}; // only ONE entry is active at a given time; "goals" lists all current goals
+  private trackedData : {[trackedData:string]: any;}[] = [];
+  private options : {[optionName:string]: any;} = {withCredentials: true};
 
   constructor(public http: HttpClient, private globalFunctions: GlobalFunctionsServiceProvider) {
   }
 
-  getCurrentBreak(){
+  getCurrentBreak() : {[breakDetails: string] : any}{
     // todo: pull from db, make sure it's current
-    return undefined;
+    return {};
     // return {
     //   "reasonForBreak": "I want to",
     //   "notifyDate": "2020-02-28",
@@ -24,18 +24,18 @@ export class CouchDbServiceProvider {
     // }
   }
 
-  updateBreak(currentBreak){
+  updateBreak(currentBreak : {[breakDetails: string] : any}){
     // todo: push to db
     console.log(currentBreak);
   }
 
-  setBreak(newBreak){
+  setBreak(newBreak : {[breakDetails: string] : any}){
     //todo: push to db
     console.log(newBreak);
   }
 
 
-  login(credentials) {
+  login(credentials : {[login: string] : string}) {
     // log the user in based on the credentials
     return this.http.post(this.baseUrl + '/login', JSON.stringify(credentials), this.options);
   }
@@ -45,7 +45,7 @@ export class CouchDbServiceProvider {
     return this.http.get(this.baseUrl + '/authenticated', this.options);
   }
 
-  getQuickTrackers() {
+  getQuickTrackers() : {[dataType: string] : any}{
     // todo: database, of course
     let defaultTrackers = {
       "Symptoms": [
@@ -80,7 +80,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  trackData(newData) {
+  trackData(newData : {[dataType: string] : any}) {
     // todo: should store a datapoint in couch as a new object
     // console.log(newData); // push to db
     // todo: needs to append start and end time!!!
@@ -90,7 +90,8 @@ export class CouchDbServiceProvider {
 
 
 
-  combineDataToTrack(oldDataToTrack, newDataToTrack) {
+  combineDataToTrack(oldDataToTrack : {[dataType:string]: any;},
+                     newDataToTrack : {[dataType:string]: any;}) : {[dataType:string]: any;}{
     // should return all data to track
     if(newDataToTrack) {
       // @ts-ignore
@@ -106,7 +107,7 @@ export class CouchDbServiceProvider {
     return oldDataToTrack;
   }
 
-  addGoalFromSetup(setupDict) {
+  addGoalFromSetup(setupDict : {[configInfo: string] : any}) : {[goalsProps:string]: any;}{
     // todo: actually push to database
     let goalsOnly = this.globalFunctions.getAllGoalsAndSubgoals(setupDict.configPath);
     if('goals' in this.activeUserGoals) {
@@ -135,40 +136,33 @@ export class CouchDbServiceProvider {
     return this.activeUserGoals;
   }
 
-  removeGoal(goal) {
+  removeGoal(goal : string) {
     // todo: push to database
     if(goal === 'textGoal'){
       this.activeUserGoals['textGoals'] = undefined;
     }
     else{
+      // TODO: nope; we want to make a copy and make the old one the active one
       this.activeUserGoals['goals'].splice(this.activeUserGoals['goals'].indexOf(goal), 1);
     }
   }
 
-  editTextGoal(newGoal){
+  editTextGoal(newGoal : string){
     // todo: push to database
     this.activeUserGoals['textGoals'] = newGoal;
   }
 
-  getPreviouslyAddedGoals() {
-    // todo: should pull (active? All???) goals
-  }
 
-  getPreviouslyTrackedData() {
-    // todo: should pull data from database
-  }
-
-
-  getActiveGoals() {
+  getActiveGoals() : {[goalAspect:string]: any;}{
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }
-    return this.getExampleGoal(); //todo: will leave
-   // return {};
+    // return this.getExampleGoal(); //todo: will leave
+   return {};
   }
 
 
-  getTrackedData() {
+  getTrackedData() : {[trackedData:string]: any;}[]{
     // todo!
     if(this.trackedData.length > 0){
       return this.trackedData;
@@ -179,7 +173,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  getExamplePreviouslyTracked() {
+  getExamplePreviouslyTracked() : {[trackedData:string]: any;}[] {
     return [
       {
         "allDay": "true",
@@ -1247,7 +1241,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  getExampleGoal() {
+  getExampleGoal()  : {[goalAspect:string]: any;}{
     let exGoal = {
       "goals": [
         "Learning about my migraines",

@@ -14,17 +14,17 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 })
 export class DataConfigPage {
 
-  private dataType;
-  private dataDesc;
-  private dataObject;
-  private displayName;
-  private alreadyTracking = [];
-  activeGoals;
-  private customData = [];
-  private recommendedData = [];
-  private otherData = [];
-  private selectedFromList = [];
-  private configPath;
+  private dataType : string;
+  private dataDesc : string;
+  private dataObject : {[dataInfo: string] : string};
+  private displayName : string;
+  private alreadyTracking : {[dataProps : string ] : any}[] = [];
+  activeGoals : {[goalAspect:string]: any;};
+  private customData : {[dataProps : string ] : any}[]= [];
+  private recommendedData : {[dataProps : string ] : any}[]= [];
+  private otherData : {[dataProps : string ] : any}[] = [];
+  private selectedFromList : {[dataProps : string ] : any}[] = [];
+  private configPath : {[configStep : string ] : any}[];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -43,8 +43,8 @@ export class DataConfigPage {
     if(this.configPath.length > 0){ // got here via adding a goal
       goals = this.globalFunctions.getAllGoalsAndSubgoals(this.configPath);
       this.dataObject = this.navParams.data['dataPage'];
-      this.dataType = this.navParams.data['dataPage'].name;
-      this.dataDesc = this.navParams.data['dataPage'].description;
+      this.dataType = this.dataObject.name;
+      this.dataDesc = this.dataObject.description;
     }
     else{ // we're not adding another goal
       goals = this.activeGoals['goals'];
@@ -61,7 +61,7 @@ export class DataConfigPage {
   }
 
 
-  dataInList(data, dataList) {
+  dataInList(data : {[dataProps : string ] : any}, dataList: {[dataProps : string ] : any}[]) : boolean{
     for(let i =0; i<dataList.length; i++){
       if(dataList[i].name === data.name && !dataList[i].custom){
         return true;
@@ -71,7 +71,7 @@ export class DataConfigPage {
   }
 
 
-  getAllRecs(goals) {
+  getAllRecs(goals : string[]) {
     let commonData = Object.assign({}, this.dataDetailsServiceProvider.getCommonData(this.dataType));
     for(let data in commonData){
       if(this.dataInList(commonData[data], this.alreadyTracking)){
@@ -80,9 +80,9 @@ export class DataConfigPage {
       else if(commonData[data]['condition']) {
         if(commonData[data]['name'] === 'Frequent Use of Medications'){
           let alreadyTracking = this.activeGoals['dataToTrack'] ?
-            this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']) : false;
+            this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']) : false;
           let selectedInConfig = this.navParams.data['selectedData'] ?
-            this.globalFunctions.getWhetherTrackingMeds(this.navParams.data['selectedData']['Treatments']) : false;
+            this.globalFunctions.getWhetherTrackingMeds(this.navParams.data['selectedData']) : false;
           if(!alreadyTracking && ! selectedInConfig){
             delete commonData[data];
           }
@@ -175,7 +175,8 @@ export class DataConfigPage {
     customDataModal.present();
   }
 
-  replaceData(list, oldData, newData){
+  replaceData(list : {[dataProps : string ] : any}[],
+              oldData : {[dataProps : string ] : any}, newData : {[dataProps : string ] : any}){
     let oldIndex = list.indexOf(oldData);
     if(oldIndex > -1){
       list.splice(oldIndex, 1, newData);
@@ -185,7 +186,7 @@ export class DataConfigPage {
     }
   }
 
-  editData(oldData, type) {
+  editData(oldData : {[dataProps : string ] : any}, type : string) {
     let editDataModal = this.modalCtrl.create(EditDataPage, oldData);
 
     editDataModal.onDidDismiss(newData => {
@@ -216,23 +217,24 @@ export class DataConfigPage {
     editDataModal.present();
   }
 
-  track(data) {
+  track(data : {[dataProps : string ] : any}) {
     data.selected = true;
     this.selectedFromList.push(data);
   }
 
-  remove(data, category){
+  remove(data : {[dataProps : string ] : any}, category : string){
     if(category === "custom") {
       this.customData[this.dataType].splice(data, 1);
     }
     else{
+      // @ts-ignore
       this.selectedFromList.splice(data, 1);
       data.selected = false;
     }
   }
 
 
-  toggleDetails(configStep) {
+  toggleDetails(configStep : {[configDetails : string ] : any}) {
     this.globalFunctions.toggleDetails(configStep);
   }
 
