@@ -18,19 +18,19 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 })
 export class SelectTrackingFrequencyPage {
 
-  recommended;
-  activeGoals;
-  hasActiveGoals;
-  isModal;
-  selected = '';
-  notificationData;
+  recommended : string;
+  activeGoals : {[goalAspect:string]: any;};
+  hasActiveGoals : boolean;
+  isModal : boolean;
+  selected : string[] = [];
+  notificationData : {[notificationField:string]: any;} = {};
 
   constructor(public navCtrl: NavController,
               private modalCtrl: ModalController, public viewCtrl: ViewController,
               public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
   }
 
-  getGoals(goals){
+  getGoals(goals : string){
     for(let i=0; i<goals.length; i++){
       if (goals[i].indexOf("Learning") >= 0 || goals[i].indexOf("Predicting") >= 0){
         this.recommended = "regular";
@@ -57,23 +57,65 @@ export class SelectTrackingFrequencyPage {
     }
   }
 
-  configureNotifications(){
-    this.changeSelected('regularly');
 
-    let dataToSend = this.activeGoals.notifications ? this.activeGoals.notifications : {};
+  configureRetroacitveNotifications(){
+    let configuredData = {};
+    if(this.notificationData['retroactive']){
+      configuredData = this.notificationData['retroactive'];
+    }
+    else if (this.activeGoals.notifications && this.activeGoals.notifications['retroactive']){
+      configuredData = this.activeGoals.notifications['retroactive'];
+    }
+
+    let dataToSend = {'configured': configuredData, 'type': 'retroactive'};
 
     let notificationModal = this.modalCtrl.create(ConfigureNotificationsPage, dataToSend);
     notificationModal.onDidDismiss(newData => {
       if(newData){
-        if(Object.keys(newData).length === 0){
-          this.notificationData = undefined;
+        if(this.selected.indexOf('retroactive') === -1){
+          this.selected.push('retroactive');
         }
-        else{
-          this.notificationData = newData;
-        }
+        this.notificationData['retroactive'] = newData;
       }
       else{
-        console.log("Data lost...")
+        delete this.notificationData['retroactive'];
+        let index = this.selected.indexOf('retroactive');
+        if(index > -1){
+          this.selected.splice(index,1);
+        }
+      }
+    });
+
+    notificationModal.present();
+
+  }
+
+  configureRegularNotifications(){
+    let configuredData = {};
+    if(this.notificationData['regular']){
+      configuredData = this.notificationData['regular'];
+    }
+    else if (this.activeGoals.notifications && this.activeGoals.notifications['regular']){
+      configuredData = this.activeGoals.notifications['regular'];
+    }
+
+    let dataToSend = {'configured': configuredData, 'type': 'regular'};
+
+    let notificationModal = this.modalCtrl.create(ConfigureNotificationsPage, dataToSend);
+    notificationModal.onDidDismiss(newData => {
+      if(newData){
+        console.log(newData)
+        if(this.selected.indexOf('regular') === -1){
+          this.selected.push('regular');
+        }
+        this.notificationData['regular'] = newData;
+      }
+      else{
+        delete this.notificationData['regular'];
+        let index = this.selected.indexOf('regular');
+        if(index > -1){
+          this.selected.splice(index,1);
+        }
       }
     });
 
@@ -87,21 +129,11 @@ export class SelectTrackingFrequencyPage {
 
   continue() {
     if(this.isModal) {
-      if(this.selected === 'postSymptoms'){
-        this.viewCtrl.dismiss('postSymptoms');
-      }
-      else{
-        this.viewCtrl.dismiss(this.notificationData);
-      }
+      this.viewCtrl.dismiss({'notificationSettings' : this.notificationData, 'trackingFreq' : this.selected});
     }
     else{
-      if(this.selected === 'postSymptoms'){
-        this.navParams.data['trackingFreq'] = 'postSymptoms';
-      }
-      else if(this.selected === 'regularly'){
-        this.navParams.data['trackingFreq'] = 'regular';
-        this.navParams.data['notificationSettings'] = this.notificationData;
-      }
+      this.navParams.data['trackingFreq'] = this.selected;
+      this.navParams.data['notificationSettings'] = this.notificationData;
       if(Object.keys(this.activeGoals).length !== 0){
         this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
       }
@@ -109,10 +141,6 @@ export class SelectTrackingFrequencyPage {
         this.navCtrl.setRoot(HomePage, this.navParams.data);
       }
     }
-  }
-
-  changeSelected(selection) {
-    this.selected = selection;
   }
 
 

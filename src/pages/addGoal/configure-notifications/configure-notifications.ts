@@ -1,7 +1,5 @@
 import { Component } from '@angular/core';
 import {NavController, NavParams, ViewController} from 'ionic-angular';
-import {HomePage} from "../../home/home";
-import {GoalModificationPage} from "../../goal-modification/goal-modification";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 
 /**
@@ -17,18 +15,20 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 })
 export class ConfigureNotificationsPage {
 
-  minDate;
-  dates;
-  days;
-  notificationData;
+  minDate : any ;
+  freqType : string;
+  dates : Number[];
+  days : string[];
+  notificationData : {[notificationProp:string] : any};
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController,
               public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
+    this.freqType = this.navParams.data.type;
     this.minDate = new Date().toISOString();
     this.dates = Array.from(new Array(31), (x,i) => i + 1);
     this.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
-    this.notificationData = this.navParams.data;
-    this.notificationData['startdate'] = new Date().toISOString();
+    this.notificationData = this.navParams.data.configured;
+    if(!this.notificationData['startdate']) this.notificationData['startdate'] = new Date().toISOString();
   }
 
 
@@ -37,7 +37,7 @@ export class ConfigureNotificationsPage {
   }
 
   cancel() {
-    this.viewCtrl.dismiss({});
+    this.viewCtrl.dismiss();
   }
 
   finish(){

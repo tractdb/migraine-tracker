@@ -58,9 +58,9 @@
             <ion-text>
               <h2>
                 Field:
-                <button *ngIf="!(data.field && data.field.includes('calculated'))" icon-only color="primary" item-right (click)="editData('field')">
-                  <ion-icon *ngIf="!editField" slot="icon-only" name="create"></ion-icon>
-                  <ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>
+                <button *ngIf="!editField && !(data.field && data.field.includes('calculated'))" icon-only color="primary" item-right (click)="editData('field')">
+                  <ion-icon slot="icon-only" name="create"></ion-icon>
+                  <!--<ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>-->
                 </button>
               </h2>
               <h3 text-wrap *ngIf="!editField">{{data.field}}<span *ngIf="data.fieldDescription">: {{data.fieldDescription}}</span></h3>
@@ -68,7 +68,7 @@
           </ion-label>
         </ion-item>
         <ion-item *ngIf="editField">
-          <ion-select [(ngModel)]="dataField">
+          <ion-select [(ngModel)]="data.field" (ngModelChange)="editedField()">
             <ion-option *ngFor="let field of fieldList"
                         [value]="field['name']"
                         [selected]="data.field === field['name']">
@@ -78,8 +78,7 @@
         </ion-item>
 
 
-        <ng-container *ngIf="(dataField === undefined && data.field === 'binary' || data.field === 'number')
-                            ||(dataField === 'binary' || dataField === 'number')">
+        <ng-container *ngIf="(data.field === undefined && data.field === 'binary' || data.field === 'number')">
 
 
           <ion-item text-wrap>
@@ -87,9 +86,8 @@
               <ion-text>
                 <h2>
                   Goal/Limit (Optional):
-                  <button icon-only item-right (click)="editData('goal')">
-                    <ion-icon *ngIf="!editGoal" slot="icon-only" name="create"></ion-icon>
-                    <ion-icon *ngIf="editGoal" slot="icon-only" name="checkmark-circle"></ion-icon>
+                  <button *ngIf="!editGoal" icon-only item-right (click)="editData('goal')">
+                    <ion-icon  slot="icon-only" name="create"></ion-icon>
                   </button>
                 </h2>
                 <h3 text-wrap *ngIf="data.goal && !editGoal">
@@ -102,7 +100,7 @@
           <ng-container *ngIf="editGoal">
             <ion-item>
               <ion-label>More or less</ion-label>
-              <ion-select [(ngModel)]="goalFreq">
+              <ion-select [(ngModel)]="data.goal.freq" (ngModelChange)="editedField()">
                 <ion-option value="More" [selected]="data.goal && data.goal.freq === 'More'">
                   More
                 </ion-option>
@@ -116,12 +114,12 @@
               <ion-label>than</ion-label>
               <ion-input type="number" text-right
                          [placeholder]="(data.goal && data.goal.threshold) ? data.goal.threshold : '---'"
-                         [(ngModel)]="goalThresh"></ion-input>
+                         [(ngModel)]="data.goal.threshold" (ngModelChange)="editedField()"></ion-input>
             </ion-item>
 
             <ion-item>
               <ion-label>times per</ion-label>
-              <ion-select [(ngModel)]="goalTime">
+              <ion-select [(ngModel)]="data.goal.timespan" (ngModelChange)="editedField()">
                 <ion-option *ngIf="data.field !== 'binary'"
                             value="Day" [selected]="data.goal && data.goal.timespan === 'Day'">
                   Day
