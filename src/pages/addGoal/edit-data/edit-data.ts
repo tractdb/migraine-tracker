@@ -26,6 +26,7 @@ export class EditDataPage {
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
     this.data = navParams.data;
+    console.log(this.data)
     this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 

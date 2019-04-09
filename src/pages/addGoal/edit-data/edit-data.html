@@ -78,7 +78,7 @@
         </ion-item>
 
 
-        <ng-container *ngIf="(data.field === undefined && data.field === 'binary' || data.field === 'number')">
+        <ng-container *ngIf="(data.field !== undefined && data.field === 'binary' || data.field === 'number')">
 
 
           <ion-item text-wrap>
