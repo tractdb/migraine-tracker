@@ -29,7 +29,7 @@ export class DataVisPage {
   allOverTimeGoals = ["Learn how frequently I get migraines",
                                "Monitoring my migraines",];
   allBeforeAfterGoals = ["Learn whether a specific change affects my migraines"];
-  allCorrelationVisGoals = ["Learn what factors may affect my migraines",
+  allCorrelationVisGoals = ["Learn what factors may contribute to my migraines",
                               "Predicting future migraines"];
 
   currentOverTimeGoals = [];

@@ -10,16 +10,15 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class DataDetailsServiceProvider {
 
-  private recommendationData : {[goal: string] : any};
   private supportedFields : any;
-  private commonData : {[dataType: string] : any};
+  private listedData : {[dataType: string] : any};
   private configData : any;
+  private medTrackingIDs : string[] = ['asNeededMeds', 'newAsNeededMedication'];
 
   constructor(public http: HttpClient) {
     this.openDataConfig();
     this.openSupportedFields();
-    this.oepnDataRecommendations();
-    this.openCommonData();
+    this.openListedData();
   }
 
 
@@ -54,18 +53,9 @@ export class DataDetailsServiceProvider {
       });
   }
 
-  openCommonData() {
-    this.http.get('assets/commonData.json', {},).subscribe(commonData => {
-        this.commonData = commonData;
-      },
-      error => {
-        console.log(error);
-      });
-  }
-
-  oepnDataRecommendations() {
-    this.http.get('assets/recommendationsByGoal.json', {},).subscribe(recommendationData => {
-        this.recommendationData = recommendationData;
+  openListedData() {
+    this.http.get('assets/listedData.json', {},).subscribe(listedData => {
+        this.listedData = listedData;
       },
       error => {
         console.log(error);
@@ -105,29 +95,90 @@ export class DataDetailsServiceProvider {
   }
 
 
-  getCommonData(dataType : string) : {[commonData : string]:any}{
-    return this.commonData[dataType];
+  getListedData(dataType : string) : {[listedDataProps : string]:any}{
+    return this.listedData[dataType];
   }
 
-  getRecommendations(name : string, dataType : string) : string[] {
-    let fullName = null;
 
-    if(name in this.recommendationData){ // full name was used
-      fullName = name;
+  getWhetherTrackingMeds(alreadyTracking: string[]) : boolean{
+    console.log(alreadyTracking);
+    console.log(this.medTrackingIDs);
+    for(let i=0; i<this.medTrackingIDs.length; i++){
+      if(alreadyTracking.indexOf(this.medTrackingIDs[i]) > -1){
+        return true;
+      }
     }
+    return false;
+  }
 
-    else { //used only "learning", for ex
-      Object.keys(this.recommendationData).forEach(function(goalName) {
-        if(goalName.includes(name)){
-          fullName = goalName;
+
+  getWhetherRecommended(activeGoals: string[], recs: string[]){
+    for(let i=0; i<activeGoals.length; i++){
+      if(recs.indexOf(activeGoals[i]) > -1){
+        return true;
+      }
+    }
+    return false;
+  }
+
+
+  findNextConfigData(goalIDs, currentlyConfiguring) {
+    let newDataIndex = this.configData.indexOf(currentlyConfiguring) + 1;
+    for(let i = newDataIndex; i < this.configData.length; i++) {
+      let dataType = this.configData[i];
+      if(!(dataType.conditionalGoals)){
+        return dataType;
+      }
+      else{
+        for(let i=0; i<dataType.conditionalGoals.length; i++){
+          if(goalIDs.indexOf(dataType.conditionalGoals[i]) > -1){
+            return dataType;
+          }
         }
-      });
+      }
     }
-
-    if(fullName !== null){
-      return this.recommendationData[fullName][dataType];
-    }
-
-    return [];
+    return null;
   }
+
+
+  getRecsAndCommon(alreadyTracking: string[], dataType: string,
+                   goalIDs: string[]) : any[]{
+    let dataOfType = this.listedData[dataType];
+    let otherData = [];
+    let recData = [];
+
+    for(let i=0; i<dataOfType.length; i++){
+      let dataObject = dataOfType[i];
+      if (alreadyTracking.indexOf(dataObject.id) === -1){ // not already tracking it
+        if(dataObject['condition']) {
+          console.log("conditional");
+          if(dataObject['id'] === 'frequentMedUse'){
+            console.log("medUse");
+            if(this.getWhetherTrackingMeds(alreadyTracking)){
+              if(this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals'])){
+                recData.push(dataObject);
+              }
+              else{
+                otherData.push(dataObject);
+              }
+            }
+          }
+          else{
+            console.log("CONDITION BUT NO FUNCTION!");
+          }
+        }
+        else if(this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals'])){
+          recData.push(dataObject);
+        }
+        else{
+          otherData.push(dataObject);
+        }
+      }
+    }
+
+    return [recData, otherData];
+
+
+  }
+
 }

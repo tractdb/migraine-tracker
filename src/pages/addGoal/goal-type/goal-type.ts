@@ -33,15 +33,15 @@ export class GoalTypePage {
   }
 
   addGoal(goal : {[goalDetails:string]: any;}){
-    if (this.selectedGoals.indexOf(goal.goalName) < 0 ) {
-      this.selectedGoals.push(goal.goalName);
+    if (this.selectedGoals.indexOf(goal.goalID) < 0 ) {
+      this.selectedGoals.push(goal.goalID);
     }
     goal.colors = this.globalFunctions.buttonColors(true);
   }
 
 
   removeGoal(goal : {[goalDetails:string]: any;}) {
-    const index = this.selectedGoals.indexOf(goal.goalName);
+    const index = this.selectedGoals.indexOf(goal.goalID);
     if (index > -1) {
       this.selectedGoals.splice(index, 1);
     }
@@ -51,14 +51,14 @@ export class GoalTypePage {
 
   continueSetup() {
     this.selectedGoals.sort();
-    let configStep = {"step": "goalType", "description": "Selected Goals", "added": this.selectedGoals};
+    let configStep = {"step": "goalType", "description": "Selected Goals", "added": []};
     configStep = this.globalFunctions.toggleDetails(configStep);
-    let dataToSend = {"configPath": [configStep]};
+    let dataToSend = {"configPath": [configStep], 'goalIDs': this.selectedGoals};
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
-      let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
+      let subgoals = this.goalDetailsServiceProvider.getSubgoalByID(this.selectedGoals[i]);
       if(subgoals !== null){
-        allSubgoals.push({"goal": this.selectedGoals[i], "subgoals": subgoals});
+        allSubgoals.push(subgoals);
       }
     }
 

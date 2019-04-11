@@ -18,13 +18,13 @@ export class DataConfigPage {
   private dataDesc : string;
   private dataObject : {[dataInfo: string] : string};
   private displayName : string;
-  private alreadyTracking : {[dataProps : string ] : any}[] = [];
-  activeGoals : {[goalAspect:string]: any;};
   private customData : {[dataProps : string ] : any}[]= [];
   private recommendedData : {[dataProps : string ] : any}[]= [];
   private otherData : {[dataProps : string ] : any}[] = [];
   private selectedFromList : {[dataProps : string ] : any}[] = [];
   private configPath : {[configStep : string ] : any}[];
+  private startDate : any = null;
+  private today : any = new Date().toISOString();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -35,19 +35,23 @@ export class DataConfigPage {
   }
 
   ionViewDidLoad() {
-    this.activeGoals = this.couchDBService.getActiveGoals();
+    let activeGoals = this.couchDBService.getActiveGoals();
 
-
+    let alreadyTracking = this.globalFunctions.getDataIDs(activeGoals['dataToTrack']); // need to add previously configured
     let goals;
 
     if(this.configPath.length > 0){ // got here via adding a goal
-      goals = this.globalFunctions.getAllGoalsAndSubgoals(this.configPath);
+      goals = this.navParams.data['goalIDs'];
       this.dataObject = this.navParams.data['dataPage'];
+      this.startDate = this.dataObject.additionalData ? new Date().toISOString() : null;
       this.dataType = this.dataObject.name;
       this.dataDesc = this.dataObject.description;
+      alreadyTracking = alreadyTracking.concat(this.globalFunctions.getDataIDs(this.navParams.data['selectedData']));
+      console.log(alreadyTracking)
     }
-    else{ // we're not adding another goal
-      goals = this.activeGoals['goals'];
+
+    else{ // got here via tracking routine modification page
+      goals = activeGoals['goals']; // todo: needs to be ids ...
       this.dataType = this.navParams.data['dataPage'];
       this.dataDesc = this.navParams.data['dataDesc'];
     }
@@ -55,63 +59,16 @@ export class DataConfigPage {
     this.displayName = this.dataDetailsServiceProvider.getDisplayName(this.dataType);
     this.customData[this.dataType] = [];
 
-    this.alreadyTracking = this.activeGoals['dataToTrack'] && this.activeGoals['dataToTrack'][this.dataType] ?
-                            this.activeGoals['dataToTrack'][this.dataType] : [];
-    this.getAllRecs(goals);
+    this.getAllRecs(goals, alreadyTracking);
   }
 
 
-  dataInList(data : {[dataProps : string ] : any}, dataList: {[dataProps : string ] : any}[]) : boolean{
-    for(let i =0; i<dataList.length; i++){
-      if(dataList[i].name === data.name && !dataList[i].custom){
-        return true;
-      }
-    }
-    return false;
-  }
 
 
-  getAllRecs(goals : string[]) {
-    let commonData = Object.assign({}, this.dataDetailsServiceProvider.getCommonData(this.dataType));
-    for(let data in commonData){
-      if(this.dataInList(commonData[data], this.alreadyTracking)){
-        delete commonData[data];
-      }
-      else if(commonData[data]['condition']) {
-        if(commonData[data]['name'] === 'Frequent Use of Medications'){
-          let alreadyTracking = this.activeGoals['dataToTrack'] ?
-            this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']) : false;
-          let selectedInConfig = this.navParams.data['selectedData'] ?
-            this.globalFunctions.getWhetherTrackingMeds(this.navParams.data['selectedData']) : false;
-          if(!alreadyTracking && ! selectedInConfig){
-            delete commonData[data];
-          }
-        }
-        else{
-          console.log('Conditional case not defined');
-        }
-      }
-    }
-    // @ts-ignore
-    this.otherData = Object.values(commonData);
-    for(let goalIndex=0; goalIndex<goals.length; goalIndex++){
-      let recs = this.dataDetailsServiceProvider.getRecommendations(goals[goalIndex], this.dataType);
-      for (let recIndex=0; recIndex<recs.length; recIndex++){
-        let recommendation = commonData[recs[recIndex]];
-        if(recommendation === undefined){
-          continue;
-        }
-        let alreadyAdded = this.dataInList(recommendation, this.recommendedData);
-        if(alreadyAdded) {
-          this.recommendedData[this.recommendedData.indexOf(recommendation)]['recommendingGoal'].push(goals[goalIndex]);
-        }
-        else{
-          this.otherData.splice(this.otherData.indexOf(recommendation), 1);
-          recommendation["recommendingGoal"] = [goals[goalIndex]];
-          this.recommendedData.push(recommendation);
-        }
-      }
-    }
+  getAllRecs(goals : string[], alreadyTracking : string[]) {
+    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataType, goals);
+    this.recommendedData = dataGroups[0];
+    this.otherData = dataGroups[1];
   }
 
 
@@ -126,17 +83,17 @@ export class DataConfigPage {
         }
 
         this.navParams.data['selectedData'][this.dataType] = selectedData;
+
         let configStep = {"step": this.dataType,
           "description": "Selected " + this.dataType,
           "added": selectedData.map(x => x.name)
         };
+        if(this.startDate) configStep['startDate'] = this.startDate;
         configStep = this.globalFunctions.toggleDetails(configStep);
         this.navParams.data['configPath'].push(configStep);
       }
 
-      let configData = this.globalFunctions.findNextConfigData(this.configPath,
-                                                                this.navParams.data['allConfigurationData'],
-                                                                  this.dataObject);
+      let configData = this.dataDetailsServiceProvider.findNextConfigData(this.navParams.data['goalIDs'], this.dataObject);
 
       if (configData !== null){
         this.navParams.data['dataPage'] = configData;

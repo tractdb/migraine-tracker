@@ -19,8 +19,7 @@
 
   <ng-container *ngIf="dataDesc === undefined">
     <h3>
-      Do you want to track any
-      <span *ngIf="alreadyTracking.length!==0">additional </span>
+      Do you want to start tracking any
       <span text-lowercase>{{displayName}}</span>?
     </h3>
   </ng-container>
@@ -64,9 +63,8 @@
     <ion-card-content>
 
       <div *ngIf="recommendedData.length==0">
-        Based on your goals, we do not recommend tracking
-        <span *ngIf="alreadyTracking.length!==0">additional </span>
-        <span text-lowercase *ngIf="dataType!=='Other'">{{dataType ? dataType : "HI"}}</span> data.
+        Based on your goals, we do not recommend adding any
+        <span text-lowercase *ngIf="dataType!=='Other'">{{dataType}}</span> data.
         Unless you know of any specific <span text-lowercase>{{displayName}}</span> you wish to track,
             consider continuing without selecting any!
       </div>
@@ -128,6 +126,18 @@
   </ion-card>
 
 
+  <ng-container  *ngIf="startDate">
+    <ion-card>
+      <ion-card-header text-wrap>When do you want to start the change? (Defaults to today!)</ion-card-header>
+      <ion-item>
+        <ion-label>Set start date:</ion-label>
+        <ion-datetime min="{{today}}" displayFormat="MM/DD/YY"
+                      [(ngModel)]="startDate"></ion-datetime>
+      </ion-item>
+    </ion-card>
+  </ng-container>
+
+
   <ion-card>
     <ng-container *ngFor="let step of configPath">
       <ion-list padding *ngIf="step.added.length > 0">
@@ -141,6 +151,7 @@
       </ion-list>
     </ng-container>
   </ion-card>
+
 
   <ng-container *ngIf="configPath.length === 0">
 

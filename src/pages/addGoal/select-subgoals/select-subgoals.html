@@ -14,10 +14,10 @@
 
 
 <ion-content padding>
-  <h3>{{subgoalDict['Title']}} </h3>
+  <h3>{{currentSubgoal['Title']}} </h3>
 
   <ion-slides pager="true" options="{autoheight: true}">
-    <ion-slide *ngFor="let subgoal of subgoalDict['subgoals']">
+    <ion-slide *ngFor="let subgoal of currentSubgoal['subgoals']">
       <ion-card class="goalCard">
         <ion-item padding text-wrap>
           {{subgoal['subgoalName']}}

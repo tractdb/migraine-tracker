@@ -52,6 +52,19 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
+  getDataIDs(dataToTrack : {[dataType: string] : any}) : string[] {
+    if(!dataToTrack) return [];
+    let dataIDs = [];
+    let dataTypes = Object.keys(dataToTrack);
+    for(let i=0; i<dataTypes.length; i++){
+      for(let j=0; j<dataToTrack[dataTypes[i]].length; j++){
+        dataIDs.push(dataToTrack[dataTypes[i]][j].id);
+      }
+    }
+    return dataIDs;
+  }
+
+
 
   getAllGoalsAndSubgoals(configPath) {
     let goals = [];
@@ -79,23 +92,7 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  findNextConfigData(configPath, configDataList, currentlyConfiguring) {
-    let newDataIndex = configDataList.indexOf(currentlyConfiguring) + 1;
-    for(let i = newDataIndex; i < configDataList.length; i++) {
-      let dataType = configDataList[i];
-      if(!(dataType.conditionalGoal)){
-        return dataType;
-      }
-      else{
-        for (let i = 0; i < configPath.length; i++) {
-          if (configPath[i].added.includes(dataType.conditionalGoal)) {
-            return dataType;
-          }
-        }
-      }
-    }
-    return null;
-  }
+
 
   calculatePriorGoalProgress(data, dataType, previouslyTracked, timespan=undefined) {
     let timesTracked = 0;

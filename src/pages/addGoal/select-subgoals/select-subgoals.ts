@@ -15,8 +15,7 @@ import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
   templateUrl: 'select-subgoals.html',
 })
 export class SelectSubgoalsPage {
-  private currentSubgoal : string;
-  private subgoalDict : {[goalProp: string] : any} = {};
+  private currentSubgoal : {[goalProp: string] : any} = {};
   private selectedSubgoals : string[] = [];
   private goalType : string;
 
@@ -26,24 +25,23 @@ export class SelectSubgoalsPage {
 
   ionViewDidLoad() {
     this.currentSubgoal = this.navParams.data['currentSubgoal'];
-    this.goalType = this.navParams.data['currentSubgoal']["goal"].split(" ")[0];
-    this.subgoalDict = this.navParams.data['currentSubgoal']["subgoals"];
-    let subgoals = this.subgoalDict['subgoals'];
+    this.goalType = this.navParams.data['currentSubgoal']['GoalCategory'];
+    let subgoals = this.currentSubgoal['subgoals'];
     for(let i=0; i<subgoals.length; i++){
-      this.subgoalDict['subgoals'][i].colors = this.globalFunctions.buttonColors(false);
+      this.currentSubgoal['subgoals'][i].colors = this.globalFunctions.buttonColors(false);
     }
   }
 
   addGoal(subgoal : {[subgoalProp : string] : any}){
-    if (this.selectedSubgoals.indexOf(subgoal.subgoalName) < 0 ) {
-      this.selectedSubgoals.push(subgoal.subgoalName);
+    if (this.selectedSubgoals.indexOf(subgoal.goalID) < 0 ) {
+      this.selectedSubgoals.push(subgoal.goalID);
     }
     subgoal.colors = this.globalFunctions.buttonColors(true);
   }
 
 
   removeGoal(subgoal : {[subgoalProp : string] : any}) {
-    const index = this.selectedSubgoals.indexOf(subgoal.subgoalName);
+    const index = this.selectedSubgoals.indexOf(subgoal.goalID);
     if (index > -1) {
       this.selectedSubgoals.splice(index, 1);
     }
@@ -63,7 +61,8 @@ export class SelectSubgoalsPage {
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{
-      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath});
+      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath,
+                                                'goalIDs': this.navParams.data['goalIDs'].concat(this.selectedSubgoals)});
     }
   }
 

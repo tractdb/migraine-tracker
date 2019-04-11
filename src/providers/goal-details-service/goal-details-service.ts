@@ -33,6 +33,36 @@ export class GoalDetailsServiceProvider {
       });
   }
 
+  getGoalByID(goalID: string) : string{
+    if(/^\d+$/.test(goalID)){
+      let goalIDs = Object.keys(this.subgoals);
+      for(let i=0; i<goalIDs.length; i++){
+        for(let j=0; j<this.subgoals[goalIDs[i]].subgoals.length; j++){
+          if(this.subgoals[goalIDs[i]].subgoals[j].id === goalID){
+            return this.subgoals[goalIDs[i]].subgoals[j].name;
+          }
+        }
+      }
+    }
+    else{
+      for(let i=0; i<this.goalList.length; i++){
+        if(this.goalList[i].id === goalID){
+          return this.goalList[i].name;
+        }
+      }
+    }
+    return null;
+  }
+
+
+  getGoalsByIDs(goalIDs : string[]) : string[]{
+    let goalNames = [];
+    for(let i=0; i<goalIDs.length; i++){
+      goalNames.push(this.getGoalByID(goalIDs[i]));
+    }
+    return goalNames;
+  }
+
 
 
   getSubgoalList() : {[subgoalDetails:string]: any;} {
@@ -45,9 +75,9 @@ export class GoalDetailsServiceProvider {
   }
 
 
-  getSubgoalByName(name: string) : {[subgoalDetails:string]: any;}  {
-    if(name in this.subgoals){
-      return this.subgoals[name];
+  getSubgoalByID(id: string) : {[subgoalDetails:string]: any;}  {
+    if(id in this.subgoals){
+      return this.subgoals[id];
     }
 
     return null;

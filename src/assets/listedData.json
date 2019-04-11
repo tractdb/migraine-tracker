@@ -1,0 +1,460 @@
+{
+    "Symptoms": 
+        [
+            {
+                "name": "Migraine today",
+                "id": "migraineToday",
+                "explanation": "Migraine experienced today",
+                "fieldDescription": "Whether you had a migraine (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"]
+            },
+            {
+                "name": "Headache today",
+                "id": "headacheToday",
+                "explanation": "(Non-migraine) headache experience today",
+                "fieldDescription": "Whether you had a headache (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b", "3c"]
+            },
+            {
+                "name": "Peak Severity",
+                "id": "peakMigraineSeverity",
+                "explanation": "How bad your migraine was at its worst point",
+                "fieldDescription": "10-point Pain level (1=mild, 10=terrible)",
+                "field": "numeric scale",
+                "recommendingGoals": ["3b", "3c"]
+            },
+            {
+                "name": "Migraine Duration",
+                "id": "migraineDuration",
+                "explanation": "How long your migraine lasted",
+                "fieldDescription": "the number of hours your migraine lasted",
+                "field": "number",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Aura",
+                "id": "hadAura",
+                "explanation": "Aura experience today (recommended only if you sometimes experience aura)",
+                "fieldDescription": "Whether you experienced aura (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Nausea",
+                "id": "hadNausea",
+                "explanation": "Nausea experience today (recommended only if you sometimes experience nausea)",
+                "fieldDescription": "Whether you experienced nausea (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Lightheadedness/Dizziness",
+                "id": "hadLightheadednessOrDizziness",
+                "explanation": "Lightheadedness/dizziness experience today (recommended only if you sometimes experience lightheadedness/dizziness)",
+                "fieldDescription": "Whether you were lightheaded/dizzy (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Migraine Impact on Disability",
+                "id": "impactOnDisability",
+                "explanation": "Whether your migraine prevented you from doing the things you wanted or needed to do today",
+                "fieldDescription": "3-point disability rating",
+                "field": "category scale",
+                "recommendingGoals": ["3c"]
+            },
+            {
+                "name": "Brain Fog",
+                "id": "brainFog",
+                "explanation": "\"Brain fog\" experience today (recommended only if you sometimes experience brain fog)",
+                "fieldDescription": "Whether you had brain fog (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Location",
+                "id": "migraineLocation",
+                "explanation": "Where the pain was (right or left side, eyes, forehead, temples, face, back of head, neck, all over)",
+                "fieldDescription": "Text box where you can describe the location",
+                "field": "note",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Light Sensitivity",
+                "id": "lightSensitivity",
+                "explanation": "Light sensitivity experience today (only recommended if that's a symptom you experience)",
+                "fieldDescription": "Whether you experienced light sensitivity (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Sound Sensitivity",
+                "id": "soundSensitivity",
+                "explanation": "Sound sensitivity experience today (only recommended if that's a symptom you experience)",
+                "fieldDescription": "Whether you experienced sound sensitivity (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Quality of the Pain",
+                "id": "painQuality",
+                "explanation": "What the pain was like (pulsating/throbbing, pressure, tension, stabbing, sharp, dull, burning, other)",
+                "fieldDescription": "Text box where you can describe the pain",
+                "field": "note",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Fatigue",
+                "id": "whetherFatigue",
+                "explanation": "Fatigue experience today",
+                "fieldDescription": "3-point fatigue rating",
+                "field": "category scale",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Start time",
+                "id": "migraineStartTime",
+                "explanation": "The time your migraine started",
+                "fieldDescription": "time",
+                "field": "time",
+                "recommendingGoals": []
+            }
+        ],
+    "Treatments": 
+        [
+            {
+                "name": "As-needed medications today",
+                "id": "asNeededMeds",
+                "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
+                "fieldDescription": "Whether you took any as-needed medication today",
+                "field": "binary",
+                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+                "goal": {
+                    "freq": "Less",
+                    "threshold": 4,
+                    "timespan": "Month"
+                }
+            },
+            {
+                "name": "Routine Medication Use",
+                "id": "routineMeds",
+                "explanation": "Any routine (for example, daily) medication",
+                "fieldDescription": "Whether you took any routine medication today",
+                "field": "binary",
+                "recommendingGoals": ["3b"]
+            },
+            {
+                "name": "Exercise",
+                "id": "exerciseToday",
+                "explanation": "How much you exercised today",
+                "fieldDescription": "Number of minutes of exercise",
+                "field": "number",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 180,
+                    "timespan": "Week"
+                },
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Supplements",
+                "id": "supplementsToday",
+                "explanation": "Whether you took migraine prevention supplements today (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
+                "fieldDescription": "Whether you took supplements (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Stress Management",
+                "id": "stressManagement",
+                "explanation": "Any stress management you engaged in today (for example, yoga, meditation)",
+                "fieldDescription": "Whether you did any stress management (yes/no)",
+                "field": "binary",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 6,
+                    "timespan": "Week"
+                },
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Nutrition Today",
+                "id": "nutritionToday",
+                "explanation": "Whether you ate healthily today. For example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar",
+                "fieldDescription": "Whether you ate healthily (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Warm/cold Compress on Head/Neck",
+                "id": "usedCompress",
+                "explanation": "Whether you used a warm/cold compress on your head or neck to treat symptoms",
+                "fieldDescription": "Whether you used a warm/cold compress (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Warm/Cold shower",
+                "id": "tookShower",
+                "explanation": "Whether you took a warm/cold shower to treat symptoms",
+                "fieldDescription": "Whether you took a warm/cold shower (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Relax in a Dark Room",
+                "id": "darkRoom",
+                "explanation": "Whether you relaxed in a dark room to treat symptoms",
+                "fieldDescription": "Whether you relaxed in a dark room (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            }
+        ],
+    "Contributors": 
+        [
+            {
+                "name": "Frequent Use of Medications",
+                "id": "frequentMedUse",
+                "explanation": "Calculated medication use, to let you know if you might want to think about cutting back.",
+                "fieldDescription": "Number of pills you took",
+                "field": "calculated medication use",
+                "condition": true,
+                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+                "goal": {
+                    "freq": "Less",
+                    "threshold": 4,
+                    "timespan": "Month"
+                },
+                "significance": "If you use as-needed medications too frequently, they can start causing more migraines."
+            },
+            {
+                "name": "Stress",
+                "id": "stressToday",
+                "explanation": "How stressed you were today",
+                "fieldDescription": "3-point stress rating",
+                "significance": "High stress levels can lead to more migraines",
+                "field": "category scale",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Caffeine",
+                "id": "caffeineToday",
+                "explanation": "How much caffeine you had today",
+                "fieldDescription": "3-point caffeine rating",
+                "field": "category scale",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Alcohol",
+                "id": "alcoholToday",
+                "explanation": "How much alcohol you had today",
+                "fieldDescription": "3-point alcohol rating",
+                "field": "category scale",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Dehydration",
+                "id": "dehydrationToday",
+                "explanation": "How dehydrated you were today",
+                "fieldDescription": "3-point dehydration rating",
+                "field": "category scale",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Menstruation",
+                "id": "menstruationToday",
+                "explanation": "Whether you were menstruating today",
+                "fieldDescription": "Whether you were menstruating",
+                "field": "binary",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Sleep",
+                "id": "sleepToday",
+                "explanation": "How much sleep you got today",
+                "fieldDescription": "Hours of sleep",
+                "field": "number",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 8,
+                    "timespan": "Day"
+                },
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Mood",
+                "id": "moodToday",
+                "explanation": "How your mood was today",
+                "fieldDescription": "10-point mood scale (1=terrible, 10=great)",
+                "field": "numeric scale",
+                "recommendingGoals": ["1b", "3b"]
+            },
+            {
+                "name": "Interrupted Routine",
+                "id": "routineToday",
+                "explanation": "Whether your routine was interrupted today",
+                "fieldDescription": "Whether your routine was interrupted (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Contributing Activities",
+                "id": "activitiesToday",
+                "explanation": "Whether you did any activities that can contribute to symptoms (like screen time, vigorous exercise that you’re not used to, or long periods of concentration)",
+                "fieldDescription": "Whether you did contributing activities",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Depressive Symptoms",
+                "id": "depressionToday",
+                "explanation": "Whether you had a depressed mood today",
+                "fieldDescription": "Whether you had a depressed mood (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Anxiety",
+                "id": "anxietyToday",
+                "explanation": "Whether you had symptoms of anxiety today",
+                "fieldDescription": "Whether you had symptoms of anxiety (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Bright Light",
+                "id": "lightExposureToday",
+                "explanation": "Whether you were exposed to bright light today",
+                "fieldDescription": "Whether you were exposed to bright light (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Loud Sound",
+                "id": "soundExposureToday",
+                "explanation": "Whether you were exposed to loud sound today",
+                "fieldDescription": "Whether you were exposed to loud sound (yes/no)",
+                "field": "binary",
+                "recommendingGoals":[]
+            },
+            {
+                "name": "Intense Smell",
+                "id": "smellExposureToday",
+                "explanation": "Whether you were exposed to an intense smell today",
+                "fieldDescription": "Whether you were exposed to an intense smell (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Environmental Allergies",
+                "id": "allergieExposureToday",
+                "explanation": "Whether you had environmental allergies today",
+                "fieldDescription": "Whether you had environmental allergies (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Change in Weather",
+                "id": "weatherChangeToday",
+                "explanation": "Whether the weather changed today",
+                "fieldDescription": "Whether the weather changed (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            }
+        ],
+    "Changes": 
+        [
+            {
+                "name": "Starting to Exercise Regularly",
+                "id": "exerciseToday",
+                "explanation": "How much you exercised today",
+                "fieldDescription": "Number of minutes of exercise",
+                "field": "number",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 180,
+                    "timespan": "Week"
+                },
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "Starting Supplements",
+                "id": "supplementsToday",
+                "explanation": "Whether you took migraine prevention supplements today (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
+                "fieldDescription": "Whether you took supplements (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "Managing Stress",
+                "id": "stressManagement",
+                "explanation": "Any stress management you engaged in today (for example, yoga, meditation)",
+                "fieldDescription": "Whether you did any stress management (yes/no)",
+                "field": "binary",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 6,
+                    "timespan": "Week"
+                },
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "Eating a More Healthy Diet",
+                "id": "nutritionToday",
+                "explanation": "Whether you ate healthily today. For example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar",
+                "fieldDescription": "Whether you ate healthily (yes/no)",
+                "field": "binary",
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "Increasing Sleep",
+                "id": "sleepToday",
+                "explanation": "How much sleep you got today",
+                "fieldDescription": "Hours of sleep",
+                "field": "number",
+                "goal": {
+                    "freq": "More",
+                    "threshold": 8,
+                    "timespan": "Day"
+                },
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "New As-Needed Medication",
+                "id": "newAsNeededMedication",
+                "explanation": "Any new as-needed medication you're starting",
+                "fieldDescription": "Whether you took your new as-needed medication today",
+                "field": "binary",
+                "recommendingGoals": ["1c"]
+            },
+            {
+                "name": "New Routine Medication",
+                "id": "newRoutineMedication",
+                "explanation": "Any new routine medication (like a daily preventative medication) you're starting",
+                "fieldDescription": "Whether you took your new routine medication today",
+                "field": "binary",
+                "recommendingGoals": ["1c"]
+            }
+        ],
+    "Other": 
+        [
+            {
+                    "name": "Whether as-needed medication worked",
+                    "id": "whetherMedsWorked",
+                    "explanation": "Whether your as-needed medication improved your symptoms",
+                    "fieldDescription": "3-point symptoms improvement scale",
+                    "field": "category scale",
+                    "recommendingGoals": ["1b", "3c"]
+                },
+                {
+                    "name": "Other notes",
+                    "id": "otherNotes",
+                    "explanation": "Anything else you want to note about today ",
+                    "fieldDescription": "Text box where you can record any notes",
+                    "field": "note",
+                    "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"]
+                }
+        ]
+}

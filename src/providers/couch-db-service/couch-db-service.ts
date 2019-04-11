@@ -1246,7 +1246,7 @@ export class CouchDbServiceProvider {
       "goals": [
         "Learning about my migraines",
         "Monitoring my migraines",
-        "Learn what factors may affect my migraines",
+        "Learn what factors may contribute to my migraines",
         "Monitor for my doctor",
         "Learn whether a specific change affects my migraines"
       ],
@@ -1264,7 +1264,7 @@ export class CouchDbServiceProvider {
               "timespan": "Week"
             },
             "recommendingGoal": [
-              "Learn what factors may affect my migraines",
+              "Learn what factors may contribute to my migraines",
               "Monitor for my doctor"
             ],
             "opts": {
@@ -1322,7 +1322,7 @@ export class CouchDbServiceProvider {
               "timespan": "Week"
             },
             "recommendingGoal": [
-              "Learn what factors may affect my migraines",
+              "Learn what factors may contribute to my migraines",
               "Monitor for my doctor"
             ],
             "opts": {
@@ -1411,7 +1411,7 @@ export class CouchDbServiceProvider {
           //   },
           //   "significance": "If you use as-needed medications too frequently, they can start causing more migraines.",
           //   "recommendingGoal": [
-          //     "Learn what factors may affect my migraines",
+          //     "Learn what factors may contribute to my migraines",
           //     "Monitor for my doctor"
           //   ],
           //   "opts": {
