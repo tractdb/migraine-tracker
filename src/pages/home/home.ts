@@ -3,9 +3,11 @@ import {ModalController, NavController, NavParams} from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GoalTypePage} from "../addGoal/goal-type/goal-type";
 import {LoginPage} from "../login/login";
-import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {TrackDataPage} from "../track-data/track-data";
 import {UsedQuickTrackPage} from "../used-quick-track/used-quick-track";
+import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 
 @Component({
   selector: 'page-home',
@@ -21,13 +23,17 @@ export class HomePage {
   constructor(public navCtrl: NavController,
               private couchDbService: CouchDbServiceProvider,
               public navParams: NavParams,
-              private globalFunctions: GlobalFunctionsServiceProvider,
+              private dataDetialsProvider: DataDetailsServiceProvider,
+              private dateFunctionsProvider: DateFunctionServiceProvider,
+              private globalFuns: GlobalFunctionsServiceProvider,
               private modalCtrl: ModalController){
   }
 
   ionViewDidEnter(){
-    if(this.navParams.data.configPath){ //todo: notification stuff
+    console.log(this.navParams.data)
+    if(this.navParams.data['goalIDs']){ //todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
+      console.log(this.navParams.data)
       this.addQuickTrackers();
     }
     else{
@@ -55,14 +61,24 @@ export class HomePage {
     }
   }
 
-  addGoal() {
+  addFirstGoal() {
     this.navCtrl.push(GoalTypePage);
   }
 
   addQuickTrackers(){
-    this.isTrackingMeds = this.globalFunctions.getWhetherTrackingMeds(this.activeGoals['dataToTrack']);
+    this.isTrackingMeds = this.dataDetialsProvider.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']);
     this.quickTrackers = this.couchDbService.getQuickTrackers();
     this.quickTrackerKeys = Object.keys(this.quickTrackers);
+  }
+
+
+  formatForCalendar(event){
+    let startAndEndDates = this.dateFunctionsProvider.getStartAndEndDatesForCalendar();
+    event['startTime'] = startAndEndDates[0];
+    event['endTime'] = startAndEndDates[1];
+    event['allDay'] = true;
+    event['title'] = this.globalFuns.getWhetherMigraine(event['Symptoms']) ? 'Migraine' : 'No Migraine';
+    return event;
   }
 
 
@@ -71,7 +87,8 @@ export class HomePage {
     trackedDataModal.onDidDismiss(newData => {
       if(newData !== 'cancel'){
         let dataToPush = {};
-        dataToPush['dateTracked'] = new Date();
+        dataToPush['quickTracker'] = true;
+        dataToPush = this.formatForCalendar(dataToPush);
         dataToPush[dataTracked['name']] = true;
         this.couchDbService.trackData(dataToPush);
       }

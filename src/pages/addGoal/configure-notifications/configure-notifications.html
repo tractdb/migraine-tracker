@@ -63,12 +63,6 @@
                         [(ngModel)]="notificationData['timeOfDay']"></ion-datetime>
         </ion-item>
 
-
-        <ion-item>
-          <ion-label>Set start date:</ion-label>
-          <ion-datetime min="{{minDate}}" displayFormat="MM/DD/YY"
-                        placeholder="Select Date" [(ngModel)]="notificationData['startdate']"></ion-datetime>
-        </ion-item>
       </ng-container>
 
       <ng-container *ngIf="freqType === 'retroactive'">
@@ -76,15 +70,14 @@
         <ion-item>
           <ion-label>Set delay:</ion-label>
           <ion-input type="number" text-right
-                     [placeholder]="(notificationData.delayNum) ? notificationData.delayNum : '1'"
                      [(ngModel)]="notificationData.delayNum"></ion-input>
           <ion-select [(ngModel)]="notificationData['delayScale']">
             <ion-option value="Hour"
-                        [selected]="notificationData.delayScale && notificationData.delayScale === 'hour'">
+                        [selected]="notificationData.delayScale && notificationData.delayScale === 'Hour'">
               Hour
             </ion-option>
             <ion-option value="Day"
-                        [selected]="!notificationData.delayScale || notificationData.delayScale === 'day'">
+                        [selected]="!notificationData.delayScale || notificationData.delayScale === 'Day'">
               Day
             </ion-option>
           </ion-select>

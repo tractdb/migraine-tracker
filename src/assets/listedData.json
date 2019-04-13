@@ -446,6 +446,7 @@
                     "explanation": "Whether your as-needed medication improved your symptoms",
                     "fieldDescription": "3-point symptoms improvement scale",
                     "field": "category scale",
+                    "condition": true,
                     "recommendingGoals": ["1b", "3c"]
                 },
                 {

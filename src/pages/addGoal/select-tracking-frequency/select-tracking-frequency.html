@@ -27,8 +27,8 @@
 
       <p *ngIf="recommended === 'regular'">Recommended for your goals!</p>
 
-      <button full ion-button [ngClass]="selected.indexOf('regular') > -1 ? 'selectedSlider' : 'unselectedSlider'"
-              (click)="configureRegularNotifications()">
+      <button full ion-button [ngClass]="notificationData['regular'] ? 'selectedSlider' : 'unselectedSlider'"
+              (click)="configureNotifications('regular')">
         Track regularly<br>(can configure tracking notifications)
       </button>
 
@@ -43,8 +43,8 @@
 
       <p *ngIf="recommended === 'post symptoms'">Recommended for your goals!</p>
 
-      <button full ion-button [ngClass]="selected.indexOf('retroactive') > -1 ? 'selectedSlider' : 'unselectedSlider'"
-              (click)="configureRetroacitveNotifications()">
+      <button full ion-button [ngClass]="notificationData['retroactive'] ? 'selectedSlider' : 'unselectedSlider'"
+              (click)="configureNotifications('retroactive')">
         Track after symptoms occur<br>(notifications the day after symptoms)
       </button>
 
@@ -58,7 +58,7 @@
       Cancel
     </button>
 
-    <button float-right ion-button [disabled]="selected===''" (click)="continue()">
+    <button float-right ion-button [disabled]="!dataChanged" (click)="continue()">
       Save Changes
     </button>
 
@@ -68,8 +68,8 @@
 
 
   <button float-right ion-button *ngIf="hasActiveGoals && !isModal" (click)="continue()">
-    <ng-container *ngIf="selected.length === 0">Keep my current routine</ng-container>
-    <ng-container *ngIf="selected.length !== 0">Continue</ng-container>
+    <ng-container *ngIf="activeGoals['notifications']">Keep my current routine</ng-container>
+    <ng-container *ngIf="!activeGoals['notifications']">Continue</ng-container>
   </button>
 
   <button float-right ion-button *ngIf="!hasActiveGoals && !isModal" (click)="continue()">

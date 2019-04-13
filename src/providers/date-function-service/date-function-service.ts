@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import _date = moment.unitOfTime._date;
+import {GlobalFunctionsServiceProvider} from "../global-functions-service/global-functions-service";
 
 /*
   Generated class for the DateFunctionServiceProvider provider.
@@ -25,6 +27,17 @@ export class DateFunctionServiceProvider {
 
   getTime(time){
     return moment(time, 'hh:mm');
+  }
+
+
+
+  dateArithmatic(date, manipulation, amount, unit){
+    if(manipulation === 'add'){
+      return moment(date).add(amount, unit);
+    }
+    else{
+      return moment(date).subtract(amount, unit);
+    }
   }
 
 
@@ -88,16 +101,15 @@ export class DateFunctionServiceProvider {
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   }
 
-  formatForCalendar(event){
+
+  getStartAndEndDatesForCalendar(){
     let dateTracked = new Date();
     dateTracked.setHours(0,0,0,0);
     let nextDay = moment(dateTracked).add(1, "day").toDate();
-    event['startTime'] = this.getOTCDate(dateTracked);
-    event['endTime'] =this.getOTCDate(nextDay);
-    event['allDay'] = true;
-    event['title'] = (event['Symptoms'] && event['Symptoms']['Migraine today']) ? 'Migraine' : 'No Migraine';
-    return event;
+    return [this.getOTCDate(dateTracked), this.getOTCDate(nextDay)]
   }
+
+
 
 
 }

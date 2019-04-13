@@ -422,7 +422,7 @@ export class DataVisPage {
     this.initializeDict(this.triggers, this.currentGoals['dataToTrack']['Triggers']);
     for(let i=0; i<this.allTrackedData.length; i++){
       let datapoint = this.allTrackedData[i];
-      this.dates.push(datapoint['dateTracked']);
+      this.dates.push(datapoint['startDate']);
       this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptoms']));
       this.addDatapointToDict(datapoint['Treatments'], this.treatments);
       this.addDatapointToDict(datapoint['Triggers'], this.triggers);
@@ -451,7 +451,7 @@ export class DataVisPage {
 
   sortByDate(allData){
     allData.sort(function(d1, d2){
-      return new Date(d1.dateTracked) > new Date(d2.dateTracked) ? 1: -1;
+      return new Date(d1.startDate) > new Date(d2.startDate) ? 1: -1;
     });
     return allData;
   }

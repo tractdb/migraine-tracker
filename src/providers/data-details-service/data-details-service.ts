@@ -95,16 +95,15 @@ export class DataDetailsServiceProvider {
   }
 
 
-  getListedData(dataType : string) : {[listedDataProps : string]:any}{
-    return this.listedData[dataType];
+  getMedTrackingIDs() : string[] {
+    return this.medTrackingIDs;
   }
 
 
-  getWhetherTrackingMeds(alreadyTracking: string[]) : boolean{
-    console.log(alreadyTracking);
-    console.log(this.medTrackingIDs);
+  getWhetherTrackingMeds(treatmentsTracking: string[]) : boolean{
+    if(!treatmentsTracking) return false;
     for(let i=0; i<this.medTrackingIDs.length; i++){
-      if(alreadyTracking.indexOf(this.medTrackingIDs[i]) > -1){
+      if(treatmentsTracking.indexOf(this.medTrackingIDs[i]) > -1){
         return true;
       }
     }
@@ -113,6 +112,7 @@ export class DataDetailsServiceProvider {
 
 
   getWhetherRecommended(activeGoals: string[], recs: string[]){
+    // based on the set of configured goals, returns whether we recommend a specific data element
     for(let i=0; i<activeGoals.length; i++){
       if(recs.indexOf(activeGoals[i]) > -1){
         return true;
@@ -130,8 +130,8 @@ export class DataDetailsServiceProvider {
         return dataType;
       }
       else{
-        for(let i=0; i<dataType.conditionalGoals.length; i++){
-          if(goalIDs.indexOf(dataType.conditionalGoals[i]) > -1){
+        for(let j=0; j<dataType.conditionalGoals.length; j++){ // if it has ANY of the conditional goals, show the page
+          if(goalIDs.indexOf(dataType.conditionalGoals[j]) > -1){
             return dataType;
           }
         }
@@ -152,7 +152,7 @@ export class DataDetailsServiceProvider {
       if (alreadyTracking.indexOf(dataObject.id) === -1){ // not already tracking it
         if(dataObject['condition']) {
           console.log("conditional");
-          if(dataObject['id'] === 'frequentMedUse'){
+          if(dataObject['id'] === 'frequentMedUse' || dataObject['id'] === 'whetherMedsWorked'){
             console.log("medUse");
             if(this.getWhetherTrackingMeds(alreadyTracking)){
               if(this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals'])){

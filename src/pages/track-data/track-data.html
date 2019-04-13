@@ -15,13 +15,19 @@
 
 <ion-content padding>
 
+  <h1 text-center>{{trackDate}}</h1>
+
   <ion-card *ngFor="let data of dataToTrack">
+
 
     <ion-card-content>
 
       <ng-container *ngIf="data.field === 'binary'">
         <ion-item>
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
         </ion-item>
         <div class="row" >
           <div class="col" text-left>
@@ -38,15 +44,21 @@
       </ng-container>
 
         <ion-item text-wrap *ngIf="data.field === 'number'">
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
           <ion-input type="number" text-right placeholder="---"
-                     (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"></ion-input>
+                     (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.id]"></ion-input>
         </ion-item>
 
         <ion-item text-wrap *ngIf="data.field === 'numeric scale'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-select [(ngModel)]="tracked[data.name]" (ngModelChange)="itemTracked()" placeholder="---">
-            <ion-option *ngFor="let num of numList" [value]="num">
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
+          <ion-select [(ngModel)]="tracked[data.id]" (ngModelChange)="itemTracked()" placeholder="---">
+            <ion-option *ngFor="let num of numericScaleVals" [value]="num">
               {{num}}
             </ion-option>
           </ion-select>
@@ -55,7 +67,10 @@
 
       <ng-container *ngIf="data.field === 'category scale'">
         <ion-item>
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
         </ion-item>
         <div class="row" >
           <div class="col" text-left>
@@ -76,17 +91,27 @@
         </div>
       </ng-container>
 
-        <ion-item text-wrap *ngIf="data.field === 'note'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-input (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"
-                     placeholder="Enter note here"></ion-input>
+
+      <ng-container *ngIf="data.field === 'note'">
+        <ion-item text-wrap>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
         </ion-item>
+          <ion-textarea rows="1" (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.id]"
+                     placeholder="Enter note here"></ion-textarea>
+      </ng-container>
+
 
 
         <ion-item text-wrap *ngIf="data.field === 'time'">
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
           <ion-datetime displayFormat="h:mm a" placeholder="Select Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]">
+                        (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.id]">
           </ion-datetime>
         </ion-item>
 
@@ -94,15 +119,21 @@
 
       <ng-container *ngIf="data.field === 'time range'">
         <ion-item>
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
           <ion-datetime displayFormat="h:mm a" placeholder="Start Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemStart[data.name]">
+                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemStart[data.id]">
           </ion-datetime>
         </ion-item>
         <ion-item>
-          <ion-label>{{data.name}}</ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
           <ion-datetime displayFormat="h:mm a" placeholder="End Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemEnd[data.name]">
+                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemEnd[data.id]">
           </ion-datetime>
         </ion-item>
       </ng-container>
@@ -110,18 +141,16 @@
 
       <ng-container *ngIf="data.field === 'calculated medication use'">
         <ion-item >
-          <ion-label>{{data.name}} </ion-label>
+          <ion-label>
+            <h3>{{data.name}}</h3>
+            <p>{{data.explanation}}</p>
+          </ion-label>
         </ion-item>
-          <p text-wrap *ngIf="trackedSoFar['Treatments'] && trackedSoFar['Treatments']['As-needed medications today'] > 0">
+          <p text-wrap *ngIf="trackedMedsToday">
             You took as-needed medication today.  Remember that too-frequent use of medication can cause more migraines!
           </p>
-          <p text-wrap *ngIf="trackedSoFar['Treatments']
-                              && trackedSoFar['Treatments']['As-needed medications today'] === '0' ">
-            You did not take as-needed medication today!
-          </p>
-          <p text-wrap *ngIf="(trackedSoFar === {}) || (trackedSoFar['Treatments'] === undefined)
-                                || (trackedSoFar['Treatments']['As-needed medications today'] === undefined)">
-            You did not track whether you took as-needed medication today.
+          <p text-wrap *ngIf="!trackedMedsToday">
+            You did not report as-needed medication today!
           </p>
       </ng-container>
 

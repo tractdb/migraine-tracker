@@ -44,7 +44,9 @@ export class AddCustomDataPage {
           'freq': this.goalFreq,
           "threshold": this.goalThresh,
           'timespan': this.goalTime
-        }
+        },
+        'custom': true,
+        'id': 'custom_' + this.dataName.replace(' ', '')
       };
       this.viewCtrl.dismiss(data);
     }

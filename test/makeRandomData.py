@@ -5,89 +5,113 @@ import json
 categories = {
     "Symptoms": [
       {
-        "name": "Migraine today",
-        "fieldDescription": "Whether you had a migraine (yes/no)",
-        "field": "binary",
+          "name": "Migraine today",
+          "id": "migraineToday",
+          "explanation": "Migraine experienced today",
+          "fieldDescription": "Whether you had a migraine (yes/no)",
+          "field": "binary",
+          "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"]
       },
       {
-        "name": "Headache today",
-        "fieldDescription": "Whether you had a headache (yes/no)",
-        "field": "binary",
+          "name": "Headache today",
+          "id": "headacheToday",
+          "explanation": "(Non-migraine) headache experience today",
+          "fieldDescription": "Whether you had a headache (yes/no)",
+          "field": "binary",
+          "recommendingGoals": ["3b", "3c"]
       },
       {
-        "name": "Peak migraine severity",
-        "fieldDescription": "Pain level from 1-10",
-        "field": "numeric scale",
-        "recommendingGoal": [
-          "Monitor for my doctor"
-        ],
+          "name": "Peak Severity",
+          "id": "peakMigraineSeverity",
+          "explanation": "How bad your migraine was at its worst point",
+          "fieldDescription": "10-point Pain level (1=mild, 10=terrible)",
+          "field": "numeric scale",
+          "recommendingGoals": ["3b", "3c"]
       },
       {
         "name": "Migraine duration",
         "field": "time range",
+        "id": "custom_migraineduration",
         "custom": True
       }
     ],
     "Treatments": [
       {
-        "name": "As-needed medications today",
-        "fieldDescription": "Whether you took any as-needed medication today",
-        "field": "binary",
+          "name": "As-needed medications today",
+          "id": "asNeededMeds",
+          "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
+          "fieldDescription": "Whether you took any as-needed medication today",
+          "field": "binary",
+          "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+          "goal": {
+              "freq": "Less",
+              "threshold": 4,
+              "timespan": "Month"
+          }
       },
       {
-        "name": "Minutes exercised today",
-        "fieldDescription": "Number of minutes of exercise",
-        "field": "number",
+          "name": "Exercise",
+          "id": "exerciseToday",
+          "explanation": "How much you exercised today",
+          "fieldDescription": "Number of minutes of exercise",
+          "field": "number",
+          "goal": {
+              "freq": "More",
+              "threshold": 180,
+              "timespan": "Week"
+          },
+          "recommendingGoals": ["1b", "3b"]
       },
       {
         "name": "Time took advil",
         "field": "time",
+        "id": "custom_timetookadvil",
         "custom": True
       }
     ],
-    "Triggers": [
+    "Contributors": [
       {
-        "name": "Sugar",
-        "fieldDescription": "3-point stress rating",
-        "field": "category scale",
+          "name": "Frequent Use of Medications",
+          "id": "frequentMedUse",
+          "explanation": "Calculated medication use, to let you know if you might want to think about cutting back.",
+          "fieldDescription": "Number of pills you took",
+          "field": "calculated medication use",
+          "condition": True,
+          "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+          "goal": {
+              "freq": "Less",
+              "threshold": 4,
+              "timespan": "Month"
+          },
+          "significance": "If you use as-needed medications too frequently, they can start causing more migraines."
       },
       {
-        "name": "Menstruating",
-        "fieldDescription": "binary",
-        "field": "binary",
+          "name": "Stress",
+          "id": "stressToday",
+          "explanation": "How stressed you were today",
+          "fieldDescription": "3-point stress rating",
+          "significance": "High stress levels can lead to more migraines",
+          "field": "category scale",
+          "recommendingGoals": ["1b", "3b"]
       },
       {
-        "name": "Cups of Coffee",
-        "fieldDescription": "number small",
-        "field": "number",
-      },
-      {
-        "name": "Screen time",
-        "fieldDescription": "number large",
-        "field": "number",
-      },
-      {
-        "name": "Stress",
-        "fieldDescription": "a rating from 1-10",
-        "field": "numeric scale",
-      },
-      {
-        "name": "Went to bed",
-        "fieldDescription": "time",
-        "field": "time",
-      },
-      {
-        "name": "Sleep",
-        "fieldDescription": "start and end times",
-        "field": "time range",
-      },
+          "name": "Caffeine",
+          "id": "caffeineToday",
+          "explanation": "How much caffeine you had today",
+          "fieldDescription": "3-point caffeine rating",
+          "field": "category scale",
+          "recommendingGoals": ["1b", "3b"]
+      }
     ],
     "Other": [
       {
-        "name": "abnormalities",
-        "field": "note",
-        "custom": True
-      }
+        "name": "Whether as-needed medication worked",
+        "id": "whetherMedsWorked",
+        "explanation": "Whether your as-needed medication improved your symptoms",
+        "fieldDescription": "3-point symptoms improvement scale",
+        "field": "category scale",
+        "recommendingGoals": ["1b", "3c"]
+      },
     ]
 }
 
@@ -110,7 +134,9 @@ def getRandomData(dataObject):
     field = dataObject['field']
     if field == "binary":
         rand = random.randrange(2)
-        return rand == 0
+        if rand == 0:
+          return "Yes"
+        return "No"
     elif field == "number":
         if "small" in dataObject['fieldDescription']:
             return random.randrange(4)
@@ -163,7 +189,7 @@ def addDatapoint():
         for dataObject in dataObjectList:
             rand = random.randrange(5)
             if rand != 0: # to have some null data 
-                dataPoint[dataType][dataObject['name']] =\
+                dataPoint[dataType][dataObject['id']] =\
                                      getRandomData(dataObject)
     dateTracked, startDate, endDate = getRandomDate()
     dataPoint['dateTracked'] = isoFormat(dateTracked) # 2019-03-06T19:04:49.572Z"

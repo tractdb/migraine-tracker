@@ -47,7 +47,6 @@ export class DataConfigPage {
       this.dataType = this.dataObject.name;
       this.dataDesc = this.dataObject.description;
       alreadyTracking = alreadyTracking.concat(this.globalFunctions.getDataIDs(this.navParams.data['selectedData']));
-      console.log(alreadyTracking)
     }
 
     else{ // got here via tracking routine modification page
@@ -83,15 +82,16 @@ export class DataConfigPage {
         }
 
         this.navParams.data['selectedData'][this.dataType] = selectedData;
+        if(this.startDate) this.navParams.data['selectedData'][this.dataType]['startDate']  = this.startDate;
 
         let configStep = {"step": this.dataType,
           "description": "Selected " + this.dataType,
           "added": selectedData.map(x => x.name)
         };
-        if(this.startDate) configStep['startDate'] = this.startDate;
         configStep = this.globalFunctions.toggleDetails(configStep);
         this.navParams.data['configPath'].push(configStep);
       }
+
 
       let configData = this.dataDetailsServiceProvider.findNextConfigData(this.navParams.data['goalIDs'], this.dataObject);
 
@@ -102,6 +102,7 @@ export class DataConfigPage {
 
       else {
         this.navCtrl.push(SelectTrackingFrequencyPage, {'configPath': this.navParams.data['configPath'],
+          'goalIDs': this.navParams.data['goalIDs'],
           'dataToTrack': this.navParams.data['selectedData'],
           'textGoals': this.navParams.data['textGoals']});
       }
@@ -125,7 +126,6 @@ export class DataConfigPage {
     customDataModal.onDidDismiss(data => {
       if(data){
         data.selected = true;
-        data['custom'] = true;
         this.customData[this.dataType].push(data);
       }
     });
@@ -156,7 +156,6 @@ export class DataConfigPage {
         else{
           newData.selected = true;
           if(type=="custom"){
-            newData['custom'] = true;
             this.replaceData(this.customData[this.dataType], oldData, newData);
           }
           else if(type==='rec'){

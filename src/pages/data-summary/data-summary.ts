@@ -197,7 +197,7 @@ export class DataSummaryPage {
     let earliestDate = this.earliestDateFilter;
     let latestDate = this.latestDateFilter;
     let filteredData = this.allTrackedData.filter(function (datapoint) {
-      return datapoint.dateTracked >= earliestDate && datapoint.dateTracked <= latestDate;
+      return datapoint.startDate >= earliestDate && datapoint.startDate <= latestDate;
     });
     this.aggregateData(filteredData);
   }

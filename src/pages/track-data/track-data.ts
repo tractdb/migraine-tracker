@@ -4,6 +4,7 @@ import {HomePage} from "../home/home";
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import * as moment from "../../providers/date-function-service/date-function-service";
 
 
 
@@ -13,78 +14,76 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class TrackDataPage {
 
-  private tracked = {};
-  private buttonColors = {};
-  private goalProgresses = {};
-  private dataType;
-  private dataToTrack = [];
-  private trackedSoFar;
-  private numList;
-  private previouslyTracked;
-  somethingTracked;
-  durationItemStart = {};
-  durationItemEnd ={};
+  private tracked : {[trackedDataID : string] : any} = {};
+  private buttonColors : {[dataName : string] : {}} = {};
+  private trackDate : string;
+  private goalProgresses : {[dataID : string] : any} = {};
+  private dataType : string;
+  private dataToTrack : {[dataProps : string] : any}[] = [];
+  private trackedMedsToday : boolean;
+  private numericScaleVals : Number[];
+  private previouslyTracked : {[trackedDataID : string] : any}[];
+  private somethingTracked : boolean;
+  private durationItemStart : {[trackedDataID : string] : string} = {};
+  private durationItemEnd : {[trackedDataID : string] : string} ={};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public dateFunctionservice: DateFunctionServiceProvider,
-              private couchDBService: CouchDbServiceProvider, private globalFunctions: GlobalFunctionsServiceProvider) {
-    this.numList = Array.from(new Array(10),(val,index)=>index+1);
+              private couchDBService: CouchDbServiceProvider, private globalFuns: GlobalFunctionsServiceProvider) {
+    this.numericScaleVals = Array.from(new Array(10),(val,index)=>index+1);
     this.previouslyTracked = couchDBService.getTrackedData();
+    this.trackDate = this.dateFunctionservice.dateToPrettyDate(new Date());
   }
 
   ionViewDidLoad() {
     this.dataType = this.navParams.data['currentDataType'];
     this.dataToTrack = this.navParams.data['dataDict'][this.dataType];
-    this.trackedSoFar = this.navParams.data['tracked'];
-
     if(!('tracked' in this.navParams.data)) {
       this.navParams.data['tracked'] = {};
     }
-
+    this.trackedMedsToday = this.globalFuns.getWhetherTrackedMeds(this.navParams.data['tracked']['Treatments']);
     this.calculateGoalProgresses();
   }
 
-  getColor(data, value) {
-    if(this.buttonColors[data.name] === undefined){
-      this.buttonColors[data.name] = {value: 'light'};
+  getColor(data : {[dataProps : string] : any}, value : string) : string {
+    if(this.buttonColors[data.id] === undefined){
+      this.buttonColors[data.id] = {value: 'light'};
       return 'light';
     }
-    else if (this.buttonColors[data.name][value] === undefined) {
-      this.buttonColors[data.name][value] = 'light';
+    else if (this.buttonColors[data.id][value] === undefined) {
+      this.buttonColors[data.id][value] = 'light';
       return 'light';
     }
-    return this.buttonColors[data.name][value];
+    return this.buttonColors[data.id][value];
   }
 
 
   calculateGoalProgresses() {
     for(let i=0; i<this.dataToTrack.length; i++){
       let data = this.dataToTrack[i];
-      if(data.goal && data.goal.freq) {
-        this.goalProgresses[data.name] =
-          this.globalFunctions.calculatePriorGoalProgress(data, this.dataType, this.previouslyTracked);
+      if(data.id === 'frequentMedUse'){
+        this.goalProgresses[data.id] =
+          this.globalFuns.calculatePriorGoalProgress(data, 'Treatments', this.previouslyTracked);
+      }
+      else if(data.goal && data.goal.freq) {
+        this.goalProgresses[data.id] =
+          this.globalFuns.calculatePriorGoalProgress(data, this.dataType, this.previouslyTracked);
       }
     }
   }
 
 
-  totalTrackedTimes(data) {
-    if(data.name === 'Frequent Use of Medications'){
-      let dataName = 'As-needed medications today';
-      let timesSoFar = this.globalFunctions.calculatePriorGoalProgress({'name': dataName, 'field': 'Number'},
-        'Treatments', this.previouslyTracked, data.goal.timespan);
-      if(!this.trackedSoFar['Treatments'] || !this.trackedSoFar['Treatments'][dataName]){
-        return timesSoFar;
-      }
-      return Number(this.trackedSoFar['Treatments'][dataName]) + timesSoFar;
+  totalTrackedTimes(data: {[dataProps : string] : any}) : Number{
+    let timesSoFar = this.goalProgresses[data.id];
+    if (data.id === 'frequentMedUse'){ // we pull from the 'treatments' dict!
+      timesSoFar += (this.trackedMedsToday ? 1 : 0);
     }
-    let timesSoFar = this.goalProgresses[data.name];
-    if(this.tracked[data.name] !== 'undefined' && !isNaN(this.tracked[data.name])){
-      if(data.field === 'number'){
-        timesSoFar += Number(this.tracked[data.name]);
+    else if(this.tracked[data.id]) {
+      if (data.field === 'number') {
+        timesSoFar += Number(this.tracked[data.id]);
       }
-      else if(data.field !== 'binary' || this.tracked[data.name] === true){
+      else if (data.field !== 'binary' || this.tracked[data.id] === 'Yes') {
         timesSoFar += 1;
       }
     }
@@ -92,7 +91,7 @@ export class TrackDataPage {
   }
 
 
-  goalProgress(data){
+  goalProgress(data : {[dataProps : string] : any}){
     if(this.dataType==='Symptoms'){
       return 'no feedback';
     }
@@ -118,12 +117,12 @@ export class TrackDataPage {
   }
 
 
-  catScale(data, value) {
-    if(this.tracked[data.name]){
-      this.buttonColors[data.name][this.tracked[data.name]] = 'light';
+  catScale(data : {[dataProps : string] : any}, value : string) {
+    if(this.tracked[data.id]){
+      this.buttonColors[data.id][this.tracked[data.id]] = 'light';
     }
-    this.buttonColors[data.name][value] = 'primary';
-    this.tracked[data.name] = value;
+    this.buttonColors[data.id][value] = 'primary';
+    this.tracked[data.id] = value;
     this.itemTracked();
   }
 
@@ -131,14 +130,24 @@ export class TrackDataPage {
     this.somethingTracked = true;
   }
 
-  addDurationItems(dict, endPoint){
-    let dataNames = Object.keys(dict);
+  addDurationItems(durationDict : {[dataID : string] : any}, endPoint : string){
+    let dataNames = Object.keys(durationDict);
     for(let i=0; i<dataNames.length; i++){
       if(!this.tracked[dataNames[i]]){
         this.tracked[dataNames[i]] = {};
       }
-      this.tracked[dataNames[i]][endPoint] = dict[dataNames[i]];
+      this.tracked[dataNames[i]][endPoint] = durationDict[dataNames[i]];
     }
+  }
+
+
+  formatForCalendar(event){
+    let startAndEndDates = this.dateFunctionservice.getStartAndEndDatesForCalendar();
+    event['startTime'] = startAndEndDates[0];
+    event['endTime'] = startAndEndDates[1];
+    event['allDay'] = true;
+    event['title'] = this.globalFuns.getWhetherMigraine(event['Symptoms']) ? 'Migraine' : 'No Migraine';
+    return event;
   }
 
 
@@ -155,7 +164,7 @@ export class TrackDataPage {
       this.navCtrl.push(TrackDataPage, this.navParams.data);
     }
     else {
-      this.navParams.data['tracked'] = this.dateFunctionservice.formatForCalendar(this.navParams.data['tracked']);
+      this.navParams.data['tracked'] = this.formatForCalendar(this.navParams.data['tracked']);
       this.couchDBService.trackData(this.navParams.data['tracked']);
       this.navCtrl.setRoot(HomePage, {'trackedData': this.navParams.data['tracked']});
     }
