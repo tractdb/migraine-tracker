@@ -16,12 +16,12 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
   templateUrl: 'goal-modification.html',
 })
 export class GoalModificationPage {
-  activeGoals;
+  activeGoals : {[goalProps: string] : any};
+  goalTypes : string[];
   goalHierarchy;
-  goalTypes;
-  textGoals;
-  editingTextGoal = false;
-  oldTextGoals;
+  textGoals : string;
+  editingTextGoal : boolean = false;
+  oldTextGoals : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider,
@@ -46,7 +46,7 @@ export class GoalModificationPage {
 
 
   deleteGoal(goal) {
-    // console.log(this.activeGoals.goals)
+    // todo: push to couch, etc.
     this.activeGoals.goals.splice(this.activeGoals.goals.indexOf(goal), 1);
     this.couchDBService.removeGoal(goal);
     if(goal in this.goalHierarchy){

@@ -16,7 +16,7 @@ export class CouchDbServiceProvider {
 
   getCurrentBreak() : {[breakDetails: string] : any}{
     // todo: pull from db, make sure it's current
-    return {};
+    return null;
     // return {
     //   "reasonForBreak": "I want to",
     //   "notifyDate": "2020-02-28",
@@ -153,8 +153,8 @@ export class CouchDbServiceProvider {
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }
-    // return this.getExampleGoal(); //todo: remove, use db
-   return {};
+    return this.getExampleGoal(); //todo: remove, use db
+   // return {};
   }
 
 
@@ -951,6 +951,9 @@ export class CouchDbServiceProvider {
   getExampleGoal()  : {[goalAspect:string]: any;}{
     let exGoal = {
         "goals": [
+          "1",
+          "2",
+          "3",
           "1a",
           "1b",
           "1c",

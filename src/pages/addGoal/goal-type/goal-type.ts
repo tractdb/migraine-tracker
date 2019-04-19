@@ -56,7 +56,7 @@ export class GoalTypePage {
     let dataToSend = {"configPath": [configStep], 'goalIDs': this.selectedGoals};
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
-      let subgoals = this.goalDetailsServiceProvider.getSubgoalByID(this.selectedGoals[i]);
+      let subgoals = this.goalDetailsServiceProvider.getSubgoalByGoalID(this.selectedGoals[i]);
       if(subgoals !== null){
         allSubgoals.push(subgoals);
       }

@@ -30,7 +30,6 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    console.log(this.navParams.data)
     if(this.navParams.data['goalIDs']){ //todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
       console.log(this.navParams.data)

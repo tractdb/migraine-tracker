@@ -34,18 +34,19 @@ export class SelectTrackingFrequencyPage {
   ionViewDidLoad() {
     this.activeGoals = this.couchDBService.getActiveGoals();
     this.hasActiveGoals = (Object.keys(this.activeGoals).length > 0);
+    if(this.hasActiveGoals){
+      this.notificationData = this.activeGoals['notificationSettings'];
+    }
     this.isModal = this.navParams.data['isModal'];
 
-    if(this.isModal){
-      this.getGoals(this.activeGoals['goals']);
-    }
+    let allGoals = this.hasActiveGoals ? this.activeGoals['goals'] : [];
 
-    else{
-      this.getGoals(this.navParams.data['goalIDs']);
-    }
+    allGoals = allGoals.concat(this.navParams.data['goalIDs'] ? this.navParams.data['goalIDs'] : []);
+    this.getGoals(allGoals);
+
   }
 
-  getGoals(goalIDs : string){
+  getGoals(goalIDs : string[]){
     let recommended = "post symptoms";
     for(let i=0; i<goalIDs.length; i++){
       for(let j=0; j<this.regularGoals.length; j++){
@@ -61,6 +62,7 @@ export class SelectTrackingFrequencyPage {
 
   configureNotifications(type : string){
     let configuredData = {};
+    console.log(this.notificationData)
     if(this.notificationData[type]){
       configuredData = this.notificationData[type];
     }
@@ -91,7 +93,7 @@ export class SelectTrackingFrequencyPage {
 
   continue() {
     if(this.isModal) {
-      this.viewCtrl.dismiss({'notificationSettings' : this.notificationData});
+      this.viewCtrl.dismiss(this.notificationData);
     }
     else{
       this.navParams.data['notificationSettings'] = this.notificationData;

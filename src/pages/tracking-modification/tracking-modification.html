@@ -49,42 +49,36 @@
     <ion-card-header text-wrap>
       Current Frequency
     </ion-card-header>
-    <ion-card-content *ngIf="trackingFreq === 'postSymptoms'">
-      You are currently tracking after symptoms occur.
+    <ion-card-content *ngIf="notifications['regular']">
+      You are currently receiving notifications
+      <span text-lowercase>{{notifications['regular'].timescale}}</span>,
+      at {{timeToDisplay}}<span text-lowercase
+       *ngIf="notifications['regular'].dayOfWeek !== undefined"> on
+        {{notifications['regular'].dayOfWeek.slice(0, notifications['regular'].dayOfWeek.length-1).join('s, ')}}<span
+        *ngIf="notifications['regular'].dayOfWeek.length > 1">s</span><span
+          *ngIf="notifications['regular'].dayOfWeek.length > 2">,</span><span
+        *ngIf="notifications['regular'].dayOfWeek.length > 1"> and</span>
+        {{notifications['regular'].dayOfWeek[notifications['regular'].dayOfWeek.length-1]}}s</span><span
+      text-lowercase *ngIf="notifications['regular'].dayOfMonth !== undefined"> on the
+        {{notifications['regular'].dayOfMonth.slice(0, notifications['regular'].dayOfMonth.length-1).join(', ')}}<span
+          *ngIf="notifications['regular'].dayOfMonth.length > 2">,</span> <span
+        *ngIf="notifications['regular'].dayOfMonth.length > 1">and</span>
+        {{notifications['regular'].dayOfMonth[notifications['regular'].dayOfMonth.length-1]}} day<span
+          *ngIf="notifications['regular'].dayOfMonth.length > 1">s</span> of the month</span>.
     </ion-card-content>
-    <ion-card-content *ngIf="trackingFreq === 'regularly' && notifications === undefined">
-      You are currently tracking regularly, but you do not have any notifications configured.
+
+    <ion-card-content *ngIf="notifications['retroactive']">
+      You are <span *ngIf="notifications['regular']">also</span>
+      <span *ngIf="!notifications['regular']">currently</span>
+      receiving notifications {{notifications['retroactive']['delayNum']}}
+      <span text-lowercase>{{notifications['retroactive']['delayScale']}}</span><span
+      *ngIf="notifications['retroactive'].delayNum > 1">s</span> after indicating symptoms.
     </ion-card-content>
-    <ion-card-content *ngIf="notifications !== undefined">
-      You are currently tracking <span text-lowercase>{{notifications.timescale}}</span>,
-      at {{timeToDisplay}}<span
-      text-lowercase *ngIf="notifications.dayOfWeek !== undefined"> on
-        {{notifications.dayOfWeek.slice(0, notifications.dayOfWeek.length-1).join('s, ')}}<span
-        *ngIf="notifications.dayOfWeek.length > 1">s</span><span
-          *ngIf="notifications.dayOfWeek.length > 2">,</span><span
-        *ngIf="notifications.dayOfWeek.length > 1"> and</span>
-        {{notifications.dayOfWeek[notifications.dayOfWeek.length-1]}}s</span><span
-      text-lowercase *ngIf="notifications.dayOfMonth !== undefined"> on the
-        {{notifications.dayOfMonth.slice(0, notifications.dayOfMonth.length-1).join(', ')}}<span
-          *ngIf="notifications.dayOfMonth.length > 2">,</span> <span
-        *ngIf="notifications.dayOfMonth.length > 1">and</span>
-        {{notifications.dayOfMonth[notifications.dayOfMonth.length-1]}} day<span
-          *ngIf="notifications.dayOfMonth.length > 1">s</span> of the month</span>.
-    </ion-card-content>
+
     <button class="button" ion-button full icon-start (click)="changeFreq()">
       <ion-icon name="create"></ion-icon>
       Change tracking frequency
     </button>
   </ion-card>
-
-  <!--<ion-card>-->
-    <!--<ion-card-header text-wrap>-->
-      <!--Post-Symptoms Notifications-->
-    <!--</ion-card-header>-->
-    <!--<ion-card-content *ngIf="postSymptomNotifications">-->
-      <!--You're currently receiving notifications the day after you indicate you have a migraine.-->
-      <!--<button ion-button>Turn off post-symptom notifications</button>-->
-    <!--</ion-card-content>-->
-  <!--</ion-card>-->
 
 </ion-content>

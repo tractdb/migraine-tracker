@@ -33,34 +33,25 @@ export class GoalDetailsServiceProvider {
       });
   }
 
-  getGoalByID(goalID: string) : string{
-    if(/^\d+$/.test(goalID)){
-      let goalIDs = Object.keys(this.subgoals);
-      for(let i=0; i<goalIDs.length; i++){
-        for(let j=0; j<this.subgoals[goalIDs[i]].subgoals.length; j++){
-          if(this.subgoals[goalIDs[i]].subgoals[j].id === goalID){
-            return this.subgoals[goalIDs[i]].subgoals[j].name;
-          }
+  getGoalNameByID(goalID: string) : string{
+    if(/^\d+$/.test(goalID)){ // it's just a number so it's not a subgoal
+      for(let i=0; i<this.goalList.length; i++){
+        if(this.goalList[i].goalID === goalID){
+          return this.goalList[i].goalName;
         }
       }
     }
     else{
-      for(let i=0; i<this.goalList.length; i++){
-        if(this.goalList[i].id === goalID){
-          return this.goalList[i].name;
+      let goalIDs = Object.keys(this.subgoals);
+      for(let i=0; i<goalIDs.length; i++){
+        for(let j=0; j<this.subgoals[goalIDs[i]].subgoals.length; j++){
+          if(this.subgoals[goalIDs[i]].subgoals[j].goalID === goalID){
+            return this.subgoals[goalIDs[i]].subgoals[j].subgoalName;
+          }
         }
       }
     }
     return null;
-  }
-
-
-  getGoalsByIDs(goalIDs : string[]) : string[]{
-    let goalNames = [];
-    for(let i=0; i<goalIDs.length; i++){
-      goalNames.push(this.getGoalByID(goalIDs[i]));
-    }
-    return goalNames;
   }
 
 
@@ -75,11 +66,10 @@ export class GoalDetailsServiceProvider {
   }
 
 
-  getSubgoalByID(id: string) : {[subgoalDetails:string]: any;}  {
+  getSubgoalByGoalID(id: string) : {[subgoalDetails:string]: any;}  {
     if(id in this.subgoals){
       return this.subgoals[id];
     }
-
     return null;
   }
 

@@ -20,16 +20,22 @@ export class ConfigureNotificationsPage {
   dates : Number[];
   days : string[];
   notificationData : {[notificationProp:string] : any};
+  dataChanged : boolean = false;
+  hasNotificationsConfigured : boolean = false;
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController,
               public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
     this.freqType = this.navParams.data.type;
-    this.notificationData = this.navParams.data.configured;
+    this.notificationData = this.navParams.data.configured ? this.navParams.data.configured : {};
     if(this.freqType === 'retroactive'){
-      this.notificationData.delayScale = 'Day';
-      this.notificationData.delayNum = 1;
+      if(this.notificationData.delayScale) this.hasNotificationsConfigured = true;
+      else{
+        this.notificationData.delayScale = 'Day';
+        this.notificationData.delayNum = 1;
+      }
     }
     else {
+      if(this.notificationData.timescale) this.hasNotificationsConfigured = true;
       this.minDate = new Date().toISOString();
       this.dates = Array.from(new Array(31), (x,i) => i + 1);
       this.days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
@@ -46,7 +52,6 @@ export class ConfigureNotificationsPage {
   }
 
   finish(){
-    console.log(this.notificationData);
     this.viewCtrl.dismiss(this.notificationData);
   }
 

@@ -22,6 +22,13 @@ export class DataDetailsServiceProvider {
   }
 
 
+
+  getDataInfoByID(id : string, dataType: string) : {[dataProps: string] : any} {
+    for(let i=0; i<this.listedData.length; i++){
+
+    }
+  }
+
   getDisplayName(name : string) : string{
     for(let i=0; i<this.configData.length; i++){
       if(this.configData[i].name === name){
@@ -64,6 +71,21 @@ export class DataDetailsServiceProvider {
 
   getConfigData() : [{[dataProperty: string] : any}]{
     return this.configData;
+  }
+
+
+  getConfigByName(dataType: string) : {[dataTypeProps:string]:any}{
+    for(let i=0; i<this.configData.length; i++){
+      if(this.configData[i]['name'] === dataType){
+        return this.configData[i];
+      }
+    }
+    console.log("DATATYPE NOT IN DATA CONFIG: " + dataType);
+    return null;
+  }
+
+  getWhetherGoals(dataType: string) : boolean{
+    return this.getConfigByName(dataType)['dataGoals'];
   }
 
   getAllDataTypes() : string[]{

@@ -61,6 +61,10 @@ export class DateFunctionServiceProvider {
     return minutes + " min" + (minutes>1? 's' : '');
   }
 
+  getISOTime(timeString){
+    return moment(timeString).toISOString();
+  }
+
 
   milisecondsToPrettyTime(durationInMS){
     let duration = moment.duration(durationInMS);

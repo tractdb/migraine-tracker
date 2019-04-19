@@ -38,6 +38,7 @@ import { DateFunctionServiceProvider } from '../providers/date-function-service/
 import {ViewDatapointPage} from "../pages/view-datapoint/view-datapoint";
 import {DataVisPage} from "../pages/data-vis/data-vis";
 import { ChartsModule } from 'ng2-charts-x';
+import {DataElementTrackingComponent} from "../components/data-element-tracking/data-element-tracking";
 
 @NgModule({
   declarations: [
@@ -61,7 +62,8 @@ import { ChartsModule } from 'ng2-charts-x';
     UsedQuickTrackPage,
     BreakFromTrackingPage,
     ViewDatapointPage,
-    DataVisPage
+    DataVisPage,
+    DataElementTrackingComponent
   ],
   imports: [
     BrowserModule,

@@ -53,30 +53,23 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  getGoalHierarchy(goals){
-    let allGoals = {};
-    let allSubgoals = this.goalDetails.getSubgoalList();
-    let allGoalTypes = this.goalDetails.getGoalList();
-    for(let i=0; i<goals.length; i++){
-      if(goals[i] in allSubgoals){
-        let possibleSubgoals = allSubgoals[goals[i]].subgoals;
-        let subgoals = [];
-        for(let j=0; j<possibleSubgoals.length; j++){
-          if(goals.indexOf(possibleSubgoals[j]['subgoalName'])>-1){
-            subgoals.push(possibleSubgoals[j]['subgoalName']);
-          }
-        }
-        allGoals[goals[i]] = subgoals;
-      }
-      else{
-        for(let j=0; j<allGoalTypes.length; j++){
-          if(allGoalTypes[j].goalName === goals[i]){
-            allGoals[goals[i]] = undefined;
+  getGoalHierarchy(currentGoalIDs : string[]){
+    let goalHierarchy = {};
+    for(let i=0; i<currentGoalIDs.length; i++){
+      let goalID = currentGoalIDs[i];
+      let goalName = this.goalDetails.getGoalNameByID(goalID);
+      if(/^\d+$/.test(goalID)){ // it's not a subogal (no letters)
+        goalHierarchy[goalName] = [];
+        let subgoalInfo = this.goalDetails.getSubgoalByGoalID(goalID);
+        let allGoalSubgoals = subgoalInfo ? subgoalInfo.subgoals : [];
+        for(let j=0; j<allGoalSubgoals.length; j++){
+          if(currentGoalIDs.indexOf(allGoalSubgoals[j].goalID) > -1){
+            goalHierarchy[goalName].push(allGoalSubgoals[j].subgoalName)
           }
         }
       }
     }
-    return allGoals;
+    return goalHierarchy;
   }
 
 

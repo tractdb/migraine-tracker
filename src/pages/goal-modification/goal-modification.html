@@ -25,7 +25,7 @@
     <ion-card-content>
       <ion-item text-wrap *ngFor="let goal of goalTypes">
         {{goal}}
-        <button *ngIf="goalHierarchy[goal] === undefined" float-right class="button"
+        <button *ngIf="goalHierarchy[goal].length === 0" float-right class="button"
                 ion-button icon-only (click)="deleteGoal(goal)">
           <ion-icon name="trash"></ion-icon>
         </button>

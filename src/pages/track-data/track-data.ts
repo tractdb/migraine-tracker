@@ -15,13 +15,12 @@ import * as moment from "../../providers/date-function-service/date-function-ser
 export class TrackDataPage {
 
   private tracked : {[trackedDataID : string] : any} = {};
-  private buttonColors : {[dataName : string] : {}} = {};
+
   private trackDate : string;
   private goalProgresses : {[dataID : string] : any} = {};
   private dataType : string;
   private dataToTrack : {[dataProps : string] : any}[] = [];
   private trackedMedsToday : boolean;
-  private numericScaleVals : Number[];
   private previouslyTracked : {[trackedDataID : string] : any}[];
   private somethingTracked : boolean;
   private durationItemStart : {[trackedDataID : string] : string} = {};
@@ -31,9 +30,23 @@ export class TrackDataPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public dateFunctionservice: DateFunctionServiceProvider,
               private couchDBService: CouchDbServiceProvider, private globalFuns: GlobalFunctionsServiceProvider) {
-    this.numericScaleVals = Array.from(new Array(10),(val,index)=>index+1);
+
     this.previouslyTracked = couchDBService.getTrackedData();
     this.trackDate = this.dateFunctionservice.dateToPrettyDate(new Date());
+  }
+
+
+  changeVals(componentEvent : {[eventPossibilities: string] : any}, data : {[dataProps: string] : any}){
+    if(componentEvent.dataVal){
+      this.tracked[data.id] = componentEvent.dataVal;
+    }
+    if(componentEvent.dataStart){
+      this.durationItemStart[data.id] = componentEvent.dataStart;
+    }
+    if(componentEvent.dataEnd){
+      this.durationItemEnd[data.id] = componentEvent.dataEnd;
+    }
+    this.somethingTracked = true;
   }
 
   ionViewDidLoad() {
@@ -44,18 +57,6 @@ export class TrackDataPage {
     }
     this.trackedMedsToday = this.globalFuns.getWhetherTrackedMeds(this.navParams.data['tracked']['Treatments']);
     this.calculateGoalProgresses();
-  }
-
-  getColor(data : {[dataProps : string] : any}, value : string) : string {
-    if(this.buttonColors[data.id] === undefined){
-      this.buttonColors[data.id] = {value: 'light'};
-      return 'light';
-    }
-    else if (this.buttonColors[data.id][value] === undefined) {
-      this.buttonColors[data.id][value] = 'light';
-      return 'light';
-    }
-    return this.buttonColors[data.id][value];
   }
 
 
@@ -116,19 +117,6 @@ export class TrackDataPage {
     }
   }
 
-
-  catScale(data : {[dataProps : string] : any}, value : string) {
-    if(this.tracked[data.id]){
-      this.buttonColors[data.id][this.tracked[data.id]] = 'light';
-    }
-    this.buttonColors[data.id][value] = 'primary';
-    this.tracked[data.id] = value;
-    this.itemTracked();
-  }
-
-  itemTracked() {
-    this.somethingTracked = true;
-  }
 
   addDurationItems(durationDict : {[dataID : string] : any}, endPoint : string){
     let dataNames = Object.keys(durationDict);

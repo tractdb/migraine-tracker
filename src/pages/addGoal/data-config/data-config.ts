@@ -38,10 +38,10 @@ export class DataConfigPage {
     let activeGoals = this.couchDBService.getActiveGoals();
 
     let alreadyTracking = this.globalFunctions.getDataIDs(activeGoals['dataToTrack']); // need to add previously configured
-    let goals;
+    let goals = activeGoals['goals'] ? activeGoals['goals'] : [];
 
     if(this.configPath.length > 0){ // got here via adding a goal
-      goals = this.navParams.data['goalIDs'];
+      goals = goals.concat(this.navParams.data['goalIDs']);
       this.dataObject = this.navParams.data['dataPage'];
       this.startDate = this.dataObject.additionalData ? new Date().toISOString() : null;
       this.dataType = this.dataObject.name;
@@ -50,8 +50,8 @@ export class DataConfigPage {
     }
 
     else{ // got here via tracking routine modification page
-      goals = activeGoals['goals']; // todo: needs to be ids ...
       this.dataType = this.navParams.data['dataPage'];
+      this.dataObject = this.dataDetailsServiceProvider.getConfigByName(this.dataType);
       this.dataDesc = this.navParams.data['dataDesc'];
     }
 
@@ -122,7 +122,8 @@ export class DataConfigPage {
 
 
   addCustomData() {
-    let customDataModal = this.modalCtrl.create(AddCustomDataPage, {"type": this.dataType});
+    let customDataModal = this.modalCtrl.create(AddCustomDataPage,
+                                              {"type": this.dataType, 'goals':this.dataObject.dataGoals});
     customDataModal.onDidDismiss(data => {
       if(data){
         data.selected = true;
@@ -144,7 +145,7 @@ export class DataConfigPage {
   }
 
   editData(oldData : {[dataProps : string ] : any}, type : string) {
-    let editDataModal = this.modalCtrl.create(EditDataPage, oldData);
+    let editDataModal = this.modalCtrl.create(EditDataPage, {'data': oldData, 'goals': this.dataObject.dataGoals});
 
     editDataModal.onDidDismiss(newData => {
       if(newData){

@@ -24,7 +24,7 @@
 
         <ion-item>
           <ion-label>Set frequency:</ion-label>
-          <ion-select [(ngModel)]="notificationData['timescale']">
+          <ion-select [(ngModel)]="notificationData['timescale']" (change)="dataChanged = true">
             <ion-option value="Daily"
                         [selected]="notificationData.timescale && notificationData.timescale === 'Daily'">
               Daily
@@ -43,7 +43,7 @@
         <ion-item *ngIf="notificationData['timescale']==='Weekly'">
           <ion-label>Set day(s) of week:</ion-label>
           <ion-select multiple="true" [(ngModel)]="notificationData['dayOfWeek']">
-            <ion-option *ngFor="let day of days" [value]="day"
+            <ion-option *ngFor="let day of days" [value]="day"  (change)="dataChanged = true"
                         [selected]="notificationData.dayOfWeek && notificationData.dayOfWeek === day">
               {{day}}
             </ion-option>
@@ -53,13 +53,13 @@
         <ion-item *ngIf="notificationData['timescale']==='Monthly'">
           <ion-label>Set day(s) of month:</ion-label>
           <ion-select multiple="true" [(ngModel)]="notificationData['dayOfMonth']">
-            <ion-option *ngFor="let date of dates" [value]=date>{{date}}</ion-option>
+            <ion-option *ngFor="let date of dates" [value]=date  (change)="dataChanged = true">{{date}}</ion-option>
           </ion-select>
         </ion-item>
 
         <ion-item>
           <ion-label>Set time of day:</ion-label>
-          <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" hourValues="12"
+          <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" (change)="dataChanged = true"
                         [(ngModel)]="notificationData['timeOfDay']"></ion-datetime>
         </ion-item>
 
@@ -69,9 +69,9 @@
 
         <ion-item>
           <ion-label>Set delay:</ion-label>
-          <ion-input type="number" text-right
+          <ion-input type="number" text-right  (change)="dataChanged = true"
                      [(ngModel)]="notificationData.delayNum"></ion-input>
-          <ion-select [(ngModel)]="notificationData['delayScale']">
+          <ion-select [(ngModel)]="notificationData['delayScale']" (change)="dataChanged = true">
             <ion-option value="Hour"
                         [selected]="notificationData.delayScale && notificationData.delayScale === 'Hour'">
               Hour
@@ -97,12 +97,14 @@
                  [disabled]="(notificationData['timescale']==='Monthly' && notificationData['dayOfMonth'] === undefined) ||
           (notificationData['timescale']==='Weekly' && notificationData['dayOfWeek'] === undefined) ||
           (notificationData['timeOfDay'] === undefined)">
-      Save
+      <span *ngIf="dataChanged || !hasNotificationsConfigured">Save</span>
+      <span *ngIf="!dataChanged && hasNotificationsConfigured">Cancel</span>
     </button>
 
   <button *ngIf="freqType === 'retroactive'" float-right ion-button (click)="finish()"
           [disabled]="(notificationData['timescale']==='Monthly' && notificationData['dayOfMonth'] === undefined)">
-    Save
+    <span *ngIf="dataChanged || !hasNotificationsConfigured">Save</span>
+    <span *ngIf="!dataChanged && hasNotificationsConfigured">Cancel</span>
   </button>
 
 </ion-content>

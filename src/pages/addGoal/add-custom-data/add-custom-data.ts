@@ -23,11 +23,13 @@ export class AddCustomDataPage {
   private goalTime : string;
   private fieldList : [{[fieldProp : string]:any}];
   private numList : Number[];
+  private allowsGoals : boolean;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
     this.dataType = navParams.data.type;
+    this.allowsGoals = navParams.data.goals;
     this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 

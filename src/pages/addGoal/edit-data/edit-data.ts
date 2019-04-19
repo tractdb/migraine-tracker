@@ -20,12 +20,14 @@ export class EditDataPage {
   private fieldList : {[fieldProp: string] : any}[]= [];
   private editGoal : boolean = false;
   private numList : Number[];
+  private allowsGoals: boolean;
   private somethingEdited : boolean = false;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
-    this.data = navParams.data;
+    this.allowsGoals = navParams.data['goals'];
+    this.data = navParams.data['data'];
     this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 
@@ -37,8 +39,11 @@ export class EditDataPage {
     this.somethingEdited = true;
   }
 
-  editData(type){
-    if(type==='field') this.editField = true;
+  editData(type : string){
+    if(type==='field'){
+      this.editField = true;
+      delete this.data.fieldDescription; // CHANGE IF WE DON'T LET THEM EDIT FIELDS
+    }
     else if (type==='goal') this.editGoal = true;
   }
 

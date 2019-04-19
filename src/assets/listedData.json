@@ -18,7 +18,7 @@
                 "recommendingGoals": ["3b", "3c"]
             },
             {
-                "name": "Peak Severity",
+                "name": "Peak Migraine Severity",
                 "id": "peakMigraineSeverity",
                 "explanation": "How bad your migraine was at its worst point",
                 "fieldDescription": "10-point Pain level (1=mild, 10=terrible)",
@@ -34,28 +34,60 @@
                 "recommendingGoals": ["3b"]
             },
             {
+                "name": "Fatigue",
+                "id": "whetherFatigue",
+                "explanation": "Fatigue experience today",
+                "fieldDescription": "3-point fatigue rating",
+                "field": "category scale",
+                "recommendingGoals": ["3b"]
+            },
+            {
                 "name": "Aura",
                 "id": "hadAura",
-                "explanation": "Aura experience today (recommended only if you sometimes experience aura)",
+                "explanation": "Aura experience today",
                 "fieldDescription": "Whether you experienced aura (yes/no)",
                 "field": "binary",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": []
             },
             {
                 "name": "Nausea",
                 "id": "hadNausea",
-                "explanation": "Nausea experience today (recommended only if you sometimes experience nausea)",
+                "explanation": "Nausea experience today",
                 "fieldDescription": "Whether you experienced nausea (yes/no)",
                 "field": "binary",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": []
             },
             {
                 "name": "Lightheadedness/Dizziness",
                 "id": "hadLightheadednessOrDizziness",
-                "explanation": "Lightheadedness/dizziness experience today (recommended only if you sometimes experience lightheadedness/dizziness)",
+                "explanation": "Lightheadedness/dizziness experience today",
                 "fieldDescription": "Whether you were lightheaded/dizzy (yes/no)",
                 "field": "binary",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": []
+            },
+            {
+                "name": "Brain Fog",
+                "id": "brainFog",
+                "explanation": "\"Brain fog\" experience today",
+                "fieldDescription": "Whether you had brain fog (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Light Sensitivity",
+                "id": "lightSensitivity",
+                "explanation": "Light sensitivity experience today",
+                "fieldDescription": "Whether you experienced light sensitivity (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
+            },
+            {
+                "name": "Sound Sensitivity",
+                "id": "soundSensitivity",
+                "explanation": "Sound sensitivity experience today",
+                "fieldDescription": "Whether you experienced sound sensitivity (yes/no)",
+                "field": "binary",
+                "recommendingGoals": []
             },
             {
                 "name": "Migraine Impact on Disability",
@@ -66,14 +98,6 @@
                 "recommendingGoals": ["3c"]
             },
             {
-                "name": "Brain Fog",
-                "id": "brainFog",
-                "explanation": "\"Brain fog\" experience today (recommended only if you sometimes experience brain fog)",
-                "fieldDescription": "Whether you had brain fog (yes/no)",
-                "field": "binary",
-                "recommendingGoals": ["3b"]
-            },
-            {
                 "name": "Location",
                 "id": "migraineLocation",
                 "explanation": "Where the pain was (right or left side, eyes, forehead, temples, face, back of head, neck, all over)",
@@ -82,35 +106,11 @@
                 "recommendingGoals": ["3b"]
             },
             {
-                "name": "Light Sensitivity",
-                "id": "lightSensitivity",
-                "explanation": "Light sensitivity experience today (only recommended if that's a symptom you experience)",
-                "fieldDescription": "Whether you experienced light sensitivity (yes/no)",
-                "field": "binary",
-                "recommendingGoals": ["3b"]
-            },
-            {
-                "name": "Sound Sensitivity",
-                "id": "soundSensitivity",
-                "explanation": "Sound sensitivity experience today (only recommended if that's a symptom you experience)",
-                "fieldDescription": "Whether you experienced sound sensitivity (yes/no)",
-                "field": "binary",
-                "recommendingGoals": ["3b"]
-            },
-            {
                 "name": "Quality of the Pain",
                 "id": "painQuality",
                 "explanation": "What the pain was like (pulsating/throbbing, pressure, tension, stabbing, sharp, dull, burning, other)",
                 "fieldDescription": "Text box where you can describe the pain",
                 "field": "note",
-                "recommendingGoals": ["3b"]
-            },
-            {
-                "name": "Fatigue",
-                "id": "whetherFatigue",
-                "explanation": "Fatigue experience today",
-                "fieldDescription": "3-point fatigue rating",
-                "field": "category scale",
                 "recommendingGoals": ["3b"]
             },
             {

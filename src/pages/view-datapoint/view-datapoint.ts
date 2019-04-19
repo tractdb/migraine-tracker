@@ -16,9 +16,10 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
   templateUrl: 'view-datapoint.html',
 })
 export class ViewDatapointPage {
-  dataTypes = [];
-  dataDict = {};
-  displayNames = {};
+  dataTypes: string[] = [];
+  dataDict : {[datapointProps: string] : any} = {};
+  displayNames : {[shortName : string] : string}= {};
+  today : any = new Date();
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams,
               public dataDetailsService:DataDetailsServiceProvider, public dateFunctions: DateFunctionServiceProvider,
@@ -29,47 +30,97 @@ export class ViewDatapointPage {
     this.viewCtrl.dismiss();
   }
 
-  transformIntoArray(dataType){ //since ionic won't allow iteration on dicts.  Func.
+
+  changeVals(componentEvent : {[eventPossibilities: string] : any}, dataType : string,
+             dataItem : {[dataProps: string] : any}){
+    // todo: push to database!
+    console.log(this.dataDict)
+    let itemIndex = this.dataDict[dataType]['dataArray'].indexOf(dataItem);
+    console.log(this.dataDict[dataType]['dataArray'][itemIndex]);
+    if(componentEvent.dataVal){
+      this.dataDict[dataType][dataItem.data.id] = componentEvent.dataVal;
+      this.dataDict[dataType]['dataArray'][itemIndex]['value'] = (dataItem.data.field === 'time' ?
+        this.dateFunctions.timeTo12Hour(componentEvent.dataVal) : componentEvent.dataVal);
+    }
+    if(componentEvent.dataStart){
+      this.dataDict[dataType][dataItem.data.id]['start'] = componentEvent.dataStart;
+      this.dataDict[dataType]['dataArray'][itemIndex]['value']['start'] =
+        this.dateFunctions.timeTo12Hour(componentEvent.dataStart);
+    }
+    if(componentEvent.dataEnd){
+      this.dataDict[dataType][dataItem.data.id]['end'] = componentEvent.dataEnd;
+      this.dataDict[dataType]['dataArray'][itemIndex]['value']['end'] =
+        this.dateFunctions.timeTo12Hour(componentEvent.dataEnd);
+    }
+
+    if(this.dataDict['dateChanged'].indexOf(this.today) < 0){
+      this.dataDict['dateChanged'].push(this.today);
+    }
+
+    console.log(this.dataDict);
+  }
+
+
+  getDataInfoByID(dataID : string, dataTracked : {[dataProp: string] : any}[]) : {[dataProp: string] : any} {
+    for(let i=0; i<dataTracked.length; i++){
+      if(dataTracked[i].id === dataID){
+        return dataTracked[i];
+      }
+    }
+    return null;
+  }
+
+  transformIntoArray(dataType : string, dataInRoutine : {[dataProp: string] : any}[]) : {[dataProp: string] : any}[]{
+    //since ionic won't allow iteration on dicts.  Fun.
+    let allData = [];
     let dataTypeDict = this.dataDict[dataType];
     let dataPoints = Object.keys(dataTypeDict);
     this.dataDict[dataType]['dataArray'] = [];
-    for(let j=0; j<dataPoints.length; j++){
-      let element;
-      if(dataTypeDict[dataPoints[j]] && dataTypeDict[dataPoints[j]] != ''){
-        if(typeof dataTypeDict[dataPoints[j]] === 'object'){
-          element = {'data': dataPoints[j],
-            'value': {
-              'start': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].start),
-              'end': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].end)
-            },
-            'isDuration': true
+    for(let j=0; j<dataPoints.length; j++) {
+      if (dataTypeDict[dataPoints[j]] && dataTypeDict[dataPoints[j]] != '') {
+        let dataInfo = this.getDataInfoByID(dataPoints[j], dataInRoutine);
+        if (dataInfo) { // if they're not currently tracking it it doesn't match their current goals
+          let element = {'data' : dataInfo};
+          if (dataInfo.field === 'time range') {
+            element['value'] = {
+                'start': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].start),
+                'end': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].end)
+            };
+            element['isDuration'] = true;
           }
-        }
-        else{
-          element = {'data': dataPoints[j],
-            'value': dataTypeDict[dataPoints[j]],
-            'isDuration': false
+          else if (dataInfo.field === 'time') {
+            element['value'] = this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]]);
           }
+          else {
+            element['value'] =  dataTypeDict[dataPoints[j]];
+          }
+          allData.push(element);
         }
-        this.dataDict[dataType]['dataArray'].push(element);
       }
     }
+    return allData;
   }
 
   ionViewDidLoad() {
     this.dataDict = this.navParams.data;
+    if(!this.dataDict['dateChanged']){
+      this.dataDict['dateChanged'] = [];
+    }
     this.dataDict['date'] = this.dateFunctions.dateToPrettyDate(this.dataDict['startTime']);
+    let configuredGoals = this.couchDBService.getActiveGoals();
 
     let allDataTypes = this.dataDetailsService.getAllDataTypes();
     for(let i=0; i<allDataTypes.length; i++){
       let dataType = allDataTypes[i];
-      if(this.dataDict[dataType]){
-        this.displayNames[dataType] = this.dataDetailsService.getDisplayName(dataType);
-        this.dataTypes.push(dataType);
-        this.transformIntoArray(dataType);
+      if(this.dataDict[dataType] && configuredGoals['dataToTrack'][dataType]){
+        this.dataDict[dataType]['dataArray'] = this.transformIntoArray(dataType,
+                                                                          configuredGoals['dataToTrack'][dataType]);
+        if(this.dataDict[dataType]['dataArray'].length > 0){
+          this.displayNames[dataType] = this.dataDetailsService.getDisplayName(dataType);
+          this.dataTypes.push(dataType);
+        }
       }
     }
-    console.log(this.dataDict);
   }
 
 }

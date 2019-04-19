@@ -15,16 +15,16 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 })
 export class BreakFromTrackingPage {
 
-  currentBreak;
-  currentBreakStarted;
+  currentBreak : {[breakProps: string] : any};
+  currentBreakStarted : string;
 
-  selected = '';
+  selected : string = '';
 
 
-  dateToSnoozeTo;
-  dateToCheckIn;
+  dateToSnoozeTo : string;
+  dateToCheckIn : string;
 
-  reasonForBreak;
+  reasonForBreak : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBProvider: CouchDbServiceProvider) {
@@ -62,7 +62,6 @@ export class BreakFromTrackingPage {
 
   takeBrake(){
     //todo: push to couch, deal with notifications, etc
-    console.log("wants to take break!");
     let newBreak = {};
     newBreak['reasonForBreak'] = this.reasonForBreak;
     if(this.selected==='Yes' && this.dateToSnoozeTo){
@@ -84,7 +83,12 @@ export class BreakFromTrackingPage {
 
   updateBreak(){
     this.currentBreak['notifyDate'] = this.dateToSnoozeTo;
-    this.currentBreak['checkInDate'] = this.dateToCheckIn;
+    if(this.dateToSnoozeTo){
+      delete this.currentBreak['checkInDate'];
+    }
+    else{
+      this.currentBreak['checkInDate'] = this.dateToCheckIn
+    }
     this.couchDBProvider.updateBreak(this.currentBreak);
   }
 

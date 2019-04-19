@@ -55,6 +55,8 @@ export class SelectSubgoalsPage {
     configStep = this.globalFunctions.toggleDetails(configStep);
     this.navParams.data.configPath.push(configStep);
 
+    this.navParams.data['goalIDs'] = this.navParams.data['goalIDs'].concat(this.selectedSubgoals);
+
     let nextSubgoalIndex = this.navParams.data['allSubgoals'].indexOf(this.currentSubgoal) + 1;
     if(nextSubgoalIndex < this.navParams.data['allSubgoals'].length){
       this.navParams.data['currentSubgoal'] = this.navParams.data['allSubgoals'][nextSubgoalIndex];
@@ -62,7 +64,7 @@ export class SelectSubgoalsPage {
     }
     else{
       this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath,
-                                                'goalIDs': this.navParams.data['goalIDs'].concat(this.selectedSubgoals)});
+                                                'goalIDs': this.navParams.data['goalIDs'] });
     }
   }
 

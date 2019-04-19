@@ -22,13 +22,27 @@
       <ion-list *ngFor="let item of dataDict[dataType]['dataArray']">
         <ion-item>
           <ion-label>
-            <h3 *ngIf="!item.isDuration">{{item.data}}: {{item.value}}</h3>
-            <h3 *ngIf="item.isDuration">{{item.data}}: {{item.value.start}} - {{item.value.end}}</h3>
+            <h3 *ngIf="!item.isDuration">{{item.data.name}}: {{item.value}}</h3>
+            <h3 *ngIf="item.isDuration">{{item.data.name}}: {{item.value.start}} - {{item.value.end}}</h3>
           </ion-label>
         </ion-item>
+
+
+        <data-element-tracking *ngIf="!item.isDuration" [data]="item.data" [dataVal]="item.value"
+                               (valueChanged) = 'changeVals($event, dataType, item)'>
+        </data-element-tracking>
+
+        <data-element-tracking *ngIf="item.isDuration" [data]="item.data"  [dataStart]="item.value.start" [dataEnd]="item.value.end"
+                               (valueChanged) = 'changeVals($event, dataType, item)'>
+        </data-element-tracking>
+
       </ion-list>
     </ion-card-content>
   </ion-card>
+
+
+  <h4 *ngIf="dataDict['dateChanged'] && dataDict['dateChanged'].length > 0">Data Edited:</h4>
+  <p *ngFor="let change of dataDict['dateChanged']">{{dateFunctions.dateToPrettyDate(change)}}</p>
 
   <button ion-button float-right (click)="closeModal()">Done</button>
 

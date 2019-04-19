@@ -60,7 +60,6 @@
                 Field:
                 <button *ngIf="!editField && !(data.field && data.field.includes('calculated'))" icon-only color="primary" item-right (click)="editData('field')">
                   <ion-icon slot="icon-only" name="create"></ion-icon>
-                  <!--<ion-icon *ngIf="editField" slot="icon-only" name="checkmark-circle"></ion-icon>-->
                 </button>
               </h2>
               <h3 text-wrap *ngIf="!editField">{{data.field}}<span *ngIf="data.fieldDescription">: {{data.fieldDescription}}</span></h3>
@@ -78,7 +77,8 @@
         </ion-item>
 
 
-        <ng-container *ngIf="(data.field !== undefined && data.field === 'binary' || data.field === 'number')">
+        <ng-container *ngIf="allowsGoals &&
+                              (data.field !== undefined && data.field === 'binary' || data.field === 'number')">
 
 
           <ion-item text-wrap>
