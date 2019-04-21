@@ -15,18 +15,19 @@ import {GeneralInfoServiceProvider} from "../../providers/general-info-service/g
 })
 export class FaqPage {
 
-  faqList;
+  private faqList : {[categoryInfo: string]: any}[] = [];
 
-  constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public generalInfoService: GeneralInfoServiceProvider) {
+  constructor(public generalInfoService: GeneralInfoServiceProvider,
+              public navCtrl: NavController,
+              public navParams: NavParams
+              ) {
   }
 
   ionViewDidLoad() {
     this.faqList = this.generalInfoService.getFaqData();
   }
 
-  expndOrHide(question){
+  expandOrHide(question : {[questionProps: string]: any}){
     if(question['expanded'] === undefined){
       question['expanded'] = true;
     }

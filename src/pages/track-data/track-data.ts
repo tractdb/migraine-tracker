@@ -4,7 +4,6 @@ import {HomePage} from "../home/home";
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
-import * as moment from "../../providers/date-function-service/date-function-service";
 
 
 

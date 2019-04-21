@@ -13,10 +13,6 @@ export class GeneralInfoServiceProvider {
   private faqData : any;
 
   constructor(public http: HttpClient) {
-    this.readFaqData();
-  }
-
-  readFaqData() {
     this.http.get('assets/migraineInfo.json', {},).subscribe(faqData => {
         this.faqData = faqData;
       },
@@ -25,7 +21,7 @@ export class GeneralInfoServiceProvider {
       });
   }
 
-  getFaqData() : [{[section: string] : any}] {
+  getFaqData() : {[section: string] : any}[] {
     return this.faqData;
   }
 

@@ -22,13 +22,6 @@ export class DataDetailsServiceProvider {
   }
 
 
-
-  getDataInfoByID(id : string, dataType: string) : {[dataProps: string] : any} {
-    for(let i=0; i<this.listedData.length; i++){
-
-    }
-  }
-
   getDisplayName(name : string) : string{
     for(let i=0; i<this.configData.length; i++){
       if(this.configData[i].name === name){

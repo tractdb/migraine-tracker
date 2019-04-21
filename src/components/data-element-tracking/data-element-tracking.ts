@@ -63,6 +63,7 @@ export class DataElementTrackingComponent {
       this.buttonColors[this.dataVal] = 'primary';
       if(this.data.field === 'time'){
         this.dataVal = this.dateFuns.getISOTime(this.dataVal);
+        console.log(this.dataVal);
       }
     }
 

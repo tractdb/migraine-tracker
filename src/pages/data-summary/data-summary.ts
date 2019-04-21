@@ -16,13 +16,13 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class DataSummaryPage {
 
-  currentlyTracking;
-  allTrackedData;
-  filteredDataByName;
-  dataTypes;
-  earliestDateFilter;
-  latestDateFilter;
-  today;
+  currentlyTracking : {[dataType: string] : {[dataElementProps: string] : any}[]};
+  allTrackedData : {[dataType: string] : {[dataID: string] : any}[]}[];
+  filteredDataByID : {[dataID: string] : {[reportProps: string] : any}[]};
+  dataTypes : string[];
+  earliestDateFilter : string;
+  latestDateFilter : string;
+  today : any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider, public dateFunctions: DateFunctionServiceProvider) {
@@ -38,72 +38,66 @@ export class DataSummaryPage {
   }
 
 
-  findDataInfo(trackingInType, dataName){
-    let dataInfo = trackingInType.filter(function (data) {
-      return data.name === dataName;
-    });
-    return dataInfo;
-  }
 
-
-  getPrettifiedDates(){
+  getPrettifiedDates() : string{
     let prettyEarlyDate = this.dateFunctions.dateToPrettyDate(this.earliestDateFilter);
     let prettyLateDate = this.dateFunctions.dateToPrettyDate(this.latestDateFilter);
     return "between " + prettyEarlyDate + " and " + prettyLateDate + ".";
   }
 
-  getSum(dataVals){
+  getSum(dataVals) : number{
     return dataVals.reduce(function(a, b){
       return Number(a) + Number(b)
     });
   }
 
 
-  getDataToReport(trackedDict){
-    let dataNames = Object.keys(trackedDict);
+  getDataToReport(trackedDict : {[dataID: string] : {[reportProps: string] : any}[]}){
+    let dataIDs = Object.keys(trackedDict);
     let betweenDates = this.getPrettifiedDates();
-    for(let i=0; i<dataNames.length; i++) {
+    for(let i=0; i<dataIDs.length; i++) {
       let report;
-      let timesTrackedStatement ="You tracked '" + dataNames[i].toLowerCase() + "' " +
-        trackedDict[dataNames[i]]['vals'].length  + " times " + betweenDates;
+      let dataName = trackedDict[dataIDs[i]]['name'].toLowerCase();
+      let timesTrackedStatement ="You tracked '" + dataName + "' " +
+        trackedDict[dataIDs[i]]['vals'].length  + " times " + betweenDates;
 
 
-      if (trackedDict[dataNames[i]]['vals'].length === 0){
-        report = "You did not report '" + dataNames[i].toLowerCase() + "' " + betweenDates;
+      if (trackedDict[dataIDs[i]]['vals'].length === 0){
+        report = "You did not report '" + dataName + "' " + betweenDates;
       }
 
 
-      else if (trackedDict[dataNames[i]]['field'] === 'binary') {
-        let timesSaidTrue = trackedDict[dataNames[i]]['vals'].filter(function(data){return data === true}).length;
-        report = "You reported having '" + dataNames[i].toLowerCase() + "' "
+      else if (trackedDict[dataIDs[i]]['field'] === 'binary') {
+        let timesSaidTrue = trackedDict[dataIDs[i]]['vals'].filter(function(data){return data === 'Yes'}).length;
+        report = "You reported having '" + dataName + "' "
           + timesSaidTrue + ' times ' + betweenDates;
       }
 
 
-      else if(trackedDict[dataNames[i]]['field'] === 'number') {
-        let addedVals = this.getSum(trackedDict[dataNames[i]]['vals']);
-        let average = addedVals/trackedDict[dataNames[i]]['vals'].length;
+      else if(trackedDict[dataIDs[i]]['field'] === 'number') {
+        let addedVals = this.getSum(trackedDict[dataIDs[i]]['vals']);
+        let average = addedVals/trackedDict[dataIDs[i]]['vals'].length;
         report =  timesTrackedStatement + " You totalled " + addedVals +
           ", for an average of " + Math.round(average) + " each time tracked.";
       }
 
 
-      else if(trackedDict[dataNames[i]]['field'] === 'numeric scale') {
-        let addedVals = this.getSum(trackedDict[dataNames[i]]['vals']);
-        let average = addedVals/trackedDict[dataNames[i]]['vals'].length;
-        report = timesTrackedStatement + " Your average '" + dataNames[i].toLowerCase() + "' was "
+      else if(trackedDict[dataIDs[i]]['field'] === 'numeric scale') {
+        let addedVals = this.getSum(trackedDict[dataIDs[i]]['vals']);
+        let average = addedVals/trackedDict[dataIDs[i]]['vals'].length;
+        report = timesTrackedStatement + " Your average '" + dataName + "' was "
                   + Math.round(average) + ".";
       }
 
 
-      else if(trackedDict[dataNames[i]]['field'] === 'category scale') {
+      else if(trackedDict[dataIDs[i]]['field'] === 'category scale') {
         let counts = {};
-        for(let j=0; j<trackedDict[dataNames[i]]['vals'].length; j++){
-          if(trackedDict[dataNames[i]]['vals'][j] in counts){
-            counts[trackedDict[dataNames[i]]['vals'][j]] ++;
+        for(let j=0; j<trackedDict[dataIDs[i]]['vals'].length; j++){
+          if(trackedDict[dataIDs[i]]['vals'][j] in counts){
+            counts[trackedDict[dataIDs[i]]['vals'][j]] ++;
           }
           else{
-            counts[trackedDict[dataNames[i]]['vals'][j]] = 1;
+            counts[trackedDict[dataIDs[i]]['vals'][j]] = 1;
           }
         }
         let toReport = [];
@@ -115,47 +109,46 @@ export class DataSummaryPage {
       }
 
 
-      else if(trackedDict[dataNames[i]]['field'] === 'time') {
+      else if(trackedDict[dataIDs[i]]['field'] === 'time') {
         report = timesTrackedStatement;
       }
 
 
-      else if(trackedDict[dataNames[i]]['field'] === 'time range') {
-        let addedDurations = this.getSum(trackedDict[dataNames[i]]['vals']);
-        let averageDuration = addedDurations / trackedDict[dataNames[i]]['vals'].length;
+      else if(trackedDict[dataIDs[i]]['field'] === 'time range') {
+        let addedDurations = this.getSum(trackedDict[dataIDs[i]]['vals']);
+        let averageDuration = addedDurations / trackedDict[dataIDs[i]]['vals'].length;
         report = timesTrackedStatement +" Your average duration was " +
           this.dateFunctions.milisecondsToPrettyTime(averageDuration) + ".";
       }
 
-      trackedDict[dataNames[i]]['toReport'] = report;
+      trackedDict[dataIDs[i]]['toReport'] = report;
     }
 
 
-    this.filteredDataByName = trackedDict;
+    this.filteredDataByID = trackedDict;
 
   }
 
-  getDuration(timeRangeDict){
+  getDuration(timeRangeDict : {[timeEnds: string] : string}) : number{
     let earlyTime = timeRangeDict['start'];
     let lateTime = timeRangeDict['end'];
     if(earlyTime===undefined || lateTime === undefined){
       return 0;
     }
     else{
-      let duration = this.dateFunctions.getDuration(earlyTime, lateTime);
-      return duration;
+      return this.dateFunctions.getDuration(earlyTime, lateTime);
     }
   }
 
 
-  aggregateData(filteredData){
+  aggregateData(filteredData : {[dataType: string] : {[dataID: string] : any}[]}[]){
     let trackedDict = {};
 
     for(let i=0; i<this.dataTypes.length; i++){
       let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
       for(let t=0; t<trackingOfType.length; t++){
-        if(!trackedDict[trackingOfType[t].name])
-          trackedDict[trackingOfType[t].name] = {'field': trackingOfType[t].field,
+        if(!trackedDict[trackingOfType[t].id])
+          trackedDict[trackingOfType[t].id] = {'name' : trackingOfType[t].name, 'field': trackingOfType[t].field,
                                                   'vals': [], 'goal': trackingOfType[t].goal};
       }
     }
@@ -165,29 +158,28 @@ export class DataSummaryPage {
       for(let j=0; j<trackedDataTypes.length; j++){
         if(this.dataTypes.indexOf(trackedDataTypes[j]) > -1){
           let dataItems = filteredData[i][trackedDataTypes[j]];
-          for(var dataName in dataItems) {
-            if (trackedDict[dataName]) {
-              if(trackedDict[dataName].field === 'time range'){
-                trackedDict[dataName]['vals'].push(this.getDuration(dataItems[dataName]))
+          for(var dataID in dataItems) {
+            if (trackedDict[dataID]) {
+              if(trackedDict[dataID].field === 'time range'){
+                trackedDict[dataID]['vals'].push(this.getDuration(dataItems[dataID]))
               }
               else{
-                trackedDict[dataName]['vals'].push(dataItems[dataName]);
+                trackedDict[dataID]['vals'].push(dataItems[dataID]);
               }
             }
             else{
-              console.log("Not currently tracking " + dataName);
+              console.log("Not currently tracking " + dataID);
             }
           }
         }
       }
     }
-    console.log(trackedDict);
     this.getDataToReport(trackedDict);
   }
 
 
 
-  filterData(filterDate =undefined, filterDir=undefined){
+  filterData(filterDate : string = undefined, filterDir : string=undefined){
     if(filterDir === 'early'){ // because of dumb ionic bug ...
       this.earliestDateFilter = filterDate;
     }
@@ -196,8 +188,10 @@ export class DataSummaryPage {
     }
     let earliestDate = this.earliestDateFilter;
     let latestDate = this.latestDateFilter;
+    let actualThis = this;
     let filteredData = this.allTrackedData.filter(function (datapoint) {
-      return datapoint.startDate >= earliestDate && datapoint.startDate <= latestDate;
+      return actualThis.dateFunctions.dateGreaterOrEqual(datapoint.startTime, earliestDate) &&
+              actualThis.dateFunctions.dateGreaterOrEqual(latestDate, datapoint.startTime);
     });
     this.aggregateData(filteredData);
   }
@@ -206,7 +200,7 @@ export class DataSummaryPage {
     this.allTrackedData = this.couchDBService.getTrackedData();
     this.currentlyTracking = this.couchDBService.getActiveGoals()['dataToTrack'];
     let allDataTypes = Object.keys(this.currentlyTracking);
-    for(let i=0; i<allDataTypes.length; i++){
+    for(let i=0; i<allDataTypes.length; i++){ // we won't report notes, so if it's all they have for a datatype, remove
       this.currentlyTracking[allDataTypes[i]] = this.currentlyTracking[allDataTypes[i]].filter(function(dataItem){
         return dataItem.field !== 'note';
       });

@@ -20,6 +20,7 @@ export class ViewDatapointPage {
   dataDict : {[datapointProps: string] : any} = {};
   displayNames : {[shortName : string] : string}= {};
   today : any = new Date();
+  edit: boolean = false;
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams,
               public dataDetailsService:DataDetailsServiceProvider, public dateFunctions: DateFunctionServiceProvider,
@@ -34,7 +35,6 @@ export class ViewDatapointPage {
   changeVals(componentEvent : {[eventPossibilities: string] : any}, dataType : string,
              dataItem : {[dataProps: string] : any}){
     // todo: push to database!
-    console.log(this.dataDict)
     let itemIndex = this.dataDict[dataType]['dataArray'].indexOf(dataItem);
     console.log(this.dataDict[dataType]['dataArray'][itemIndex]);
     if(componentEvent.dataVal){
@@ -56,46 +56,48 @@ export class ViewDatapointPage {
     if(this.dataDict['dateChanged'].indexOf(this.today) < 0){
       this.dataDict['dateChanged'].push(this.today);
     }
-
-    console.log(this.dataDict);
   }
 
 
-  getDataInfoByID(dataID : string, dataTracked : {[dataProp: string] : any}[]) : {[dataProp: string] : any} {
-    for(let i=0; i<dataTracked.length; i++){
-      if(dataTracked[i].id === dataID){
-        return dataTracked[i];
-      }
-    }
-    return null;
+  startEditing(){
+    this.edit = true;
   }
+
+
 
   transformIntoArray(dataType : string, dataInRoutine : {[dataProp: string] : any}[]) : {[dataProp: string] : any}[]{
     //since ionic won't allow iteration on dicts.  Fun.
     let allData = [];
     let dataTypeDict = this.dataDict[dataType];
-    let dataPoints = Object.keys(dataTypeDict);
+    let dataElements = Object.keys(dataTypeDict);
     this.dataDict[dataType]['dataArray'] = [];
-    for(let j=0; j<dataPoints.length; j++) {
-      if (dataTypeDict[dataPoints[j]] && dataTypeDict[dataPoints[j]] != '') {
-        let dataInfo = this.getDataInfoByID(dataPoints[j], dataInRoutine);
-        if (dataInfo) { // if they're not currently tracking it it doesn't match their current goals
-          let element = {'data' : dataInfo};
+    for(let i=0; i<dataInRoutine.length; i++){
+      let dataInfo = dataInRoutine[i];
+      if(dataInfo.field === 'calculated medication use') continue;
+      let element = {'data' : dataInfo};
+      let found = false;
+      for(let j=0; j<dataElements.length; j++){
+        if(dataInfo.id === dataElements[j] && dataTypeDict[dataElements[j]] != ''){
           if (dataInfo.field === 'time range') {
             element['value'] = {
-                'start': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].start),
-                'end': this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]].end)
+              'start': this.dateFunctions.timeTo12Hour(dataTypeDict[dataElements[j]].start),
+              'end': this.dateFunctions.timeTo12Hour(dataTypeDict[dataElements[j]].end)
             };
             element['isDuration'] = true;
           }
           else if (dataInfo.field === 'time') {
-            element['value'] = this.dateFunctions.timeTo12Hour(dataTypeDict[dataPoints[j]]);
+            element['value'] = this.dateFunctions.timeTo12Hour(dataTypeDict[dataElements[j]]);
           }
           else {
-            element['value'] =  dataTypeDict[dataPoints[j]];
+            element['value'] =  dataTypeDict[dataElements[j]];
           }
           allData.push(element);
+          found=true;
+          break;
         }
+      }
+      if(!found){
+        allData.push(element);
       }
     }
     return allData;
@@ -103,16 +105,19 @@ export class ViewDatapointPage {
 
   ionViewDidLoad() {
     this.dataDict = this.navParams.data;
+    console.log(this.dataDict);
+    console.log(this.dateFunctions.dateToPrettyDate(this.dataDict['startTime'], true))
     if(!this.dataDict['dateChanged']){
       this.dataDict['dateChanged'] = [];
     }
-    this.dataDict['date'] = this.dateFunctions.dateToPrettyDate(this.dataDict['startTime']);
+    this.dataDict['date'] = this.dateFunctions.dateToPrettyDate(this.dataDict['startTime'], true);
     let configuredGoals = this.couchDBService.getActiveGoals();
 
     let allDataTypes = this.dataDetailsService.getAllDataTypes();
     for(let i=0; i<allDataTypes.length; i++){
       let dataType = allDataTypes[i];
-      if(this.dataDict[dataType] && configuredGoals['dataToTrack'][dataType]){
+      if(configuredGoals['dataToTrack'][dataType]){
+        if(!this.dataDict[dataType]) this.dataDict[dataType] = {};
         this.dataDict[dataType]['dataArray'] = this.transformIntoArray(dataType,
                                                                           configuredGoals['dataToTrack'][dataType]);
         if(this.dataDict[dataType]['dataArray'].length > 0){

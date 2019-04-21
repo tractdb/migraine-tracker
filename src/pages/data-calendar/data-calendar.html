@@ -19,7 +19,7 @@
 <ion-content padding>
 
   <h3 style="text-align: center;">
-    <button float-left ion-button icon-only (click)="changeMonth('subtract')" [disabled]="isMinMonth">
+    <button float-left ion-button icon-only (click)="changeMonth('subtract')">
       <ion-icon name="md-arrow-dropleft"></ion-icon>
     </button>
     {{currentMonth}}
@@ -55,7 +55,11 @@
 
       <ion-item *ngIf="selectedDate.events.length === 0">
         <ion-label>
-          <div class="no-events-label">{{noEventsLabel}}</div>
+          <div class="no-events-label">{{noEventsLabel}}
+            <button item-right ion-button icon-only float-right (click)="seeDataDetails(null)">
+              <ion-icon name="add-circle-outline"></ion-icon>
+            </button>
+          </div>
         </ion-label>
       </ion-item>
 
@@ -73,7 +77,6 @@
             [monthviewDisplayEventTemplate]="template"
             [monthviewEventDetailTemplate]="template2"
             (onCurrentDateChanged)="onCurrentDateChanged($event)"
-            (onEventSelected)="onEventSelected($event)"
             step="30">
   </calendar>
 

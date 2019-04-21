@@ -16,8 +16,12 @@ export class DateFunctionServiceProvider {
   constructor(public http: HttpClient) {
   }
 
-  dateToPrettyDate(dateString){
-    return moment(dateString).format("MM/DD/YYYY");
+  dateToPrettyDate(dateString, utc=false){
+    let date = moment(dateString);
+    if(utc){
+      date = date.utc()
+    }
+    return date.format("MM/DD/YYYY");
     // return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
   }
 
@@ -27,6 +31,15 @@ export class DateFunctionServiceProvider {
 
   getTime(time){
     return moment(time, 'hh:mm');
+  }
+
+
+  getDate(date){
+    return moment(date);
+  }
+
+  compareToToday(date, granularity){
+    return moment().isSame(date, granularity)
   }
 
 
@@ -62,7 +75,11 @@ export class DateFunctionServiceProvider {
   }
 
   getISOTime(timeString){
-    return moment(timeString).toISOString();
+    return moment.utc(timeString, 'hh:mma').toISOString();
+  }
+
+  dateGreaterOrEqual(d1, d2){
+    return moment(d1) >= moment(d2);
   }
 
 
@@ -86,19 +103,8 @@ export class DateFunctionServiceProvider {
 
 
 
-  getMinMonth(events){
-    let minMonth = moment();
-    for(let i=0; i<events.length; i++){
-      let eventDate = moment(events[i].startTime);
-      if(eventDate.isBefore(minMonth)){
-        minMonth = eventDate;
-      }
-    }
-    return minMonth;
-  }
-
-
-  getOTCDate(date){
+  getUTCDate(date){
+    if(!date) date = new Date();
     if(typeof date === 'string'){
       date = new Date(date);
     }
@@ -110,7 +116,7 @@ export class DateFunctionServiceProvider {
     let dateTracked = new Date();
     dateTracked.setHours(0,0,0,0);
     let nextDay = moment(dateTracked).add(1, "day").toDate();
-    return [this.getOTCDate(dateTracked), this.getOTCDate(nextDay)]
+    return [this.getUTCDate(dateTracked), this.getUTCDate(nextDay)]
   }
 
 
