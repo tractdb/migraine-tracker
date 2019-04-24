@@ -33,7 +33,7 @@
       </ion-item>
 
 
-      <ng-container *ngIf="dataField === 'binary' || dataField === 'number'">
+      <ng-container *ngIf="allowsGoals && (dataField === 'binary' || dataField === 'number')">
         <ion-item-divider >Goal/Limit (Optional)</ion-item-divider>
         <ion-item>
           <ion-label>More or less</ion-label>

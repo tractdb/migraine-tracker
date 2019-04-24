@@ -1,10 +1,11 @@
 {
-    "Learning about my migraines": {
+    "1": {
         "GoalCategory": "Learning",
         "Title": "What do you want to learn about your migraines?",
         "subgoals": [
             {
                 "subgoalName": "Learn how frequently I get migraines",
+                "goalID": "1a",
                 "goodChoiceIf": [
                     "You want to know how often you have migraines (or pursue treatment)"
                 ],
@@ -14,9 +15,10 @@
                 ]
             },
             {
-                "subgoalName": "Learn what factors may affect my migraines",
+                "subgoalName": "Learn what factors may contribute to my migraines",
+                "goalID": "1b",
                 "goodChoiceIf": [
-                    "You want to identify potential contributing factors (\"triggers\")"
+                    "You want to identify potential contributors (\"triggers\")"
                 ],
                 "examples": [
                     "I want to track my stress and sleep to see if they seem to affect my migraines"
@@ -25,6 +27,7 @@
             
             {
                 "subgoalName": "Learn whether a specific change affects my migraines",
+                "goalID": "1c",
                 "goodChoiceIf": [
                     "You are making a specific change in your life and want to see how it affects your migraines"
                 ],
@@ -35,24 +38,27 @@
             }
         ]
     },
-    "Monitoring my migraines": {
+    "3": {
         "GoalCategory": "Monitoring",
         "Title": "Why do you want to monitor your migraines?",
         "subgoals": [
             {
                 "subgoalName": "Monitor for my own knowledge",
+                "goalID": "3a",
                 "examples": [
                     "I just want to know how often I get migraines"
                 ]
             },
             {
                 "subgoalName": "Monitor for my doctor",
+                "goalID": "3b",
                 "examples": [
                     "My doctor wants more detailed information about my migraines"
                 ]
             },
             {
                 "subgoalName": "Monitor for insurance",
+                "goalID": "3c",
                 "examples": [
                     "My insurance needs more detailed information about my migraines to cover my prescription"
                 ]

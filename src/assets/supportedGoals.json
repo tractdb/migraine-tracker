@@ -1,6 +1,7 @@
 [
     { 
         "goalName": "Learning about my migraines",
+        "goalID": "1",
         "goodChoiceIf": [
             "You are new to migraine tracking",
             "You are making a change"
@@ -15,6 +16,7 @@
     },
     {
         "goalName": "Predicting future migraines",
+        "goalID": "2",
         "goodChoiceIf": [
             "You know what factors affect your migraine and are willing to track frequently so you know when those factors are accumulating"
         ],
@@ -25,6 +27,7 @@
     },
     {
         "goalName": "Monitoring my migraines",
+        "goalID": "3",
         "goodChoiceIf": [
             "You just want to keep track of your migraines (or related data)"
         ],

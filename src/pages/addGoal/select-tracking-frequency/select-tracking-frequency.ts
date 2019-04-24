@@ -18,68 +18,74 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 })
 export class SelectTrackingFrequencyPage {
 
-  recommended;
-  activeGoals;
-  hasActiveGoals;
-  isModal;
-  selected = '';
-  notificationData;
+  recommended : string;
+  regularGoals : string[] = ['1b','1c', '2'];
+  activeGoals : {[goalAspect:string]: any;};
+  hasActiveGoals : boolean;
+  isModal : boolean;
+  dataChanged : boolean = false;
+  notificationData : {[notificationField:string]: any;} = {};
 
   constructor(public navCtrl: NavController,
               private modalCtrl: ModalController, public viewCtrl: ViewController,
               public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
   }
 
-  getGoals(goals){
-    for(let i=0; i<goals.length; i++){
-      if (goals[i].indexOf("Learning") >= 0 || goals[i].indexOf("Predicting") >= 0){
-        this.recommended = "regular";
-        break;
-      }
-      if (goals[i].indexOf("Monitoring") >= 0){
-        this.recommended = "post symptoms"
-      }
-    }
-  }
-
   ionViewDidLoad() {
-
     this.activeGoals = this.couchDBService.getActiveGoals();
     this.hasActiveGoals = (Object.keys(this.activeGoals).length > 0);
+    if(this.hasActiveGoals){
+      this.notificationData = this.activeGoals['notificationSettings'];
+    }
     this.isModal = this.navParams.data['isModal'];
 
-    if(this.isModal){
-      this.getGoals(this.activeGoals['goals']);
-    }
+    let allGoals = this.hasActiveGoals ? this.activeGoals['goals'] : [];
 
-    else{
-      this.getGoals(this.navParams.data.configPath[0].added);
-    }
+    allGoals = allGoals.concat(this.navParams.data['goalIDs'] ? this.navParams.data['goalIDs'] : []);
+    this.getGoals(allGoals);
+
   }
 
-  configureNotifications(){
-    this.changeSelected('regularly');
+  getGoals(goalIDs : string[]){
+    let recommended = "post symptoms";
+    for(let i=0; i<goalIDs.length; i++){
+      for(let j=0; j<this.regularGoals.length; j++){
+        if(goalIDs[i].indexOf(this.regularGoals[j]) >=0){
+          recommended = "regular";
+          break;
+        }
+      }
+    }
+    this.recommended = recommended;
+  }
 
-    let dataToSend = this.activeGoals.notifications ? this.activeGoals.notifications : {};
+
+  configureNotifications(type : string){
+    let configuredData = {};
+    console.log(this.notificationData)
+    if(this.notificationData[type]){
+      configuredData = this.notificationData[type];
+    }
+    else if (this.activeGoals.notifications && this.activeGoals.notifications[type]){
+      configuredData = this.activeGoals.notifications[type];
+    }
+
+    let dataToSend = {'configured': configuredData, 'type': type};
 
     let notificationModal = this.modalCtrl.create(ConfigureNotificationsPage, dataToSend);
     notificationModal.onDidDismiss(newData => {
+      this.dataChanged = true;
       if(newData){
-        if(Object.keys(newData).length === 0){
-          this.notificationData = undefined;
-        }
-        else{
-          this.notificationData = newData;
-        }
+        this.notificationData[type] = newData;
       }
       else{
-        console.log("Data lost...")
+        delete this.notificationData[type];
       }
     });
 
     notificationModal.present();
-
   }
+
 
   cancelChange(){
     this.viewCtrl.dismiss();
@@ -87,21 +93,10 @@ export class SelectTrackingFrequencyPage {
 
   continue() {
     if(this.isModal) {
-      if(this.selected === 'postSymptoms'){
-        this.viewCtrl.dismiss('postSymptoms');
-      }
-      else{
-        this.viewCtrl.dismiss(this.notificationData);
-      }
+      this.viewCtrl.dismiss(this.notificationData);
     }
     else{
-      if(this.selected === 'postSymptoms'){
-        this.navParams.data['trackingFreq'] = 'postSymptoms';
-      }
-      else if(this.selected === 'regularly'){
-        this.navParams.data['trackingFreq'] = 'regular';
-        this.navParams.data['notificationSettings'] = this.notificationData;
-      }
+      this.navParams.data['notificationSettings'] = this.notificationData;
       if(Object.keys(this.activeGoals).length !== 0){
         this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
       }
@@ -109,10 +104,6 @@ export class SelectTrackingFrequencyPage {
         this.navCtrl.setRoot(HomePage, this.navParams.data);
       }
     }
-  }
-
-  changeSelected(selection) {
-    this.selected = selection;
   }
 
 

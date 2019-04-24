@@ -1,16 +1,25 @@
 [
     {"name": "Changes",
     "description": "What change(s) are you planning on making?",
-    "conditionalGoal": "Learn whether a specific change affects my migraines"},
+    "conditionalGoals": ["1c"],
+    "additionalData": "startDate",
+    "dataGoals": true
+    },
 
-    {"name": "Symptoms"},
+    {"name": "Symptoms",
+    "dataGoals": false},
 
-    {"name": "Treatments"},
+    {"name": "Treatments",
+    "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
+    "dataGoals": true},
 
-    {"name": "Triggers",
-    "toDisplay": "Contributing Factors ('Triggers')"},
+    {"name": "Contributors",
+    "toDisplay": "Contributors (\"Triggers\")",
+    "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
+    "dataGoals": true},
 
     {"name": "Other",
-    "description": "Is there anything else you want to track?"}
+    "description": "Is there anything else you want to track?",
+    "dataGoals": true}
 
 ]

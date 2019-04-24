@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
+import _date = moment.unitOfTime._date;
+import {GlobalFunctionsServiceProvider} from "../global-functions-service/global-functions-service";
 
 /*
   Generated class for the DateFunctionServiceProvider provider.
@@ -14,8 +16,12 @@ export class DateFunctionServiceProvider {
   constructor(public http: HttpClient) {
   }
 
-  dateToPrettyDate(dateString){
-    return moment(dateString).format("MM/DD/YYYY");
+  dateToPrettyDate(dateString, utc=false){
+    let date = moment(dateString);
+    if(utc){
+      date = date.utc()
+    }
+    return date.format("MM/DD/YYYY");
     // return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
   }
 
@@ -25,6 +31,26 @@ export class DateFunctionServiceProvider {
 
   getTime(time){
     return moment(time, 'hh:mm');
+  }
+
+
+  getDate(date){
+    return moment(date);
+  }
+
+  compareToToday(date, granularity){
+    return moment().isSame(date, granularity)
+  }
+
+
+
+  dateArithmatic(date, manipulation, amount, unit){
+    if(manipulation === 'add'){
+      return moment(date).add(amount, unit);
+    }
+    else{
+      return moment(date).subtract(amount, unit);
+    }
   }
 
 
@@ -48,6 +74,14 @@ export class DateFunctionServiceProvider {
     return minutes + " min" + (minutes>1? 's' : '');
   }
 
+  getISOTime(timeString){
+    return moment.utc(timeString, 'hh:mma').toISOString();
+  }
+
+  dateGreaterOrEqual(d1, d2){
+    return moment(d1) >= moment(d2);
+  }
+
 
   milisecondsToPrettyTime(durationInMS){
     let duration = moment.duration(durationInMS);
@@ -69,35 +103,23 @@ export class DateFunctionServiceProvider {
 
 
 
-  getMinMonth(events){
-    let minMonth = moment();
-    for(let i=0; i<events.length; i++){
-      let eventDate = moment(events[i].startTime);
-      if(eventDate.isBefore(minMonth)){
-        minMonth = eventDate;
-      }
-    }
-    return minMonth;
-  }
-
-
-  getOTCDate(date){
+  getUTCDate(date){
+    if(!date) date = new Date();
     if(typeof date === 'string'){
       date = new Date(date);
     }
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   }
 
-  formatForCalendar(event){
+
+  getStartAndEndDatesForCalendar(){
     let dateTracked = new Date();
     dateTracked.setHours(0,0,0,0);
     let nextDay = moment(dateTracked).add(1, "day").toDate();
-    event['startTime'] = this.getOTCDate(dateTracked);
-    event['endTime'] =this.getOTCDate(nextDay);
-    event['allDay'] = true;
-    event['title'] = (event['Symptoms'] && event['Symptoms']['Migraine today']) ? 'Migraine' : 'No Migraine';
-    return event;
+    return [this.getUTCDate(dateTracked), this.getUTCDate(nextDay)]
   }
+
+
 
 
 }

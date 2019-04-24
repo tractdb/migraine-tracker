@@ -15,21 +15,19 @@ import {DataDetailsServiceProvider} from "../../../providers/data-details-servic
 })
 export class EditDataPage {
 
-  private data;
-  private dataField;
-  private goalFreq;
-  private goalThresh;
-  private goalTime;
-  private fieldList;
-  private editField = false;
-  private editGoal = false;
-  private numList;
-  private somethingEdited = false;
+  private data : {[dataInfo: string] : any} = {};
+  private editField : boolean = false;
+  private fieldList : {[fieldProp: string] : any}[]= [];
+  private editGoal : boolean = false;
+  private numList : Number[];
+  private allowsGoals: boolean;
+  private somethingEdited : boolean = false;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
-    this.data = navParams.data;
+    this.allowsGoals = navParams.data['goals'];
+    this.data = navParams.data['data'];
     this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 
@@ -37,42 +35,20 @@ export class EditDataPage {
     this.fieldList = this.dataDetails.getSupportedFields();
   }
 
-  editData(type){
-    if(type==='field'){
-      if(this.editField){
-        if(this.dataField && (this.data.field !== this.dataField)){
-          this.data.fieldDescription = null;
-          this.data.field = this.dataField;
-        }
-        this.somethingEdited = true;
-      }
-      this.editField = !this.editField;
-    }
-    else if (type==='goal'){
-      if(this.editGoal){
-        this.data.goal = {
-          'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
-          "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
-          'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
-        };
-        this.somethingEdited = true;
-      }
-      this.editGoal = !this.editGoal;
-    }
+  editedField(){
+    this.somethingEdited = true;
   }
 
-  backToConfig(choice){
+  editData(type : string){
+    if(type==='field'){
+      this.editField = true;
+      delete this.data.fieldDescription; // CHANGE IF WE DON'T LET THEM EDIT FIELDS
+    }
+    else if (type==='goal') this.editGoal = true;
+  }
+
+  backToConfig(choice : string){
     if(choice==='add') {
-      if(this.somethingEdited){
-        this.data.field = (this.dataField ? this.dataField: this.data.field);
-        if(this.data.goal || this.goalFreq) {
-          this.data.goal = {
-            'freq': (this.goalFreq ? this.goalFreq: this.data.goal.freq),
-            "threshold": (this.goalThresh ? this.goalThresh: this.data.goal.threshold),
-            'timespan': (this.goalTime ? this.goalTime: this.data.goal.timespan)
-          };
-        }
-      }
       this.viewCtrl.dismiss(this.data);
     }
     else if(choice=='remove'){

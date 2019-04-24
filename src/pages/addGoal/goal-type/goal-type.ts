@@ -16,8 +16,8 @@ export class GoalTypePage {
 
   @ViewChild('slides') slides: Slides;
 
-  private goalList;
-  private selectedGoals;
+  private goalList : [{[goalDetails:string]: any;}];
+  private selectedGoals : string[]= [];
 
   constructor(public navCtrl: NavController,
               public goalDetailsServiceProvider: GoalDetailsServiceProvider,
@@ -26,55 +26,39 @@ export class GoalTypePage {
   }
 
   ionViewDidLoad() {
-    this.goalDetailsServiceProvider.getGoalData().subscribe(goalData => {
-      this.goalList = goalData;
-      this.goalDetailsServiceProvider.setGoalList(this.goalList);
-      for(let i=0;i<this.goalList.length; i++){
-        this.goalList[i].colors = this.globalFunctions.buttonColors(false);
-      }
-    },
-    error => {
-      console.log(error);
-    });
+    this.goalList = this.goalDetailsServiceProvider.getGoalList();
+    for(let i=0;i<this.goalList.length; i++){
+      this.goalList[i].colors = this.globalFunctions.buttonColors(false);
+    }
   }
 
-  addGoal(goal){
-    if (this.selectedGoals.indexOf(goal.goalName) < 0 ) {
-      this.selectedGoals.push(goal.goalName);
+  addGoal(goal : {[goalDetails:string]: any;}){
+    if (this.selectedGoals.indexOf(goal.goalID) < 0 ) {
+      this.selectedGoals.push(goal.goalID);
     }
     goal.colors = this.globalFunctions.buttonColors(true);
   }
 
 
-  removeGoal(goal) {
-    const index = this.selectedGoals.indexOf(goal.goalName);
+  removeGoal(goal : {[goalDetails:string]: any;}) {
+    const index = this.selectedGoals.indexOf(goal.goalID);
     if (index > -1) {
       this.selectedGoals.splice(index, 1);
     }
     goal.colors = this.globalFunctions.buttonColors(false);
   }
 
-  // prev(){
-  //   this.slides.slidePrev();
-  //   // console.log(this.slides.lockSwipeToPrev())
-  // }
-  //
-  // next(){
-  //   // console.log(this.slides.lockSwipeToNext())
-  //   this.slides.slideNext();
-  // }
-
 
   continueSetup() {
     this.selectedGoals.sort();
-    let configStep = {"step": "goalType", "description": "Selected Goals", "added": this.selectedGoals};
+    let configStep = {"step": "goalType", "description": "Selected Goals", "added": []};
     configStep = this.globalFunctions.toggleDetails(configStep);
-    let dataToSend = {"configPath": [configStep]};
+    let dataToSend = {"configPath": [configStep], 'goalIDs': this.selectedGoals};
     let allSubgoals = [];
     for(let i=0; i<this.selectedGoals.length; i++){
-      let subgoals = this.goalDetailsServiceProvider.getSubgoalByName(this.selectedGoals[i]);
+      let subgoals = this.goalDetailsServiceProvider.getSubgoalByGoalID(this.selectedGoals[i]);
       if(subgoals !== null){
-        allSubgoals.push({"goal": this.selectedGoals[i], "subgoals": subgoals});
+        allSubgoals.push(subgoals);
       }
     }
 

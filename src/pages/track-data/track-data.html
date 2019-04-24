@@ -15,143 +15,50 @@
 
 <ion-content padding>
 
+  <h1 text-center>{{trackDate}}</h1>
+
   <ion-card *ngFor="let data of dataToTrack">
+
 
     <ion-card-content>
 
-      <ng-container *ngIf="data.field === 'binary'">
-        <ion-item>
-          <ion-label>{{data.name}}</ion-label>
-        </ion-item>
-        <div class="row" >
-          <div class="col" text-left>
-            <button ion-button [color]="getColor(data, 'No')" value="No" (click)="catScale(data, 'No')">
-              No
-            </button>
-          </div>
-          <div class="col" text-left >
-            <button ion-button [color]="getColor(data, 'Yes')" value="Yes" (click)="catScale(data, 'Yes')">
-              Yes
-            </button>
-          </div>
-        </div>
-      </ng-container>
+      <ion-item>
+        <ion-label text-wrap>
+          <h1>{{data.name}}</h1>
+          <h4 *ngIf="data.explanation">{{data.explanation}}</h4>
+          <h4 *ngIf="data.custom">(Custom data you configured)</h4>
+        </ion-label>
+      </ion-item>
 
-        <ion-item text-wrap *ngIf="data.field === 'number'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-input type="number" text-right placeholder="---"
-                     (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"></ion-input>
-        </ion-item>
+      <data-element-tracking [data]="data" [trackedMedsToday] = trackedMedsToday (valueChanged) = 'changeVals($event, data)'>
+      </data-element-tracking>
 
-        <ion-item text-wrap *ngIf="data.field === 'numeric scale'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-select [(ngModel)]="tracked[data.name]" (ngModelChange)="itemTracked()" placeholder="---">
-            <ion-option *ngFor="let num of numList" [value]="num">
-              {{num}}
-            </ion-option>
-          </ion-select>
-        </ion-item>
-
-
-      <ng-container *ngIf="data.field === 'category scale'">
-        <ion-item>
-          <ion-label>{{data.name}}</ion-label>
-        </ion-item>
-        <div class="row" >
-          <div class="col" text-left>
-            <button ion-button [color]="getColor(data, 'None')" value="None" (click)="catScale(data, 'None')">
-              None
-            </button>
-          </div>
-          <div class="col" text-center >
-            <button ion-button [color]="getColor(data, 'Some')" value="Some" (click)="catScale(data, 'Some')">
-              Some
-            </button>
-          </div>
-          <div class="col" text-center >
-            <button ion-button [color]="getColor(data, 'Lots')" value="Lots" (click)="catScale(data, 'Lots')">
-              Lots
-            </button>
-          </div>
-        </div>
-      </ng-container>
-
-        <ion-item text-wrap *ngIf="data.field === 'note'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-input (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]"
-                     placeholder="Enter note here"></ion-input>
-        </ion-item>
-
-
-        <ion-item text-wrap *ngIf="data.field === 'time'">
-          <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Select Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="tracked[data.name]">
-          </ion-datetime>
-        </ion-item>
-
-
-
-      <ng-container *ngIf="data.field === 'time range'">
-        <ion-item>
-          <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="Start Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemStart[data.name]">
-          </ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label>{{data.name}}</ion-label>
-          <ion-datetime displayFormat="h:mm a" placeholder="End Time"
-                        (ngModelChange)="itemTracked()" [(ngModel)]="durationItemEnd[data.name]">
-          </ion-datetime>
-        </ion-item>
-      </ng-container>
-
-
-      <ng-container *ngIf="data.field === 'calculated medication use'">
-        <ion-item >
-          <ion-label>{{data.name}} </ion-label>
-        </ion-item>
-          <p text-wrap *ngIf="trackedSoFar['Treatments'] && trackedSoFar['Treatments']['As-needed medications today'] > 0">
-            You took as-needed medication today.  Remember that too-frequent use of medication can cause more migraines!
-          </p>
-          <p text-wrap *ngIf="trackedSoFar['Treatments']
-                              && trackedSoFar['Treatments']['As-needed medications today'] === '0' ">
-            You did not take as-needed medication today!
-          </p>
-          <p text-wrap *ngIf="(trackedSoFar === {}) || (trackedSoFar['Treatments'] === undefined)
-                                || (trackedSoFar['Treatments']['As-needed medications today'] === undefined)">
-            You did not track whether you took as-needed medication today.
-          </p>
-      </ng-container>
-
-
-        <ion-item padding text-wrap *ngIf="data.goal && data.goal.freq">
-          <p>
-            Your goal is <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}}
-              times per {{data.goal.timespan}}.</span>
-            <span *ngIf="data.goal.timespan!=='Day'">
-              Including today, you have tracked
-              {{totalTrackedTimes(data)}}
-              this <span text-lowercase>{{data.goal.timespan}}</span>.
-            </span>
-            <span *ngIf="goalProgress(data) === 'met'">
-              Good job, you met your goal!
-            </span>
-            <span *ngIf="goalProgress(data) === 'below limit'">
-              Good job, you're still under your limit!
-            </span>
-            <span *ngIf="goalProgress(data) === 'under'">
-              Keep striving for your goal!
-            </span>
-            <span *ngIf="goalProgress(data) === 'over'">
-              Try to cut back!
-            </span>
-            <span *ngIf="goalProgress(data) === 'at limit'">
-              You're at your limit!
-            </span>
-          </p>
-        </ion-item>
+      <ion-item padding text-wrap *ngIf="data.goal && data.goal.freq">
+        <p>
+          Your goal is <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}}
+            times per {{data.goal.timespan}}.</span>
+          <span *ngIf="data.goal.timespan!=='Day'">
+            Including today, you have tracked
+            {{totalTrackedTimes(data)}}
+            this <span text-lowercase>{{data.goal.timespan}}</span>.
+          </span>
+          <span *ngIf="goalProgress(data) === 'met'">
+            Good job, you met your goal!
+          </span>
+          <span *ngIf="goalProgress(data) === 'below limit'">
+            Good job, you're still under your limit!
+          </span>
+          <span *ngIf="goalProgress(data) === 'under'">
+            Keep striving for your goal!
+          </span>
+          <span *ngIf="goalProgress(data) === 'over'">
+            Try to cut back!
+          </span>
+          <span *ngIf="goalProgress(data) === 'at limit'">
+            You're at your limit!
+          </span>
+        </p>
+      </ion-item>
 
 
     </ion-card-content>

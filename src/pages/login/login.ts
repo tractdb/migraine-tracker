@@ -11,10 +11,10 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class LoginPage {
 
   private loginInfo: FormGroup;
-  private credentials = {
-    'account': 'migraine_test',
-    'password': 'test'
-  };
+  // private credentials = {
+  //   'account': 'migraine_test',
+  //   'password': 'test'
+  // };
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDbService: CouchDbServiceProvider,

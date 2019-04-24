@@ -15,41 +15,33 @@ import {EnterTextGoalPage} from "../enter-text-goal/enter-text-goal";
   templateUrl: 'select-subgoals.html',
 })
 export class SelectSubgoalsPage {
-  private currentSubgoal;
-  private subgoalDict;
-  private pageTitle;
-  private subgoals;
-  private selectedSubgoals;
-  private configPath;
-  private goalType;
+  private currentSubgoal : {[goalProp: string] : any} = {};
+  private selectedSubgoals : string[] = [];
+  private goalType : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public globalFunctions: GlobalFunctionsServiceProvider) {
-    this.selectedSubgoals = [];
   }
 
   ionViewDidLoad() {
     this.currentSubgoal = this.navParams.data['currentSubgoal'];
-    this.goalType = this.navParams.data['currentSubgoal']["goal"].split(" ")[0];
-    this.subgoalDict = this.navParams.data['currentSubgoal']["subgoals"];
-    this.pageTitle = this.subgoalDict['Title']; // because of an incomprehensible error when I try to just use the dict
-    this.subgoals = this.subgoalDict['subgoals'];
-    for(let i=0; i<this.subgoals.length; i++){
-      this.subgoals[i].colors = this.globalFunctions.buttonColors(false);
+    this.goalType = this.navParams.data['currentSubgoal']['GoalCategory'];
+    let subgoals = this.currentSubgoal['subgoals'];
+    for(let i=0; i<subgoals.length; i++){
+      this.currentSubgoal['subgoals'][i].colors = this.globalFunctions.buttonColors(false);
     }
-    this.configPath = this.navParams.data['configPath'];
   }
 
-  addGoal(subgoal){
-    if (this.selectedSubgoals.indexOf(subgoal.subgoalName) < 0 ) {
-      this.selectedSubgoals.push(subgoal.subgoalName);
+  addGoal(subgoal : {[subgoalProp : string] : any}){
+    if (this.selectedSubgoals.indexOf(subgoal.goalID) < 0 ) {
+      this.selectedSubgoals.push(subgoal.goalID);
     }
     subgoal.colors = this.globalFunctions.buttonColors(true);
   }
 
 
-  removeGoal(subgoal) {
-    const index = this.selectedSubgoals.indexOf(subgoal.subgoalName);
+  removeGoal(subgoal : {[subgoalProp : string] : any}) {
+    const index = this.selectedSubgoals.indexOf(subgoal.goalID);
     if (index > -1) {
       this.selectedSubgoals.splice(index, 1);
     }
@@ -63,18 +55,21 @@ export class SelectSubgoalsPage {
     configStep = this.globalFunctions.toggleDetails(configStep);
     this.navParams.data.configPath.push(configStep);
 
+    this.navParams.data['goalIDs'] = this.navParams.data['goalIDs'].concat(this.selectedSubgoals);
+
     let nextSubgoalIndex = this.navParams.data['allSubgoals'].indexOf(this.currentSubgoal) + 1;
     if(nextSubgoalIndex < this.navParams.data['allSubgoals'].length){
       this.navParams.data['currentSubgoal'] = this.navParams.data['allSubgoals'][nextSubgoalIndex];
       this.navCtrl.push(SelectSubgoalsPage, this.navParams.data);
     }
     else{
-      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath});
+      this.navCtrl.push(EnterTextGoalPage, {'configPath': this.navParams.data.configPath,
+                                                'goalIDs': this.navParams.data['goalIDs'] });
     }
   }
 
 
-  toggleDetails(configStep) {
+  toggleDetails(configStep : {[stepDetials: string] : any}) {
     this.globalFunctions.toggleDetails(configStep);
   }
 

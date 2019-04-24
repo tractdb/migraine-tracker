@@ -20,35 +20,34 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
   templateUrl: 'data-vis.html',
 })
 export class DataVisPage {
-  // @ViewChild('barChart') barChart;
-  // @ViewChild('lineChart') lineChart;
 
-  allTrackedData = [];
-  currentGoals = {};
+  allTrackedData : {[trackedData:string]: any;}[] = [];
+  currentGoals : {[goalAspect:string]: any} = {};
 
-  allOverTimeGoals = ["Learn how frequently I get migraines",
-                               "Monitoring my migraines",];
-  allBeforeAfterGoals = ["Learn whether a specific change affects my migraines"];
-  allCorrelationVisGoals = ["Learn what factors may affect my migraines",
-                              "Predicting future migraines"];
+  allOverTimeGoals : string[] = ["1a", "3",];
+  allBeforeAfterGoals : string[] = ["1c"];
+  allCorrelationVisGoals : string[] = ["1b", "2"];
 
-  currentOverTimeGoals = [];
-  currentBeforeAfterGoals = [];
-  currentCorrelationGoals = [];
+  currentOverTimeGoals : string[] = [];
+  currentBeforeAfterGoals : string[] = [];
+  currentCorrelationGoals : string[] = [];
 
-  dates:_date[] = [];
-  symptoms:boolean[] = [];
-  triggers:any = {};
-  treatments:any = {};
-
-  correlationCharts = {'title': 'Trends in Triggers and Treatments', 'charts': []};
-  beforeAfterCharts = {'title': 'Trends Since Making a Change', 'charts': []};
-  overTimeCharts = {'title': 'Trends Over Time', 'charts': []};
+  dates : _date[] = [];
+  symptoms : boolean[] = [];
+  contributors : {[contributorID:string]: any}  = {};
+  treatments : {[treatmentID:string]: any} = {};
 
 
-  allCurrentCharts = [this.beforeAfterCharts, this.overTimeCharts, this.correlationCharts];
 
-  chartOptions = {
+  correlationCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends in Contributors', 'charts': []};
+  beforeAfterCharts : {[chartTypeProps: string ] : any}= {'title': 'Trends Since Making a Change', 'charts': []};
+  overTimeCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends Over Time', 'charts': []};
+
+
+  allCurrentCharts : {[chartTypeProps: string ] : any}[] = [this.beforeAfterCharts,
+                                                                this.overTimeCharts, this.correlationCharts];
+
+  chartOptions : {[chartProps: string ] : any} = {
     scaleShowVerticalLines: false,
     responsive: true,
     scales: {
@@ -75,7 +74,7 @@ export class DataVisPage {
 
 
 
-  chartColors = [{ // dark grey
+  chartColors : {[chartColorType: string] : string}[] = [{ // library needs it to be a list
     backgroundColor: '#547688',
     borderColor: '#547688',
     pointBackgroundColor: '#547688',
@@ -93,7 +92,7 @@ export class DataVisPage {
 
 
 
-  makeTimeOptions(){
+  makeTimeOptions() : {[chartProps: string ] : any} {
     let chartOptions = this.chartOptions;
     let timeOptions = {'scales': {'xAxes': {}}};
 
@@ -171,7 +170,7 @@ export class DataVisPage {
   }
 
   makeBeforeAfterCharts(){
-    // todo: do we ask for a date with this goal??  Or just via date added ... that's awful with additive model
+    // todo: use date asked with goal!!
     // todo: do we want anything more interesting?  Like looking at a specific change??
 
     let cutoffDate = new Date(this.currentGoals['dateAdded']); //todo: needs to change
@@ -220,8 +219,9 @@ export class DataVisPage {
   }
 
 
-  makeCorrelationChart(dataType, name){
+  makeCorrelationChart(dataType){
     let field = dataType['field'];
+    let name = dataType['name'];
     let dateFuns = this.dateFuns;
 
     if(field === 'category scale' || field === 'binary' || field === 'numeric scale'){
@@ -374,9 +374,10 @@ export class DataVisPage {
   makeCorrelationCharts(dataDict){
     let dataTypes = Object.keys(dataDict);
     for (let i=0; i<dataTypes.length; i++){
-      this.makeCorrelationChart(dataDict[dataTypes[i]], dataTypes[i])
+      this.makeCorrelationChart(dataDict[dataTypes[i]])
     }
   }
+
 
   makeAllCharts(){
     if(this.currentOverTimeGoals.length > 0){
@@ -386,14 +387,14 @@ export class DataVisPage {
       this.makeBeforeAfterCharts();
     }
     if(this.currentCorrelationGoals.length > 0){
-      this.makeCorrelationCharts(this.triggers);
+      this.makeCorrelationCharts(this.contributors);
       this.makeCorrelationCharts(this.treatments);
     }
   }
 
 
 
-  addDatapointToDict(dataPoint, dataDict){
+  addDatapointToDict(dataPoint : {[dataItem: string] : any}, dataDict : {[dataItemProps: string] : any}){
     let allDataTypes = Object.keys(dataDict);
     for(let i=0; i<allDataTypes.length; i++){
       let dataType = allDataTypes[i];
@@ -410,22 +411,23 @@ export class DataVisPage {
   initializeDict(dataDict, currentlyTracking){
     for(let i=0; i<currentlyTracking.length; i++){ // we just want to pay attention to what they currently care about
       let dataInfo = currentlyTracking[i];
-      dataDict[dataInfo['name']] = {'data': [], 'field': currentlyTracking[i]['field']}
+      dataDict[dataInfo['id']] = {'data': [], 'field': currentlyTracking[i]['field'], 'name': dataInfo['name']}
     }
   }
 
 
 
   organizeData(){
-    // todo: add changes??
+    // the library wants things in separate lists, not in dicts
+    // todo: add changes??  And treatments?!
     this.initializeDict(this.treatments, this.currentGoals['dataToTrack']['Treatments']);
-    this.initializeDict(this.triggers, this.currentGoals['dataToTrack']['Triggers']);
+    this.initializeDict(this.contributors, this.currentGoals['dataToTrack']['Contributors']);
     for(let i=0; i<this.allTrackedData.length; i++){
       let datapoint = this.allTrackedData[i];
-      this.dates.push(datapoint['dateTracked']);
+      this.dates.push(datapoint['startDate']);
       this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptoms']));
       this.addDatapointToDict(datapoint['Treatments'], this.treatments);
-      this.addDatapointToDict(datapoint['Triggers'], this.triggers);
+      this.addDatapointToDict(datapoint['Contributors'], this.contributors);
     }
     this.makeAllCharts();
   }
@@ -449,10 +451,9 @@ export class DataVisPage {
   }
 
 
-  sortByDate(allData){
-    console.log(allData);
+  sortByDate(allData : {[trackedData:string]: any;}[]) : {[trackedData:string]: any;}[]{
     allData.sort(function(d1, d2){
-      return new Date(d1.dateTracked) > new Date(d2.dateTracked) ? 1: -1;
+      return new Date(d1.startDate) > new Date(d2.startDate) ? 1: -1;
     });
     return allData;
   }

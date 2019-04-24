@@ -21,14 +21,12 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class TrackingModificationPage {
 
-  currentData = {};
-  allDataTypes = [];
-  displayNames = {};
-  timeToDisplay;
-  goals;
-  notifications;
-  postSymptomNotifications = false;
-  trackingFreq;
+  currentData : {[dataType: string] : any[]} = {};
+  allDataTypes : string[] = [];
+  displayNames : {[dataType: string] : string} = {};
+  timeToDisplay : string;
+  goals : string[];
+  notifications : {[notificationType: string] : {}} = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private couchDBService: CouchDbServiceProvider,
@@ -42,10 +40,11 @@ export class TrackingModificationPage {
     //todo: list data for each data type; also list notification frequency
     let activeGoals = this.couchDBService.getActiveGoals();
     this.goals = activeGoals['goals'];
-    this.notifications = activeGoals['notifications'];
-    this.trackingFreq = activeGoals['trackingFreq'];
+    this.notifications = activeGoals['notificationSettings'];
     this.currentData = activeGoals['dataToTrack'];
-    this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications.timeOfDay);
+    if(this.notifications['regular'] && this.notifications['regular']['timeOfDay']){
+      this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications['regular']['timeOfDay']);
+    }
     this.allDataTypes = this.dataDetailsService.getDataList(activeGoals['goals']);
     for(let i=0; i<this.allDataTypes.length; i++){
       this.displayNames[this.allDataTypes[i]] = this.dataDetailsService.getDisplayName(this.allDataTypes[i]);
@@ -55,18 +54,13 @@ export class TrackingModificationPage {
   changeFreq() {
     let changeFreqModal = this.modalCtrl.create(SelectTrackingFrequencyPage,
       {'isModal': true});
+    let actualThis = this;
     changeFreqModal.onDidDismiss(newData => {
       if(newData){ // todo: push to couch
 
-        console.log(newData);
-
-        if(newData === 'postSymptoms'){
-          this.notifications = undefined;
-        }
-
-        else{
-          this.notifications = newData;
-          this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications.timeOfDay);
+        actualThis.notifications = newData;
+        if(actualThis.notifications['regular'] && actualThis.notifications['regular']['timeOfDay']){
+          actualThis.timeToDisplay = actualThis.dateFuns.timeTo12Hour(actualThis.notifications['regular']['timeOfDay']);
         }
 
       }
@@ -75,9 +69,11 @@ export class TrackingModificationPage {
     changeFreqModal.present();
   }
 
-  editData(data, dataType){
+  editData(data : {[dataProps:string] : any}, dataType : string){
 
-    let editDataModal = this.modalCtrl.create(EditDataPage, data);
+    let goalsInDatatype = this.dataDetailsService.getWhetherGoals(dataType);
+
+    let editDataModal = this.modalCtrl.create(EditDataPage, {'data': data, 'goals': goalsInDatatype});
 
     editDataModal.onDidDismiss(newData => {
       if(newData){
@@ -98,7 +94,7 @@ export class TrackingModificationPage {
     editDataModal.present();
   }
 
-  addData(dataType){
+  addData(dataType : string){
 
     let data = {'dataPage': dataType, 'dataDesc': 'Add ' + dataType + ' Data'};
 
@@ -106,13 +102,8 @@ export class TrackingModificationPage {
 
     addDataModal.onDidDismiss(newData => {
       if(newData.length > 0){
-
         // todo: push to couch
         this.currentData[dataType] = this.currentData[dataType].concat(newData);
-      }
-
-      else{
-        console.log("No data returned??");
       }
     });
 
@@ -120,7 +111,7 @@ export class TrackingModificationPage {
 
   }
 
-  removeData(data, dataType){
+  removeData(data : {[dataProps:string] : any}, dataType : string){
     // todo: push to couch
     this.currentData[dataType].splice(this.currentData[dataType].indexOf(data), 1)
   }

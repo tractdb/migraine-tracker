@@ -1,10 +1,7 @@
 import { Component } from '@angular/core';
 import {ModalController, NavController, NavParams} from 'ionic-angular';
-import * as moment from 'moment';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
-import {TrackDataPage} from "../track-data/track-data";
-import {SelectTrackingFrequencyPage} from "../addGoal/select-tracking-frequency/select-tracking-frequency";
 import {ViewDatapointPage} from "../view-datapoint/view-datapoint";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 
@@ -19,31 +16,31 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 })
 export class DataCalendarPage {
 
-  lockSwipes = false;
-  currentMonth;
-  minMonth;
-  isMaxMonth = true;
-  isMinMonth = false;
+  private lockSwipes : boolean = false;
+  private currentMonth : string;
+  private isMaxMonth : boolean = true;
+  private selectedDay : any;
 
-  calendar = {
+  private calendar : {[calendarProp: string] : any} = {
     currentDate: new Date(),
     formatDayHeader: ''
   };
 
-  noEventsLabel;
-  allDayLabel = "Data Tracked";
+  private noEventsLabel : string;
+  private allDayLabel : string = "Data Tracked";
 
-  eventSource = [];
+  private eventSource : {[eventProps: string] : any}[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private modalCtrl: ModalController,
               public couchDBService: CouchDbServiceProvider, public globalFuns: GlobalFunctionsServiceProvider,
               public dateFunctions: DateFunctionServiceProvider) {
+    this.selectedDay = this.dateFunctions.getUTCDate(null);
   }
 
   setSwipesToLock(){
-    var me = this;
+    var actualThis = this;
     setTimeout(function() {
-      me.lockSwipes = true;
+      actualThis.lockSwipes = true;
     },100);
   }
 
@@ -57,26 +54,24 @@ export class DataCalendarPage {
 
   ionViewDidLoad() {
     let dateFuns = this.dateFunctions;
-    this.currentMonth = moment(this.calendar.currentDate).format("MMMM");
+    this.currentMonth = this.dateFunctions.getDate(this.calendar.currentDate).format("MMMM");
     let events = this.couchDBService.getTrackedData();
     events.map(function(event){
-      event.startTime = dateFuns.getOTCDate(event.startTime);
-      event.endTime = dateFuns.getOTCDate(event.endTime);
+      event.startTime = dateFuns.getUTCDate(event.startTime);
+      event.endTime = dateFuns.getUTCDate(event.endTime);
     });
     this.eventSource = events;
-    this.minMonth = dateFuns.getMinMonth(events);
-    console.log(this.minMonth);
     this.calendar.currentDate = new Date();
   }
 
 
-  isMigraineEvent(event){
+  isMigraineEvent(event : {[evenProps: string] : any}) : boolean{
     // todo: make smarter (like if they only have duration); probably put in service
     return this.globalFuns.getWhetherMigraine(event['Symptoms']);
   }
 
 
-  getClass(view){
+  getClass(view : {[dayAttributes: string] : any}) : string{
     if(view.events.length > 0){
       for(let i=0; i<view.events.length; i++){
         if(this.isMigraineEvent(view.events[i])){
@@ -90,27 +85,29 @@ export class DataCalendarPage {
 
 
   onCurrentDateChanged(event){
+    this.selectedDay = this.dateFunctions.getUTCDate(event);
     let actualThis = this;
     setTimeout(function() { // otherwise I get an "changed after checking" error ...
-      if(moment().isSame(event, 'day')){
+      if(actualThis.dateFunctions.compareToToday(event, 'day')){
         actualThis.noEventsLabel = 'No data tracked today';
       }
       else{
-        actualThis.noEventsLabel = 'No data tracked on ' + moment(event).format("MMM Do");
+        actualThis.noEventsLabel = 'No data tracked on ' +
+          actualThis.dateFunctions.getDate(event).format("MMM Do");
       }
     },50);
   }
 
-  onEventSelected(event){
-    // console.log(event);
-  }
 
 
-
-  seeDataDetails(event){
+  seeDataDetails(event : {[evenProps: string] : any}){
+    if(!event){
+      event = {'startTime': this.selectedDay.toISOString()}
+    }
     let dataDetailsModal = this.modalCtrl.create(ViewDatapointPage, event);
     dataDetailsModal.onDidDismiss(newData => {
       if(newData){
+        // todo: push?
         console.log(newData);
       }
     });
@@ -119,20 +116,13 @@ export class DataCalendarPage {
 
 
   checkMinAndMax(){
-    this.currentMonth = moment(this.calendar.currentDate).format("MMMM");
-    this.isMaxMonth = moment().isSame(this.calendar.currentDate, 'month');
-    this.isMinMonth = this.minMonth.isSame(this.calendar.currentDate, 'month');
+    this.currentMonth = this.dateFunctions.getDate(this.calendar.currentDate).format("MMMM");
+    this.isMaxMonth = this.dateFunctions.compareToToday(this.calendar.currentDate, 'month');
   }
 
-  changeMonth(direction){
+  changeMonth(direction : string){
     this.lockSwipes = false;
-    let newMonth;
-    if(direction === 'subtract'){
-      newMonth = moment(this.calendar.currentDate).subtract(1, "month");
-    }
-    else{
-      newMonth = moment(this.calendar.currentDate).add(1, "month");
-    }
+    let newMonth = this.dateFunctions.dateArithmatic(this.calendar.currentDate, direction, 1, "month");
     this.calendar.currentDate = newMonth.toDate();
     this.lockSwipes = true;
     this.checkMinAndMax();

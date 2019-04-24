@@ -15,19 +15,21 @@ import {DataDetailsServiceProvider} from "../../../providers/data-details-servic
 })
 export class AddCustomDataPage {
 
-  private dataType;
-  private dataName;
-  private dataField;
-  private goalFreq;
-  private goalThresh;
-  private goalTime;
-  private fieldList;
-  private numList;
+  private dataType : string;
+  private dataName : string;
+  private dataField : string;
+  private goalFreq : string;
+  private goalThresh : Number;
+  private goalTime : string;
+  private fieldList : [{[fieldProp : string]:any}];
+  private numList : Number[];
+  private allowsGoals : boolean;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider) {
     this.dataType = navParams.data.type;
+    this.allowsGoals = navParams.data.goals;
     this.numList = Array.from(new Array(30),(val,index)=>index+1);
   }
 
@@ -35,7 +37,7 @@ export class AddCustomDataPage {
     this.fieldList = this.dataDetails.getSupportedFields();
   }
 
-  backToConfig(choice){
+  backToConfig(choice : string){
     if(choice==='add') {
       let data = {
         'name': this.dataName,
@@ -44,7 +46,9 @@ export class AddCustomDataPage {
           'freq': this.goalFreq,
           "threshold": this.goalThresh,
           'timespan': this.goalTime
-        }
+        },
+        'custom': true,
+        'id': 'custom_' + this.dataName.replace(' ', '')
       };
       this.viewCtrl.dismiss(data);
     }

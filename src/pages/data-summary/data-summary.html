@@ -49,16 +49,16 @@
                 {{data.name}}
               </h2>
 
-              <ng-container *ngIf="filteredDataByName[data.name]">
+              <ng-container *ngIf="filteredDataByID[data.id]">
                 <h3 text-wrap>
-                  {{filteredDataByName[data.name]['toReport']}}
+                  {{filteredDataByID[data.id]['toReport']}}
                 </h3>
 
-                <p text-wrap *ngIf="filteredDataByName[data.name]['goal'] &&
-                                                                       filteredDataByName[data.name]['goal'].freq">
-                  Your goal is <span text-lowercase>{{filteredDataByName[data.name]['goal'].freq}}
-                  than {{filteredDataByName[data.name]['goal'].threshold}}
-                  per {{filteredDataByName[data.name]['goal'].timespan}}.</span>
+                <p text-wrap *ngIf="filteredDataByID[data.id]['goal'] &&
+                                                                       filteredDataByID[data.id]['goal'].freq">
+                  Your goal is <span text-lowercase>{{filteredDataByID[data.id]['goal'].freq}}
+                  than {{filteredDataByID[data.id]['goal'].threshold}}
+                  per {{filteredDataByID[data.id]['goal'].timespan}}.</span>
                 </p>
 
               </ng-container>

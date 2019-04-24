@@ -33,7 +33,7 @@
                   {{question.question}}
                 </ion-col>
                 <ion-col col-3>
-                  <button icon-only (click)="expndOrHide(question)">
+                  <button icon-only (click)="expandOrHide(question)">
                     <ion-icon *ngIf="!question.expanded"  name="add"></ion-icon>
                     <ion-icon  *ngIf="question.expanded" name="remove"></ion-icon>
                   </button>
