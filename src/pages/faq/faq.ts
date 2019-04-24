@@ -24,7 +24,13 @@ export class FaqPage {
   }
 
   ionViewDidLoad() {
-    this.faqList = this.generalInfoService.getFaqData();
+    let actualThis = this;
+    this.generalInfoService.getFaqData().subscribe(faqData => {
+        actualThis.faqList = faqData;
+      },
+      error => {
+        console.log(error);
+      });
   }
 
   expandOrHide(question : {[questionProps: string]: any}){

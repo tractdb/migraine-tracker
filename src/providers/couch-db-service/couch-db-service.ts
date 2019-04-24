@@ -149,7 +149,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  getActiveGoals() : {[goalAspect:string]: any;}{
+  getActiveGoals() : {[goalAspect:string]: any}{
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }

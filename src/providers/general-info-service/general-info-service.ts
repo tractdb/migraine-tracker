@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {Observable} from "rxjs";
 
 /*
   Generated class for the GeneralInfoServiceProvider provider.
@@ -10,19 +11,15 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class GeneralInfoServiceProvider {
 
-  private faqData : any;
+  private faqObservable : Observable<any>;
 
   constructor(public http: HttpClient) {
-    this.http.get('assets/migraineInfo.json', {},).subscribe(faqData => {
-        this.faqData = faqData;
-      },
-      error => {
-        console.log(error);
-      });
+    this.faqObservable = this.http.get('assets/migraineInfo.json', {},);
   }
 
-  getFaqData() : {[section: string] : any}[] {
-    return this.faqData;
+
+  getFaqData() : Observable<any> {
+    return this.faqObservable;
   }
 
 

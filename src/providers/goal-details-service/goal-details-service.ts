@@ -10,12 +10,12 @@ export class GoalDetailsServiceProvider {
 
 
   constructor(public http: HttpClient) {
-    this.getSubgoals();
     this.loadGoalList();
+    this.loadSubgoalList();
   }
 
 
-  getSubgoals() {
+  loadSubgoalList() {
     this.http.get('assets/subgoals.json', {},).subscribe(subgoalData => {
         this.subgoals = subgoalData;
       },
@@ -55,10 +55,6 @@ export class GoalDetailsServiceProvider {
   }
 
 
-
-  getSubgoalList() : {[subgoalDetails:string]: any;} {
-    return this.subgoals;
-  }
 
 
   getGoalList() : [{[goalDetails:string]: any;}] {

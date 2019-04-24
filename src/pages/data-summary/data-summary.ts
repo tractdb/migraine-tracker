@@ -141,16 +141,24 @@ export class DataSummaryPage {
   }
 
 
-  aggregateData(filteredData : {[dataType: string] : {[dataID: string] : any}[]}[]){
-    let trackedDict = {};
-
-    for(let i=0; i<this.dataTypes.length; i++){
-      let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
-      for(let t=0; t<trackingOfType.length; t++){
-        if(!trackedDict[trackingOfType[t].id])
-          trackedDict[trackingOfType[t].id] = {'name' : trackingOfType[t].name, 'field': trackingOfType[t].field,
-                                                  'vals': [], 'goal': trackingOfType[t].goal};
+  aggregateData(filteredData : {[dataType: string] : {[dataID: string] : any}[]}[], append: boolean) {
+    let trackedDict;
+    if (!append) {
+      trackedDict = {};
+      for (let i = 0; i < this.dataTypes.length; i++) {
+        let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
+        for (let t = 0; t < trackingOfType.length; t++) {
+          if (!trackedDict[trackingOfType[t].id])
+            trackedDict[trackingOfType[t].id] = {
+              'name': trackingOfType[t].name, 'field': trackingOfType[t].field,
+              'vals': [], 'goal': trackingOfType[t].goal
+            };
+        }
       }
+    }
+
+    else{
+      trackedDict = this.filteredDataByID;
     }
 
     for(let i=0; i<filteredData.length; i++){
@@ -180,20 +188,34 @@ export class DataSummaryPage {
 
 
   filterData(filterDate : string = undefined, filterDir : string=undefined){
-    if(filterDir === 'early'){ // because of dumb ionic bug ...
+    let append = false; // if we only EXPAND the filter we want to ADD values; otherwise, just start over
+    // (with bigger data it would be better to always adjust instead of redoing, but here I think it's ok)
+
+    let filterStart = this.earliestDateFilter;
+    let filterEnd = this.latestDateFilter;
+
+    if(filterDir === 'early'){ // because of dumb ionic bug it doesn't bind
+      if(this.dateFunctions.dateGreaterOrEqual(this.earliestDateFilter, filterDate)){
+        append = true;
+        filterEnd = this.earliestDateFilter;
+      }
       this.earliestDateFilter = filterDate;
+      filterStart = filterDate;
     }
     else if(filterDir === 'late'){
+      if(this.dateFunctions.dateGreaterOrEqual(filterDate, this.latestDateFilter)){
+        append = true;
+        filterStart = this.latestDateFilter;
+      }
       this.latestDateFilter = filterDate;
+      filterEnd = filterDate;
     }
-    let earliestDate = this.earliestDateFilter;
-    let latestDate = this.latestDateFilter;
     let actualThis = this;
     let filteredData = this.allTrackedData.filter(function (datapoint) {
-      return actualThis.dateFunctions.dateGreaterOrEqual(datapoint.startTime, earliestDate) &&
-              actualThis.dateFunctions.dateGreaterOrEqual(latestDate, datapoint.startTime);
+      return actualThis.dateFunctions.dateGreaterOrEqual(datapoint.startTime, filterStart) &&
+              actualThis.dateFunctions.dateGreaterOrEqual(filterEnd, datapoint.startTime);
     });
-    this.aggregateData(filteredData);
+    this.aggregateData(filteredData, append);
   }
 
   ionViewDidLoad() {
