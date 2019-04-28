@@ -81,8 +81,14 @@ export class DataConfigPage {
           this.navParams.data['selectedData'] = {};
         }
 
+        if(this.startDate){
+          for(let i=0; i< selectedData.length; i++){ // specify for every change so if they add different ones
+            // at different days we still know how to filter
+            selectedData[i]['startDate'] = this.startDate;
+          }
+        }
+
         this.navParams.data['selectedData'][this.dataType] = selectedData;
-        if(this.startDate) this.navParams.data['selectedData'][this.dataType]['startDate']  = this.startDate;
 
         let configStep = {"step": this.dataType,
           "description": "Selected " + this.dataType,

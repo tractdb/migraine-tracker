@@ -3,6 +3,16 @@ import datetime
 import json 
 
 categories = {
+  "Changes": [
+    {
+      "name": "Increasing Sleep",
+      "id": "sleepToday",
+      "explanation": "How much sleep you got today",
+      "fieldDescription": "Hours of sleep",
+      "field": "number",
+      "startDate": "2019-04-11T16:22:17.264Z",
+    }
+  ],
     "Symptoms": [
       {
           "name": "Migraine today",
@@ -19,6 +29,13 @@ categories = {
           "fieldDescription": "Whether you had a headache (yes/no)",
           "field": "binary",
           "recommendingGoals": ["3b", "3c"]
+      },
+      {
+        "name": "Start time",
+        "id": "migraineStartTime",
+        "explanation": "The time your migraine started",
+        "fieldDescription": "time",
+        "field": "time",
       },
       {
           "name": "Peak Severity",
@@ -50,17 +67,24 @@ categories = {
           }
       },
       {
-          "name": "Exercise",
-          "id": "exerciseToday",
-          "explanation": "How much you exercised today",
-          "fieldDescription": "Number of minutes of exercise",
-          "field": "number",
-          "goal": {
-              "freq": "More",
-              "threshold": 180,
-              "timespan": "Week"
-          },
-          "recommendingGoals": ["1b", "3b"]
+        "name": "Exercise",
+        "id": "exerciseToday",
+        "explanation": "How much you exercised today",
+        "fieldDescription": "Number of minutes of exercise",
+        "field": "number",
+        "goal": {
+            "freq": "More",
+            "threshold": 180,
+            "timespan": "Week"
+        },
+        "recommendingGoals": ["1b", "3b"]
+      },
+      {
+        "name": "Nutrition Today",
+        "id": "nutritionToday",
+        "explanation": "Whether you ate healthily today. For example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar",
+        "fieldDescription": "Whether you ate healthily (yes/no)",
+        "field": "binary",
       },
       {
         "name": "Time took advil",
@@ -95,12 +119,11 @@ categories = {
           "recommendingGoals": ["1b", "3b"]
       },
       {
-          "name": "Caffeine",
-          "id": "caffeineToday",
-          "explanation": "How much caffeine you had today",
-          "fieldDescription": "3-point caffeine rating",
+          "name": "Alcohol",
+          "id": "alcoholToday",
+          "explanation": "How much alcohol you had today",
+          "fieldDescription": "3-point alcohol rating",
           "field": "category scale",
-          "recommendingGoals": ["1b", "3b"]
       }
     ],
     "Other": [
@@ -112,12 +135,19 @@ categories = {
         "field": "category scale",
         "recommendingGoals": ["1b", "3c"]
       },
+      {
+        "name": "Other notes",
+        "id": "otherNotes",
+        "explanation": "Anything else you want to note about today ",
+        "fieldDescription": "Text box where you can record any notes",
+        "field": "note",
+      }
     ]
 }
 
 
 trackedData = []
-numDataPoints = 31
+numDataPoints = 35
 
 def makeTime(hour, min):
     timeString = ''
@@ -168,7 +198,7 @@ def getRandomData(dataObject):
       
 
 def getRandomDate():
-    randMonth = random.randrange(1, 4)
+    randMonth = random.randrange(1, 5)
     randDay = random.randrange(1,29)
     randHour = random.randrange(0,24)
     randMin = random.randrange(0, 60)
@@ -192,7 +222,6 @@ def addDatapoint():
                 dataPoint[dataType][dataObject['id']] =\
                                      getRandomData(dataObject)
     dateTracked, startDate, endDate = getRandomDate()
-    dataPoint['dateTracked'] = isoFormat(dateTracked) # 2019-03-06T19:04:49.572Z"
     dataPoint['startTime'] = isoFormat(startDate) # "2019-03-07T00:00:00.000Z",
     dataPoint['endTime'] = isoFormat(endDate) # "2019-03-06T00:00:00.000Z",
     dataPoint['allDay'] = 'true'

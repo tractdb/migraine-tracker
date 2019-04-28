@@ -14,11 +14,13 @@ export class GeneralInfoServiceProvider {
   private faqObservable : Observable<any>;
 
   constructor(public http: HttpClient) {
-    this.faqObservable = this.http.get('assets/migraineInfo.json', {},);
   }
 
 
   getFaqData() : Observable<any> {
+    if(!this.faqObservable){
+      this.faqObservable = this.http.get('assets/migraineInfo.json', {},);
+    }
     return this.faqObservable;
   }
 

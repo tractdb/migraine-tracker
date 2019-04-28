@@ -22,15 +22,15 @@
 
   <ng-container *ngFor="let chartType of allCurrentCharts">
 
-    <ion-card *ngIf="chartType.charts.length > 0">
-      <ion-card-header>
-        <h2>{{chartType.title}}</h2>
+    <ion-card *ngIf="chartType['charts'].length > 0">
+      <ion-card-header text-wrap>
+        <h2>{{chartType['title']}}</h2>
         <p>Generated because of these current goals:</p>
-        <p *ngFor="let goal of currentCorrelationGoals">{{goal}}</p>
+        <p *ngFor="let goal of chartType['goals']">{{goalDetailsService.getGoalNameByID(goal)}}</p>
       </ion-card-header>
       <ion-card-content>
-        <div *ngFor="let chart of chartType.charts">
-          <h5>Number of Migraines vs {{chart.title}}</h5>
+        <div *ngFor="let chart of chartType['charts']">
+          <h5>{{chart.title}}</h5>
           <div style="display: block">
             <canvas baseChart
                     [datasets]="chart.data"

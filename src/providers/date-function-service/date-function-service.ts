@@ -57,7 +57,7 @@ export class DateFunctionServiceProvider {
 
 
   getDayOfWeek(date){
-    return moment(date).format('ddd')
+    return moment(date).format('ddd');
   }
 
   timeTo12Hour(time) {

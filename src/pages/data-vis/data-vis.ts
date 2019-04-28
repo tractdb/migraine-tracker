@@ -7,6 +7,7 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 import * as moment from "moment";
 import _date = moment.unitOfTime._date;
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {GoalDetailsServiceProvider} from "../../providers/goal-details-service/goal-details-service";
 
 /**
  * Generated class for the DataVisPage page.
@@ -28,20 +29,21 @@ export class DataVisPage {
   allBeforeAfterGoals : string[] = ["1c"];
   allCorrelationVisGoals : string[] = ["1b", "2"];
 
-  currentOverTimeGoals : string[] = [];
-  currentBeforeAfterGoals : string[] = [];
-  currentCorrelationGoals : string[] = [];
 
   dates : _date[] = [];
   symptoms : boolean[] = [];
   contributors : {[contributorID:string]: any}  = {};
   treatments : {[treatmentID:string]: any} = {};
+  changes : {[treatmentID:string]: any} = {};
 
 
 
-  correlationCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends in Contributors', 'charts': []};
-  beforeAfterCharts : {[chartTypeProps: string ] : any}= {'title': 'Trends Since Making a Change', 'charts': []};
-  overTimeCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends Over Time', 'charts': []};
+  correlationCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends in Contributors', 'charts': [],
+                                                              'goals': []};
+  beforeAfterCharts : {[chartTypeProps: string ] : any}= {'title': 'Trends Since Making a Change', 'charts': [],
+                                                            'goals': []};
+  overTimeCharts : {[chartTypeProps: string ] : any} = {'title': 'Trends Over Time', 'charts': [],
+                                                            'goals': []};
 
 
   allCurrentCharts : {[chartTypeProps: string ] : any}[] = [this.beforeAfterCharts,
@@ -86,6 +88,7 @@ export class DataVisPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider,
+              public goalDetailsService: GoalDetailsServiceProvider,
               public globalFuns: GlobalFunctionsServiceProvider,
               public dateFuns: DateFunctionServiceProvider) {
   }
@@ -113,31 +116,18 @@ export class DataVisPage {
 
 
 
-
-
-
-  makeChartsOverTime(){
-
-    let prettyDates = [];
-    let daysOfWeek = [];
-
-    // they ignore points for which they don't have labels.  So not having an 8 means it's just skipped
-    for(let i=0; i<this.dates.length; i++){
-      prettyDates.push(this.dateFuns.dateToPrettyDate(this.dates[i]));
-      daysOfWeek.push(this.dateFuns.getDayOfWeek(this.dates[i]));
-    }
-
-
+  makeOverTimeChart(data, prettyDates:_date[], title:string){
     this.overTimeCharts.charts.push(
-      {'title': 'Date',
+      {'title': title,
         'labels': prettyDates,
-        'data': [{'data': this.symptoms, 'showLine': false}],
+        'data': [{'data': data, 'showLine': false}],
         'options': this.timeOptions,
         'legend': false,
         'type': 'line',
       });
+  }
 
-    let accumulatedData = this.accumulateData({'data': daysOfWeek});
+  makeDayOfWeekChart(accumulatedData:{}, title:string){
     let labels = Object.keys(accumulatedData),
          data = [];
 
@@ -154,46 +144,13 @@ export class DataVisPage {
     labels.sort(function(d1, d2){
       return sorter[d1] > sorter[d2] ? 1 : -1;
     });
+
     for(let j=0; j<labels.length; j++){
       data.push(accumulatedData[labels[j]]);
     }
 
     this.overTimeCharts.charts.push(
-      {'title': 'Day of Week',
-        'labels': labels,
-        'data': [{'data': data}],
-        'options': this.chartOptions,
-        'legend': false,
-        'type': 'bar'
-      });
-
-  }
-
-  makeBeforeAfterCharts(){
-    // todo: use date asked with goal!!
-    // todo: do we want anything more interesting?  Like looking at a specific change??
-
-    let cutoffDate = new Date(this.currentGoals['dateAdded']); //todo: needs to change
-    let prettyDate = this.dateFuns.dateToPrettyDate(cutoffDate);
-    let beforeOrAfter = [];
-    for(let i=0; i<this.dates.length; i++) {
-      if (new Date(this.dates[i]) < cutoffDate) {
-        beforeOrAfter.push('Before ' + prettyDate);
-      } else {
-        beforeOrAfter.push('After ' + prettyDate);
-      }
-    }
-
-    let accumulatedData = this.accumulateData({'data': beforeOrAfter});
-    let labels = Object.keys(accumulatedData),
-      data = [];
-
-    for(let j=0; j<labels.length; j++){
-      data.push(accumulatedData[labels[j]]);
-    }
-
-    this.beforeAfterCharts.charts.push(
-      {'title': 'Date of Change',
+      {'title': title,
         'labels': labels,
         'data': [{'data': data}],
         'options': this.chartOptions,
@@ -203,16 +160,128 @@ export class DataVisPage {
   }
 
 
-  accumulateData(dataType){
+
+  getWhetherTreatmentTaken(treatmentDatapoint, field){ // assumes 'no' when not tracked
+    if(field==='binary') return treatmentDatapoint === 'Yes';
+    if(field==='number') return Number(treatmentDatapoint) > 0; // means we just indicate WHETHER they exercised :-/
+    if(field==='numeric scale') return Number(treatmentDatapoint) > 0;
+    if(field==='category scale') return treatmentDatapoint !== 'None';
+    if(field==='time' || field==='time range') return treatmentDatapoint !== null;
+  }
+
+
+  accumulateDataByTreatment(dataType: {[dataProp: string] : any}, treatmentData : number[]){
     let dataDict = {};
 
     for(let i=0; i<dataType['data'].length; i++){
       let dataVal = dataType['data'][i];
       if(dataVal in dataDict){
-        dataDict[dataVal] += (this.symptoms[i] ? 1 : 0);
+        dataDict[dataVal] += treatmentData[i];
       }
       else{
-        dataDict[dataVal] = (this.symptoms[i] ? 1 : 0);
+        dataDict[dataVal] = treatmentData[i];
+      }
+    }
+    return dataDict;
+  }
+
+
+
+  makeChartsOverTime(){
+
+    let prettyDates = [];
+    let daysOfWeek = [];
+
+    // they ignore points for which they don't have labels.  So not having an 8 means it's just skipped
+    for(let i=0; i<this.dates.length; i++){
+      prettyDates.push(this.dateFuns.dateToPrettyDate(this.dates[i]));
+      daysOfWeek.push(this.dateFuns.getDayOfWeek(this.dates[i]));
+    }
+    let accumulatedData = this.accumulateDataBySymptoms({'data': daysOfWeek});
+    this.makeOverTimeChart(this.symptoms, prettyDates, 'Migraines Over Time');
+    this.makeDayOfWeekChart(accumulatedData, 'Number of Migraines vs Day of Week');
+
+    let allTrackedTreatments = Object.keys(this.treatments);
+    let actualThis = this;
+    for(let i=0; i<allTrackedTreatments.length; i++){
+      let treatmentField = this.treatments[allTrackedTreatments[i]].field;
+      let treatmentTakenPerDay = this.treatments[allTrackedTreatments[i]].data.map(function(datapoint){
+        return (actualThis.getWhetherTreatmentTaken(datapoint, treatmentField) ? 1 : 0)
+      });
+
+
+      this.makeOverTimeChart(treatmentTakenPerDay, prettyDates,
+                                      this.treatments[allTrackedTreatments[i]].name + ' Over Time');
+      let accumulatedData = this.accumulateDataByTreatment({'data': daysOfWeek}, treatmentTakenPerDay);
+      this.makeDayOfWeekChart(accumulatedData,this.treatments[allTrackedTreatments[i]].name + ' vs Day of Week');
+    }
+
+  }
+
+  makeBeforeAfterCharts(){
+    let allChanges = Object.keys(this.changes);
+
+    for(let i=0; i<allChanges.length; i++){
+      let change = this.changes[allChanges[i]];
+      let cutoffDate = moment(change['startDate']);
+      let prettyDate = this.dateFuns.dateToPrettyDate(cutoffDate);
+      let daysInMonth = cutoffDate.daysInMonth();
+      let symptomsBefore = 0,
+          symptomsAfter = 0,
+          monthsBefore = new Set(),
+          monthsAfter = new Set();
+
+      for(let j=0; j<this.dates.length; j++){
+        let monthOfReport = moment(this.dates[j]);
+        let symptoms = this.symptoms[j] ? 0 : 1;
+        if(cutoffDate.isBefore(this.dates[j], 'month')){
+          symptomsBefore += symptoms;
+          monthsBefore.add(monthOfReport.format("MMM YYYY"));
+        }
+        else if(cutoffDate.isAfter(this.dates[j], 'month')){
+          symptomsAfter += symptoms;
+          monthsAfter.add(monthOfReport.format("MMM YYYY"));
+        }
+        else { // same month, so project
+          if(cutoffDate.isAfter(this.dates[j], 'day')){
+            symptomsAfter += symptoms / (daysInMonth - cutoffDate.date() ) * daysInMonth;
+            monthsAfter.add(monthOfReport.format("MMM YYYY"));
+          }
+          else{
+            symptomsBefore += symptoms / cutoffDate.date() * daysInMonth;
+            monthsBefore.add(monthOfReport.format("MMM YYYY"));
+          }
+        }
+      }
+
+
+      let data = [symptomsBefore / monthsBefore.size, symptomsAfter / monthsAfter.size ];
+
+
+      this.beforeAfterCharts.charts.push(
+        {'title': 'Average Migraines per Month Before and After Change: ' + change.name,
+          'labels': ['Before ' + prettyDate, 'After ' + prettyDate],
+          'data': [{'data': data}],
+          'options': this.chartOptions,
+          'legend': false,
+          'type': 'bar'
+        });
+
+    }
+
+  }
+
+
+  accumulateDataBySymptoms(dataType : {[dataProps:string]:any}) : {}{
+    let dataDict = {};
+
+    for(let i=0; i<dataType['data'].length; i++){
+      let dataVal = dataType['data'][i];
+      if(dataVal in dataDict){
+        dataDict[dataVal] += (this.symptoms ? 1 : 0);
+      }
+      else{
+        dataDict[dataVal] = (this.symptoms ? 1 : 0);
       }
     }
     return dataDict;
@@ -225,7 +294,7 @@ export class DataVisPage {
     let dateFuns = this.dateFuns;
 
     if(field === 'category scale' || field === 'binary' || field === 'numeric scale'){
-      let accumulatedData = this.accumulateData(dataType);
+      let accumulatedData = this.accumulateDataBySymptoms(dataType);
       let labels = Object.keys(accumulatedData),
            data = [];
       for(let j=0; j<labels.length; j++){
@@ -237,7 +306,7 @@ export class DataVisPage {
       }
 
       this.correlationCharts.charts.push(
-        {'title': name,
+        {'title': "Number of Migraines vs " + name,
           'labels': labels,
           'data': [{'data': data}],
           'options': this.chartOptions,
@@ -248,7 +317,7 @@ export class DataVisPage {
     }
     else if(field === 'number'){
 
-      let accumulatedData = this.accumulateData(dataType);
+      let accumulatedData = this.accumulateDataBySymptoms(dataType);
       let labels = Object.keys(accumulatedData),
           data = [];
       for(let j=0; j<labels.length; j++){
@@ -258,7 +327,7 @@ export class DataVisPage {
       }
 
       this.correlationCharts.charts.push(
-        {'title': name,
+        {'title': "Number of Migraines vs " + name,
           'data': [{'data': data}],
           'options': this.chartOptions,
           'legend': false,
@@ -278,7 +347,7 @@ export class DataVisPage {
         return timeString + '--' + time.format('ha');
       });
 
-      let accumulatedData = this.accumulateData(dataType);
+      let accumulatedData = this.accumulateDataBySymptoms(dataType);
       let labels = Object.keys(accumulatedData),
           data = [];
 
@@ -313,7 +382,7 @@ export class DataVisPage {
       }
 
       this.correlationCharts.charts.push(
-        {'title': name,
+        {'title': "Number of Migraines vs " + name,
           'labels': labels,
           'data': [{'data': data}],
           'options': this.chartOptions,
@@ -330,7 +399,7 @@ export class DataVisPage {
         return dateFuns.getDuration(timeDict['start'], timeDict['end']);
       });
 
-      let accumulatedData = this.accumulateData(dataType);
+      let accumulatedData = this.accumulateDataBySymptoms(dataType);
       let labels = Object.keys(accumulatedData);
       labels.sort(function(d1, d2){
         if(d1 === '(Not Reported)'){
@@ -356,7 +425,7 @@ export class DataVisPage {
       }
 
       this.correlationCharts.charts.push(
-        {'title': name,
+        {'title': "Number of Migraines vs " + name,
           'labels': newLabels,
           'data': [{'data': scatterData, 'showLine': false}],
           'options': this.chartOptions,
@@ -371,24 +440,23 @@ export class DataVisPage {
 
   }
 
-  makeCorrelationCharts(dataDict){
-    let dataTypes = Object.keys(dataDict);
+  makeCorrelationCharts(){
+    let dataTypes = Object.keys(this.contributors);
     for (let i=0; i<dataTypes.length; i++){
-      this.makeCorrelationChart(dataDict[dataTypes[i]])
+      this.makeCorrelationChart(this.contributors[dataTypes[i]])
     }
   }
 
 
   makeAllCharts(){
-    if(this.currentOverTimeGoals.length > 0){
+    if(this.overTimeCharts['goals'].length > 0){
       this.makeChartsOverTime();
     }
-    if(this.currentBeforeAfterGoals.length > 0){
+    if(this.beforeAfterCharts['goals'].length > 0){
       this.makeBeforeAfterCharts();
     }
-    if(this.currentCorrelationGoals.length > 0){
-      this.makeCorrelationCharts(this.contributors);
-      this.makeCorrelationCharts(this.treatments);
+    if(this.correlationCharts['goals'].length > 0){
+      this.makeCorrelationCharts();
     }
   }
 
@@ -411,23 +479,24 @@ export class DataVisPage {
   initializeDict(dataDict, currentlyTracking){
     for(let i=0; i<currentlyTracking.length; i++){ // we just want to pay attention to what they currently care about
       let dataInfo = currentlyTracking[i];
-      dataDict[dataInfo['id']] = {'data': [], 'field': currentlyTracking[i]['field'], 'name': dataInfo['name']}
+      dataDict[dataInfo['id']] = {'data': [], 'field': currentlyTracking[i]['field'], 'name': dataInfo['name']};
+      if(currentlyTracking[i]['startDate']) dataDict[dataInfo['id']]['startDate'] = currentlyTracking[i]['startDate'];
     }
   }
 
 
 
-  organizeData(){
-    // the library wants things in separate lists, not in dicts
-    // todo: add changes??  And treatments?!
+  organizeData(){ // because the chart library apparently can't deal with json-format data, make everything into lists
     this.initializeDict(this.treatments, this.currentGoals['dataToTrack']['Treatments']);
     this.initializeDict(this.contributors, this.currentGoals['dataToTrack']['Contributors']);
+    this.initializeDict(this.changes, this.currentGoals['dataToTrack']['Changes']);
     for(let i=0; i<this.allTrackedData.length; i++){
       let datapoint = this.allTrackedData[i];
-      this.dates.push(datapoint['startDate']);
+      this.dates.push(datapoint['startTime']);
       this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptoms']));
       this.addDatapointToDict(datapoint['Treatments'], this.treatments);
       this.addDatapointToDict(datapoint['Contributors'], this.contributors);
+      this.addDatapointToDict(datapoint['Changes'], this.changes);
     }
     this.makeAllCharts();
   }
@@ -438,13 +507,13 @@ export class DataVisPage {
     for(let i=0; i<goals.length; i++){
       let goal = goals[i];
       if(this.allOverTimeGoals.indexOf(goal) > -1){
-        this.currentOverTimeGoals.push(goal);
+        this.overTimeCharts['goals'].push(goal);
       }
       else if(this.allBeforeAfterGoals.indexOf(goal) > -1){
-        this.currentBeforeAfterGoals.push(goal);
+        this.beforeAfterCharts['goals'].push(goal);
       }
       else if(this.allCorrelationVisGoals.indexOf(goal) > -1){
-        this.currentCorrelationGoals.push(goal);
+        this.correlationCharts['goals'].push(goal);
       }
     }
     this.organizeData();
@@ -453,7 +522,7 @@ export class DataVisPage {
 
   sortByDate(allData : {[trackedData:string]: any;}[]) : {[trackedData:string]: any;}[]{
     allData.sort(function(d1, d2){
-      return new Date(d1.startDate) > new Date(d2.startDate) ? 1: -1;
+      return new Date(d1.startTime) > new Date(d2.startTime) ? 1: -1;
     });
     return allData;
   }
