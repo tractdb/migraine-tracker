@@ -62,10 +62,6 @@ export class DataDetailsServiceProvider {
       });
   }
 
-  getConfigData() : [{[dataProperty: string] : any}]{
-    return this.configData;
-  }
-
 
   getConfigByName(dataType: string) : {[dataTypeProps:string]:any}{
     for(let i=0; i<this.configData.length; i++){

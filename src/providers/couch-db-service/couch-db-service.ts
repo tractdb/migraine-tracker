@@ -153,8 +153,8 @@ export class CouchDbServiceProvider {
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }
-    return this.getExampleGoal(); //todo: remove, use db
-   // return {};
+    // return this.getExampleGoal(); //todo: remove, use db
+   return {};
   }
 
 

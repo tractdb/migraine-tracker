@@ -16,9 +16,7 @@ import { CouchDbServiceProvider } from '../providers/couch-db-service/couch-db-s
 import {GoalTypePage} from "../pages/addGoal/goal-type/goal-type";
 import {LoginPage} from "../pages/login/login";
 import { GoalDetailsServiceProvider } from '../providers/goal-details-service/goal-details-service';
-import {SelectSubgoalsPage} from "../pages/addGoal/select-subgoals/select-subgoals";
 import { GlobalFunctionsServiceProvider } from '../providers/global-functions-service/global-functions-service';
-import {EnterTextGoalPage} from "../pages/addGoal/enter-text-goal/enter-text-goal";
 import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
 import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
@@ -45,9 +43,7 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     MyApp,
     HomePage,
     GoalTypePage,
-    SelectSubgoalsPage,
     LoginPage,
-    EnterTextGoalPage,
     DataConfigPage,
     AddCustomDataPage,
     SelectTrackingFrequencyPage,
@@ -78,8 +74,6 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     HomePage,
     GoalTypePage,
     LoginPage,
-    SelectSubgoalsPage,
-    EnterTextGoalPage,
     DataConfigPage,
     AddCustomDataPage,
     SelectTrackingFrequencyPage,

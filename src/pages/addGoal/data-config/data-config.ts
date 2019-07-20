@@ -6,6 +6,7 @@ import {SelectTrackingFrequencyPage} from "../select-tracking-frequency/select-t
 import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
 import {EditDataPage} from "../edit-data/edit-data";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
+import * as moment from 'moment';
 
 
 @Component({
@@ -16,34 +17,34 @@ export class DataConfigPage {
 
   private dataType : string;
   private dataDesc : string;
+  private allGoals : string[];
   private dataObject : {[dataInfo: string] : string};
   private displayName : string;
   private customData : {[dataProps : string ] : any}[]= [];
   private recommendedData : {[dataProps : string ] : any}[]= [];
   private otherData : {[dataProps : string ] : any}[] = [];
   private selectedFromList : {[dataProps : string ] : any}[] = [];
-  private configPath : {[configStep : string ] : any}[];
   private startDate : any = null;
-  private today : any = new Date().toISOString();
+  private today = moment().toISOString();
+  private nextYear = moment().add(1, "year").toISOString();
+  private commonExpanded = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetailsServiceProvider: DataDetailsServiceProvider,
               public modalCtrl: ModalController, public globalFunctions: GlobalFunctionsServiceProvider,
               private couchDBService: CouchDbServiceProvider) {
-    this.configPath = this.navParams.data['configPath'] ? this.navParams.data['configPath'] : [];
   }
 
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
-
     let alreadyTracking = this.globalFunctions.getDataIDs(activeGoals['dataToTrack']); // need to add previously configured
-    let goals = activeGoals['goals'] ? activeGoals['goals'] : [];
+    this.allGoals = activeGoals['goals'] ? activeGoals['goals'] : [];
 
-    if(this.configPath.length > 0){ // got here via adding a goal
-      goals = goals.concat(this.navParams.data['goalIDs']);
+    if(this.navParams.data['goalIDs']){ // got here via adding a goal
+      this.allGoals = this.allGoals.concat(this.navParams.data['goalIDs']);
       this.dataObject = this.navParams.data['dataPage'];
-      this.startDate = this.dataObject.additionalData ? new Date().toISOString() : null;
+      this.startDate = this.dataObject.startDate ? new Date().toISOString() : null;
       this.dataType = this.dataObject.name;
       this.dataDesc = this.dataObject.description;
       alreadyTracking = alreadyTracking.concat(this.globalFunctions.getDataIDs(this.navParams.data['selectedData']));
@@ -58,14 +59,14 @@ export class DataConfigPage {
     this.displayName = this.dataDetailsServiceProvider.getDisplayName(this.dataType);
     this.customData[this.dataType] = [];
 
-    this.getAllRecs(goals, alreadyTracking);
+    this.getAllRecs(alreadyTracking);
   }
 
 
 
 
-  getAllRecs(goals : string[], alreadyTracking : string[]) {
-    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataType, goals);
+  getAllRecs(alreadyTracking : string[]) {
+    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataType, this.allGoals);
     this.recommendedData = dataGroups[0];
     this.otherData = dataGroups[1];
   }
@@ -75,27 +76,19 @@ export class DataConfigPage {
   continueSetup() {
     let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
 
-    if(this.configPath.length > 0){
+    if(this.navParams.data['goalIDs']){
       if(selectedData.length > 0){
         if (!this.navParams.data['selectedData']) {
           this.navParams.data['selectedData'] = {};
         }
 
         if(this.startDate){
-          for(let i=0; i< selectedData.length; i++){ // specify for every change so if they add different ones
-            // at different days we still know how to filter
-            selectedData[i]['startDate'] = this.startDate;
+          for(let i=0; i< selectedData.length; i++){        // specify for every change so if they add different ones
+            selectedData[i]['startDate'] = this.startDate;  // at different days we still know how to filter
           }
         }
 
         this.navParams.data['selectedData'][this.dataType] = selectedData;
-
-        let configStep = {"step": this.dataType,
-          "description": "Selected " + this.dataType,
-          "added": selectedData.map(x => x.name)
-        };
-        configStep = this.globalFunctions.toggleDetails(configStep);
-        this.navParams.data['configPath'].push(configStep);
       }
 
 
@@ -151,8 +144,11 @@ export class DataConfigPage {
   }
 
   editData(oldData : {[dataProps : string ] : any}, type : string) {
-    let editDataModal = this.modalCtrl.create(EditDataPage, {'data': oldData, 'goals': this.dataObject.dataGoals});
-
+    let editDataModal = this.modalCtrl.create(EditDataPage, {'data': oldData,
+          'selectedGoals': this.allGoals,
+          'allowsDataGoals': this.dataObject.dataGoals},
+                                                       {showBackdrop:true, cssClass: 'select-modal' });
+    editDataModal['showBackdrop'] = true;
     editDataModal.onDidDismiss(newData => {
       if(newData){
 

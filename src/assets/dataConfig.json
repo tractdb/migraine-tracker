@@ -2,7 +2,7 @@
     {"name": "Changes",
     "description": "What change(s) are you planning on making?",
     "conditionalGoals": ["1c"],
-    "additionalData": "startDate",
+    "startDate": true,
     "dataGoals": true
     },
 

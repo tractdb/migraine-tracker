@@ -1,22 +1,25 @@
 page-goal-type {
 
-  //button.active{
-  //  color: light
-  //}
+  .effort{
+    font-style: italic;
+  }
 
-  //.goalCard{
-  //  height: 95%;
-  //}
+  .subgoalList{
+    background-color: #3B3B3B !important;
+    padding-top:0.2em;
+    padding-left:1em;
+  }
+
+  .goalIcon{
+    padding-left:0.25em;
+  }
 
 
+  .goalCardContent{
+    padding-left:1em;
+  }
 
-  //
-  //.bottom{
-  //  //display: block;
-  //  //vertical-align: bottom;
-  //  justify-content: flex-end;
-  //  display: flex;
-  //}
+
 
 
 }

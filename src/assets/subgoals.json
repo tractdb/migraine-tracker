@@ -1,68 +1,37 @@
 {
-    "1": {
-        "GoalCategory": "Learning",
-        "Title": "What do you want to learn about your migraines?",
-        "subgoals": [
-            {
-                "subgoalName": "Learn how frequently I get migraines",
-                "goalID": "1a",
-                "goodChoiceIf": [
-                    "You want to know how often you have migraines (or pursue treatment)"
-                ],
-                "examples": [
-                    "I want to know how many days per month I have a migraine",
-                    "I want to know how many times per month I take medications to stop my symptoms"
-                ]
-            },
-            {
-                "subgoalName": "Learn what factors may contribute to my migraines",
-                "goalID": "1b",
-                "goodChoiceIf": [
-                    "You want to identify potential contributors (\"triggers\")"
-                ],
-                "examples": [
-                    "I want to track my stress and sleep to see if they seem to affect my migraines"
-                ]
-            },
-            
-            {
-                "subgoalName": "Learn whether a specific change affects my migraines",
-                "goalID": "1c",
-                "goodChoiceIf": [
-                    "You are making a specific change in your life and want to see how it affects your migraines"
-                ],
-                "examples": [
-                    "I want to see if regular exercise decreases my migraines",
-                    "I'm on a new medication and I want to see if it helps"
-                ]
-            }
-        ]
-    },
-    "3": {
-        "GoalCategory": "Monitoring",
-        "Title": "Why do you want to monitor your migraines?",
-        "subgoals": [
-            {
-                "subgoalName": "Monitor for my own knowledge",
-                "goalID": "3a",
-                "examples": [
-                    "I just want to know how often I get migraines"
-                ]
-            },
-            {
-                "subgoalName": "Monitor for my doctor",
-                "goalID": "3b",
-                "examples": [
-                    "My doctor wants more detailed information about my migraines"
-                ]
-            },
-            {
-                "subgoalName": "Monitor for insurance",
-                "goalID": "3c",
-                "examples": [
-                    "My insurance needs more detailed information about my migraines to cover my prescription"
-                ]
-            }
-        ]
-    }
+    "1": [
+        {
+            "subgoalName": "Learn migraine frequency",
+            "goalID": "1a",
+            "goodChoiceIf": "You want to know how often you experience symptoms (or pursue treatment)"
+        },
+        {
+            "subgoalName": "Learn what factors may contribute to symmptoms",
+            "goalID": "1b",
+            "goodChoiceIf": "You want to identify potential contributors (\"triggers\")"
+        },
+        
+        {
+            "subgoalName": "Learn whether a specific change affects symptoms",
+            "goalID": "1c",
+            "goodChoiceIf": "You are making a specific change (like starting a new treatment or eliminating a potential contributor) and want to see how it affects your symptoms"
+        }
+    ],
+    "3": [
+        {
+            "subgoalName": "Monitor for my own knowledge",
+            "goalID": "3a",
+            "goodChoiceIf": "You want to keep track of symptom frequency for your own knowledge"
+        },
+        {
+            "subgoalName": "Monitor for my doctor",
+            "goalID": "3b",
+            "goodChoiceIf": "Your doctor wants more detailed symptom or treatment information"
+        },
+        {
+            "subgoalName": "Monitor for insurance",
+            "goalID": "3c",
+            "goodChoiceIf": "Your insurance needs more detailed symptom information to cover your prescription"
+        }
+    ]
 }

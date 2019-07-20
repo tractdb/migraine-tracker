@@ -26,147 +26,86 @@
 
 
 
+
   <ion-card>
-    <ion-card-header>Custom {{displayName}} Data</ion-card-header>
+    <ion-card-header>Custom {{displayName}}</ion-card-header>
     <ion-card-content>
 
       <ion-list *ngFor="let custom of customData[dataType]">
-        <ion-item-sliding>
-          <ion-item class="selectedSlider" (click)="editData(custom, 'custom')">
-            <ion-label >{{custom.name}}</ion-label>
-          </ion-item>
-          <ion-item-options>
-            <ion-item-option icon-only color="primary"  (click)="editData(custom, 'custom')">
-              <ion-icon class="adjust" slot="icon-only" name="create"></ion-icon>
-            </ion-item-option>
-            <!--<ion-item-option icon-only color="secondary" (click)="editData(custom)">-->
-              <!--<ion-icon slot="icon-only" name="information-circle-outline"></ion-icon>-->
-            <!--</ion-item-option>-->
-            <ion-item-option icon-only color="danger"
-                             *ngIf="customData[dataType].indexOf(custom) >= 0"
-                             (click)="remove(custom, 'custom')">
-              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item>
+          <ion-icon color="primary" item-left name="checkmark-circle" (click)="remove(custom, 'custom')"></ion-icon>
+          {{custom.name}}
+          <ion-icon color="primary" item-left name="create" (click)="editData(custom, 'custom')"></ion-icon>
+        </ion-item>
       </ion-list>
 
-      <button class="button" ion-button full icon-start (click)="addCustomData()">
-        <ion-icon name="add-circle"></ion-icon>
-          Add Custom {{displayName}}
-      </button>
+      <h2 class="addCustom">
+        <ion-icon item-left (click)="addCustomData()" color="primary" name="add-circle"></ion-icon>
+        Add Custom {{displayName}}
+      </h2>
     </ion-card-content>
   </ion-card>
 
   <ion-card *ngIf="recommendedData.length>0">
-    <ion-card-header>Recommended {{displayName}} Data</ion-card-header>
+    <ion-card-header>Recommended {{displayName}}</ion-card-header>
     <ion-card-content>
 
       <div *ngIf="recommendedData.length==0">
         Based on your goals, we do not recommend adding any
-        <span text-lowercase *ngIf="dataType!=='Other'">{{dataType}}</span> data.
-        Unless you know of any specific <span text-lowercase>{{displayName}}</span> you wish to track,
+        <span text-lowercase>{{dataType}}</span> data.
+        Unless tracking <span text-lowercase>{{displayName}}</span> will support your personal goals,
             consider continuing without selecting any!
       </div>
 
       <ion-list *ngFor="let rec of recommendedData">
-        <ion-item-sliding>
-          <ion-item [ngClass]="rec.selected ? 'selectedSlider' : 'unselectedSlider'" (click)="editData(rec, 'rec')">
-            <ion-label>{{rec.name}}</ion-label>
-          </ion-item>
-          <ion-item-options>
-            <ion-item-option icon-only color="primary"  (click)="editData(rec, 'rec')">
-              <ion-icon class="adjust" slot="icon-only" name="create"></ion-icon>
-            </ion-item-option>
-
-            <ion-item-option icon-only color="secondary"
-                             *ngIf="selectedFromList.indexOf(rec) < 0"
-                             (click)="track(rec)">
-              <ion-icon class="adjust" slot="icon-only" name="add-circle"></ion-icon>
-            </ion-item-option>
-            <ion-item-option icon-only color="danger"
-                             *ngIf="selectedFromList.indexOf(rec) >= 0"
-                             (click)="remove(rec, 'recommended')">
-              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item>
+          <ion-icon color="primary" *ngIf="!rec['selected']" name="add-circle-outline" (click)="editData(rec, 'rec')"></ion-icon>
+          <ion-icon color="primary" *ngIf="rec['selected']" name="checkmark-circle" (click)="remove(rec, 'rec')"></ion-icon>
+          {{rec.name}}
+          <ion-icon color="primary" *ngIf="rec['selected']" name="create" (click)="editData(rec, 'rec')"></ion-icon>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
 
   <ion-card *ngIf="otherData.length>0">
-    <ion-card-header>Common {{displayName}} Data</ion-card-header>
-    <ion-card-content>
+    <ion-card-header>
+      Other Common {{displayName}}
+      <ion-icon item-right *ngIf="commonExpanded" name="arrow-dropup" (click)="commonExpanded = false;"></ion-icon>
+      <ion-icon item-right *ngIf="!commonExpanded" name="arrow-dropdown" (click)="commonExpanded = true;"></ion-icon>
+    </ion-card-header>
+    <ion-card-content *ngIf="commonExpanded" >
+      <h3 class="otherExplanation">Tracking the following data is likely unnecessary to fulfill your selected goals.</h3>
+
       <ion-list *ngFor="let data of otherData">
-        <ion-item-sliding>
-          <ion-item [ngClass]="data.selected ? 'selectedSlider' : 'unselectedSlider'" (click)="editData(data, 'other')">
-            <ion-label>{{data.name}}</ion-label>
-          </ion-item>
-          <ion-item-options>
-            <ion-item-option icon-only color="primary" (click)="editData(data, 'other')">
-              <ion-icon class="adjust"  slot="icon-only" name="create"></ion-icon>
-            </ion-item-option>
-            <!--<ion-item-option icon-only color="primary"  (click)="editData(data)">-->
-              <!--<ion-icon slot="icon-only" name="create"></ion-icon>-->
-            <!--</ion-item-option>-->
-            <ion-item-option icon-only color="secondary"
-                             *ngIf="selectedFromList.indexOf(data) < 0" (click)="track(data)">
-              <ion-icon class="adjust" slot="icon-only" name="add-circle"></ion-icon>
-            </ion-item-option>
-            <ion-item-option color="danger" icon-only
-                             *ngIf="selectedFromList.indexOf(data) >= 0" (click)="remove(data, 'other')">
-              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <ion-item>
+          <ion-icon color="primary" *ngIf="!data['selected']" name="add-circle-outline" (click)="editData(data, 'other')"></ion-icon>
+          <ion-icon color="primary" *ngIf="data['selected']" name="checkmark-circle" (click)="remove(data, 'other')"></ion-icon>
+          {{data.name}}
+          <ion-icon color="primary" *ngIf="data['selected']" name="create" (click)="editData(data, 'other')"></ion-icon>
+        </ion-item>
       </ion-list>
     </ion-card-content>
   </ion-card>
 
 
-  <ng-container  *ngIf="startDate">
+  <ng-container *ngIf="startDate">
     <ion-card>
-      <ion-card-header text-wrap>When do you want to start the change? (Defaults to today!)</ion-card-header>
+      <ion-card-header text-wrap>
+        When do you want to start the change?
+        <p>Defaults to today!</p>
+      </ion-card-header>
       <ion-item>
         <ion-label>Set start date:</ion-label>
-        <ion-datetime min="{{today}}" displayFormat="MM/DD/YY"
+        <ion-datetime min="{{today}}" max='{{nextYear}}' displayFormat="MM/DD/YY"
                       [(ngModel)]="startDate"></ion-datetime>
       </ion-item>
     </ion-card>
   </ng-container>
 
 
-  <ion-card>
-    <ng-container *ngFor="let step of configPath">
-      <ion-list padding *ngIf="step.added.length > 0">
-        <ion-list-header (click)="toggleDetails(step)">
-          <ion-icon color="primary" item-right [name]="step.icon"></ion-icon>
-          {{step.description}}
-        </ion-list-header>
-        <div *ngIf="step.showDetails">
-          <ion-item text-wrap *ngFor="let data of step.added">{{data}}</ion-item>
-        </div>
-      </ion-list>
-    </ng-container>
-  </ion-card>
-
-
-  <ng-container *ngIf="configPath.length === 0">
-
-    <button ion-button (click)="cancelDataAdd()">
-      Cancel
-    </button>
-
-    <button float-right ion-button (click)="continueSetup()" [color]="selectedFromList.concat(customData[dataType]).length > 0 ? 'primary': 'light' "
-            [disabled]="selectedFromList.concat(customData[dataType]).length === 0">
-      Add
-    </button>
-  </ng-container>
-
-
-  <button float-right ion-button *ngIf="configPath.length > 0" (click)="continueSetup()">
+  <button float-right ion-button *ngIf="navParams.data['goalIDs']" (click)="continueSetup()">
     Continue
   </button>
 

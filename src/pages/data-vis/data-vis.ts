@@ -277,7 +277,7 @@ export class DataVisPage {
 
     for(let i=0; i<dataType['data'].length; i++){
       let dataVal = dataType['data'][i];
-      if(dataVal in dataDict){
+      if(dataDict['dataVal']){
         dataDict[dataVal] += (this.symptoms ? 1 : 0);
       }
       else{
@@ -466,7 +466,7 @@ export class DataVisPage {
     let allDataTypes = Object.keys(dataDict);
     for(let i=0; i<allDataTypes.length; i++){
       let dataType = allDataTypes[i];
-      if(dataType in dataPoint){
+      if(dataPoint[dataType]){
         dataDict[dataType]['data'].push(dataPoint[dataType]);
       }
       else{

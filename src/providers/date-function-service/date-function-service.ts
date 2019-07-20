@@ -1,15 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import _date = moment.unitOfTime._date;
-import {GlobalFunctionsServiceProvider} from "../global-functions-service/global-functions-service";
 
-/*
-  Generated class for the DateFunctionServiceProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class DateFunctionServiceProvider {
 
