@@ -19,27 +19,26 @@
 
     <ion-card *ngFor="let goal of goalList">
 
-      <ion-card-header>
-        <ion-icon color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)===-1" name="add-circle-outline" (click)="addGoal(goal)"></ion-icon>
-        <ion-icon color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)>-1" name="checkmark-circle" (click)="removeGoal(goal)"></ion-icon>
-        {{goal['goalName']}}
-        <ion-icon class="goalIcon" item-left name="{{goal['iconName']}}"></ion-icon>
+      <ion-card-header (click)="selectedGoals.indexOf(goal.goalID)===-1 ? addGoal(goal) :  removeGoal(goal)">
+          <ion-icon item-left color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)===-1" name="add-circle-outline"></ion-icon>
+          <ion-icon item-left color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)>-1" name="checkmark-circle"></ion-icon>
+          <span class="goalName">{{goal['goalName']}}</span>
+          <ion-icon class="goalIcon" item-right name="{{goal['iconName']}}"></ion-icon>
       </ion-card-header>
 
       <ion-card-content class="goalCardContent">
         <h2 class="effort">{{goal['effort']}} effort</h2>
 
-        <p text-wrap>Good choice if: {{goal['goodChoiceIf']}}</p>
+        <p text-wrap>Choose if: {{goal['goodChoiceIf']}}</p>
 
         <ion-list *ngIf="goal['subgoals'] && selectedGoals.indexOf(goal.goalID)>-1">
           <ion-item class="subgoalList" *ngFor="let subgoal of goal['subgoals']" text-wrap>
-            <ion-icon item-left  color="primary"  (click)="addGoal(goal, subgoal.goalID)" *ngIf="selectedGoals.indexOf(subgoal.goalID)===-1" name="add-circle-outline"></ion-icon>
+            <ion-icon item-left  color="primary" (click)="addGoal(goal, subgoal.goalID)" *ngIf="selectedGoals.indexOf(subgoal.goalID)===-1" name="add-circle-outline"></ion-icon>
             <ion-icon item-left  color="primary" (click)="removeGoal(goal, subgoal.goalID)" *ngIf="selectedGoals.indexOf(subgoal.goalID)>-1" name="checkmark-circle"></ion-icon>
-            <span>{{subgoal['subgoalName']}}</span>
+            <span (click)="selectedGoals.indexOf(subgoal.goalID)===-1 ? addGoal(goal, subgoal.goalID) : removeGoal(goal, subgoal.goalID)">{{subgoal['subgoalName']}}</span>
             <ion-icon item-right color="primary" name="information-circle-outline" (click)="showInfo(subgoal)"></ion-icon>
           </ion-item>
         </ion-list>
-
 
       </ion-card-content>
 
@@ -48,26 +47,39 @@
   <ion-card>
     <ion-card-header>
       Other Goals
-      <ion-icon class="goalIcon" item-left name="create"></ion-icon>
+      <ion-icon class="goalIcon" item-left name="md-create"></ion-icon>
     </ion-card-header>
     <ion-card-content>
-      <h2 text-wrap>
-        Do you have any other goals you want to specify?
-        <ion-icon item-left *ngIf="textGoalExpand" name="arrow-dropup" (click)="textGoalExpand = false;"></ion-icon>
-        <ion-icon item-left *ngIf="!textGoalExpand" name="arrow-dropdown" (click)="textGoalExpand = true;"></ion-icon>
-      </h2>
-      <p *ngIf="textGoalExpand">
-        Record any other migraine-related goals you want have so you can
-        reflect on them later or share them with your doctor!
-      </p>
-      <ion-textarea [(ngModel)]="textGoals" rows="2" placeholder="Write any other goals you have here."></ion-textarea>
+      <div  class="dropdownText" text-wrap (click)="textGoalExpand = !textGoalExpand;">
+        <span class="dropdownName">Do you have any other goals you want to remember?</span>
+        <ion-icon item-right class="dropdownIcon" *ngIf="!textGoalExpand" name="arrow-dropdown"></ion-icon>
+        <ion-icon item-right class="dropdownIcon"  *ngIf="textGoalExpand" name="arrow-dropup"></ion-icon>
+      </div>
+      <div *ngIf="textGoalExpand">
+        <p>
+          Record any other migraine-related goals you want have so you can
+          reflect on them later or share them with your doctor!
+        </p>
+        <ion-textarea [(ngModel)]="textGoals" rows="4" placeholder="Write any other goals you have here."></ion-textarea>
+      </div>
     </ion-card-content>
   </ion-card>
 
 
-  <button float-right ion-button (click)="continueSetup()" [color]="goalsWithoutSubgoals.length == 0 && selectedGoals.length > 0 ? 'primary': 'light' "
+  <button *ngIf="modifying" float-left ion-button (click)="continueSetup(true)" [color]="goalsWithoutSubgoals.length == 0 && selectedGoals.length > 0 ? 'primary': 'light' "
+          [disabled]="selectedGoals.length === 0 || goalsWithoutSubgoals.length > 0">
+    Save
+  </button>
+
+
+  <button *ngIf="!modifying" float-right ion-button (click)="continueSetup()" [color]="goalsWithoutSubgoals.length == 0 && selectedGoals.length > 0 ? 'primary': 'light' "
           [disabled]="selectedGoals.length === 0 || goalsWithoutSubgoals.length > 0">
     Continue
+  </button>
+
+  <button *ngIf="modifying" float-right ion-button (click)="continueSetup()" [color]="goalsWithoutSubgoals.length == 0 && selectedGoals.length > 0 ? 'primary': 'light' "
+          [disabled]="selectedGoals.length === 0 || goalsWithoutSubgoals.length > 0">
+    Modify Tracking
   </button>
 
 

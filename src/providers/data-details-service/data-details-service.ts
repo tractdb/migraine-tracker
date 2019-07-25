@@ -1,12 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-/*
-  Generated class for the DataDetailsServiceProvider provider.
 
-  See https://angular.io/guide/dependency-injection for more info on providers
-  and Angular DI.
-*/
 @Injectable()
 export class DataDetailsServiceProvider {
 
@@ -16,23 +11,9 @@ export class DataDetailsServiceProvider {
   private medTrackingIDs : string[] = ['asNeededMeds', 'newAsNeededMedication'];
 
   constructor(public http: HttpClient) {
+    this.openListedData();
     this.openDataConfig();
     this.openSupportedFields();
-    this.openListedData();
-  }
-
-
-  getDisplayName(name : string) : string{
-    for(let i=0; i<this.configData.length; i++){
-      if(this.configData[i].name === name){
-        if(this.configData[i].toDisplay){
-          return this.configData[i].toDisplay;
-        }
-        else{
-          return name;
-        }
-      }
-    }
   }
 
   openDataConfig() {
@@ -65,7 +46,7 @@ export class DataDetailsServiceProvider {
 
   getConfigByName(dataType: string) : {[dataTypeProps:string]:any}{
     for(let i=0; i<this.configData.length; i++){
-      if(this.configData[i]['name'] === dataType){
+      if(this.configData[i]['dataType'] === dataType){
         return this.configData[i];
       }
     }
@@ -80,7 +61,7 @@ export class DataDetailsServiceProvider {
   getAllDataTypes() : string[]{
     let allDataTypes = [];
     for(let i=0; i<this.configData.length; i++){
-      allDataTypes.push(this.configData[i].name);
+      allDataTypes.push(this.configData[i].dataType);
     }
     return allDataTypes;
   }
@@ -91,11 +72,11 @@ export class DataDetailsServiceProvider {
       let condGoal = this.configData[i].conditionalGoal;
       if(condGoal){
         if(goals.indexOf(condGoal) > -1){
-          dataList.push(this.configData[i].name);
+          dataList.push(this.configData[i].dataType);
         }
       }
       else{
-        dataList.push(this.configData[i].name);
+        dataList.push(this.configData[i].dataType);
       }
     }
     return dataList;
@@ -119,6 +100,19 @@ export class DataDetailsServiceProvider {
       }
     }
     return false;
+  }
+
+  getDisplayName(dataType : string) : string{
+    for(let i=0; i<this.configData.length; i++){
+      if(this.configData[i].dataType === dataType){
+        if(this.configData[i].toDisplay){
+          return this.configData[i].toDisplay;
+        }
+        else{
+          return dataType;
+        }
+      }
+    }
   }
 
 
@@ -151,38 +145,66 @@ export class DataDetailsServiceProvider {
     return null;
   }
 
+  getDataIDs(dataToTrack : {[dataType: string] : any}[]) : string[] {
+    if(!dataToTrack) return [];
+    let dataIDs = [];
+    for(let i=0; i<dataToTrack.length; i++){
+      dataIDs.push(dataToTrack[i].id);
+    }
+    return dataIDs;
+  }
 
-  getRecsAndCommon(alreadyTracking: string[], dataType: string,
+  getDataFromID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
+    if(!dataToTrack) return [];
+    for(let i=0; i<dataToTrack.length; i++){
+      if(dataToTrack[i].id === id){
+        return dataToTrack[i];
+      }
+    }
+    return null;
+  }
+
+
+
+
+  getRecsAndCommon(alreadyTracking: {[dataType:string]:any}, dataType: string,
                    goalIDs: string[]) : any[]{
     let dataOfType = this.listedData[dataType];
     let otherData = [];
     let recData = [];
+    let trackingMeds = this.getWhetherTrackingMeds(this.getDataIDs(alreadyTracking['Treatments']));
 
     for(let i=0; i<dataOfType.length; i++){
       let dataObject = dataOfType[i];
-      if (alreadyTracking.indexOf(dataObject.id) === -1){ // not already tracking it
-        if(dataObject['condition']) {
-          console.log("conditional");
-          if(dataObject['id'] === 'frequentMedUse' || dataObject['id'] === 'whetherMedsWorked'){
-            console.log("medUse");
-            if(this.getWhetherTrackingMeds(alreadyTracking)){
-              if(this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals'])){
-                recData.push(dataObject);
-              }
-              else{
-                otherData.push(dataObject);
-              }
+      let skip = false;
+      let recommended = this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals']);
+      if(dataObject['condition']) {
+        if(dataObject['id'] === 'frequentMedUse' || dataObject['id'] === 'whetherMedsWorked'){
+          if(!trackingMeds){
+            skip = true;
+          }
+        }
+        else if(dataObject['skipIfGoals']){
+          for(let j=0; j<dataObject['skipIfGoals'].length; j++){
+            if(goalIDs.indexOf(dataObject['skipIfGoals'][j])>-1){
+              skip = true;
+              break;
             }
           }
-          else{
-            console.log("CONDITION BUT NO FUNCTION!");
-          }
-        }
-        else if(this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals'])){
-          recData.push(dataObject);
         }
         else{
-          otherData.push(dataObject);
+          console.log("CONDITION BUT NO FUNCTION!");
+        }
+      }
+      if(!skip){
+        let trackingData = this.getDataFromID(alreadyTracking[dataType], dataObject.id);
+        if(recommended){
+          if(trackingData) recData.push(trackingData);
+          else recData.push(dataObject);
+        }
+        else{
+          if(trackingData) otherData.push(trackingData);
+          else otherData.push(dataObject);
         }
       }
     }

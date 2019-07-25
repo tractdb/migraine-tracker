@@ -60,8 +60,8 @@ export class GlobalFunctionsServiceProvider {
       let goalName = this.goalDetails.getGoalNameByID(goalID);
       if(/^\d+$/.test(goalID)){ // it's not a subogal (no letters)
         goalHierarchy[goalName] = [];
-        let subgoalInfo = this.goalDetails.getSubgoalByGoalID(goalID);
-        let allGoalSubgoals = subgoalInfo ? subgoalInfo.subgoals : [];
+        let allGoalSubgoals = this.goalDetails.getSubgoals(goalID);
+        if(!allGoalSubgoals) allGoalSubgoals = [];
         for(let j=0; j<allGoalSubgoals.length; j++){
           if(currentGoalIDs.indexOf(allGoalSubgoals[j].goalID) > -1){
             goalHierarchy[goalName].push(allGoalSubgoals[j].subgoalName)
@@ -72,18 +72,6 @@ export class GlobalFunctionsServiceProvider {
     return goalHierarchy;
   }
 
-
-  getDataIDs(dataToTrack : {[dataType: string] : any}) : string[] {
-    if(!dataToTrack) return [];
-    let dataIDs = [];
-    let dataTypes = Object.keys(dataToTrack);
-    for(let i=0; i<dataTypes.length; i++){
-      for(let j=0; j<dataToTrack[dataTypes[i]].length; j++){
-        dataIDs.push(dataToTrack[dataTypes[i]][j].id);
-      }
-    }
-    return dataIDs;
-  }
 
 
   calculatePriorGoalProgress(data : {[dataConfigDetails: string] : any},
@@ -124,26 +112,6 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  buttonColors(added){
-    if(added){
-      return {"add": "secondary", "remove": "light"};
-    }
-    else{
-      return {"add": "light", "remove": "danger"};
-    }
-  }
 
-
-  toggleDetails(configStep) {
-    if (configStep.showDetails || configStep.showDetails == undefined) {
-      configStep.showDetails = false;
-      configStep.icon = 'ios-add-circle-outline';
-    }
-    else {
-      configStep.showDetails = true;
-      configStep.icon = 'ios-remove-circle-outline';
-    }
-    return configStep;
-  }
 
 }

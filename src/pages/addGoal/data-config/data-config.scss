@@ -6,8 +6,40 @@ page-data-config {
     font-size: 2rem;
   }
 
+  .addIcon{
+    margin-right: 0.2em !important;
+  }
+
+  .addItem{
+    background-color: var(--ion-background-color);
+    font-size:1.8rem;
+    padding: 0 !important;
+  }
+
+
   .otherExplanation{
     padding-bottom:1em;
+  }
+
+  .addCustomIcon{
+    display:inline-block;
+  }
+
+  .addCustomName{
+    //float:right;
+  }
+
+  .commonHeader{
+    padding-top:0.1em;
+    padding-bottom:0.1em;
+    display: inline-block;
+  }
+
+  .commonDropdown{
+    float:right;
+    padding-left:0.2em;
+    padding-top:0.1em;
+    padding-bottom:0.1em;
   }
 
 

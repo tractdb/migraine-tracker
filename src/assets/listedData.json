@@ -1,5 +1,5 @@
 {
-    "Symptoms": 
+    "Symptom": 
         [
             {
                 "name": "Migraine",
@@ -58,9 +58,9 @@
                 "recommendingGoals": []
             },
             {
-                "name": "Lightheadedness/Dizziness",
+                "name": "Lightheadedness or Dizziness",
                 "id": "hadLightheadednessOrDizziness",
-                "explanation": "Lightheadedness/dizziness experienced",
+                "explanation": "Lightheadedness or dizziness experienced",
                 "fieldDescription": "Whether you were lightheaded/dizzy (yes/no)",
                 "recommendedField": "binary",
                 "recommendingGoals": []
@@ -122,7 +122,7 @@
                 "recommendingGoals": []
             }
         ],
-    "Treatments": 
+    "Treatment": 
         [
             {
                 "name": "As-needed medications",
@@ -131,7 +131,7 @@
                 "fieldDescription": "Whether you took any as-needed medication",
                 "recommendedField": "binary",
                 "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
-                "goal": {
+                "dataGoal": {
                     "freq": "Less",
                     "threshold": 4,
                     "timespan": "Month"
@@ -148,10 +148,12 @@
             {
                 "name": "Exercise",
                 "id": "exerciseToday",
+                "condition": true,
+                "skipIfGoals": ["1c"],
                 "explanation": "How much you exercised",
                 "fieldDescription": "Number of minutes of exercise",
                 "recommendedField": "number",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 180,
                     "timespan": "Week"
@@ -161,6 +163,8 @@
             {
                 "name": "Supplements",
                 "id": "supplementsToday",
+                "condition": true,
+                "skipIfGoals": ["1c"],
                 "explanation": "Migraine prevention supplements taken (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
                 "fieldDescription": "Whether you took supplements (yes/no)",
                 "recommendedField": "binary",
@@ -172,7 +176,7 @@
                 "explanation": "Stress management practiced (for example, yoga, meditation)",
                 "fieldDescription": "Whether you did any stress management (yes/no)",
                 "recommendedField": "binary",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 6,
                     "timespan": "Week"
@@ -182,6 +186,8 @@
             {
                 "name": "Nutrition",
                 "id": "nutritionToday",
+                "condition": true,
+                "skipIfGoals": ["1c"],
                 "explanation": "Whether you ate healthily. For example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar",
                 "fieldDescription": "Whether you ate healthily (yes/no)",
                 "recommendedField": "binary",
@@ -212,17 +218,18 @@
                 "recommendingGoals": []
             }
         ],
-    "Contributors": 
+    "Contributor": 
         [
             {
                 "name": "Frequent Use of Medications",
                 "id": "frequentMedUse",
                 "explanation": "Calculated medication use, to let you know if you might want to think about cutting back.",
                 "fieldDescription": "Number of pills you took",
+                "fieldSet": true,
                 "recommendedField": "calculated medication use",
                 "condition": true,
                 "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
-                "goal": {
+                "dataGoal": {
                     "freq": "Less",
                     "threshold": 4,
                     "timespan": "Month"
@@ -231,6 +238,8 @@
             {
                 "name": "Stress",
                 "id": "stressToday",
+                "condition": true,
+                "skipIfGoals": ["1c"],
                 "explanation": "How stressed you were",
                 "fieldDescription": "3-point stress rating",
                 "recommendedField": "category scale",
@@ -271,10 +280,12 @@
             {
                 "name": "Sleep",
                 "id": "sleepToday",
+                "condition": true,
+                "skipIfGoals": ["1c"],
                 "explanation": "How much sleep you got",
                 "fieldDescription": "Hours of sleep",
                 "recommendedField": "number",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 8,
                     "timespan": "Day"
@@ -362,15 +373,15 @@
                 "recommendingGoals": []
             }
         ],
-    "Changes": 
+    "Change": 
         [
             {
                 "name": "Starting to Exercise Regularly",
-                "id": "exerciseToday",
+                "id": "exerciseChange",
                 "explanation": "How much you exercised",
                 "fieldDescription": "Number of minutes of exercise",
                 "recommendedField": "number",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 180,
                     "timespan": "Week"
@@ -379,7 +390,7 @@
             },
             {
                 "name": "Starting Supplements",
-                "id": "supplementsToday",
+                "id": "supplementChange",
                 "explanation": "Migraine prevention supplements taken (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
                 "fieldDescription": "Whether you took supplements (yes/no)",
                 "recommendedField": "binary",
@@ -387,11 +398,11 @@
             },
             {
                 "name": "Managing Stress",
-                "id": "stressManagement",
+                "id": "stressChange",
                 "explanation": "Stress management practiced (for example, yoga, meditation)",
                 "fieldDescription": "Whether you did any stress management (yes/no)",
                 "recommendedField": "binary",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 6,
                     "timespan": "Week"
@@ -400,7 +411,7 @@
             },
             {
                 "name": "Eating a More Healthy Diet",
-                "id": "nutritionToday",
+                "id": "nutritionChange",
                 "explanation": "Whether you ate healthily (for example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar)",
                 "fieldDescription": "Whether you ate healthily (yes/no)",
                 "recommendedField": "binary",
@@ -408,11 +419,11 @@
             },
             {
                 "name": "Increasing Sleep",
-                "id": "sleepToday",
+                "id": "sleepChange",
                 "explanation": "How much you slept",
                 "fieldDescription": "Hours of sleep",
                 "recommendedField": "number",
-                "goal": {
+                "dataGoal": {
                     "freq": "More",
                     "threshold": 8,
                     "timespan": "Day"
@@ -421,7 +432,7 @@
             },
             {
                 "name": "New As-Needed Medication",
-                "id": "newAsNeededMedication",
+                "id": "AsNeededMedChange",
                 "explanation": "Any new as-needed medication you're starting",
                 "fieldDescription": "Whether you took your new as-needed medication",
                 "recommendedField": "binary",
@@ -429,7 +440,7 @@
             },
             {
                 "name": "New Routine Medication",
-                "id": "newRoutineMedication",
+                "id": "RoutineMedicationChange",
                 "explanation": "Any new routine medication (like a daily preventative medication) you're starting",
                 "fieldDescription": "Whether you took your new routine medication",
                 "recommendedField": "binary",

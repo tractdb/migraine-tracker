@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {NavController, NavParams, ViewController} from 'ionic-angular';
+import {NavParams, ViewController} from 'ionic-angular';
 import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
 import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
 
@@ -17,30 +17,36 @@ import {GoalDetailsServiceProvider} from "../../../providers/goal-details-servic
 export class EditDataPage {
 
   private data : {[dataInfo: string] : any} = {};
+  private dataType : string;
   private goalList = [];
-  private editField : boolean = false;
   private fieldList : {[fieldProp: string] : any}[]= [];
-  private editGoal : boolean = false;
-  private numList : Number[];
   private allowsGoals: boolean;
   private somethingEdited : boolean = false;
   private fieldButtonsExpanded : boolean = false;
   private goalFreqExpanded : boolean = false;
-  private goalThreshExpanded : boolean = false;
   private goalTimeExpanded : boolean = false;
+  private isCustom : boolean = false;
+  private isNew : boolean = false;
 
   constructor(public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetails: DataDetailsServiceProvider,
               public goalDetails: GoalDetailsServiceProvider) {
     this.allowsGoals = navParams.data['allowsDataGoals'];
+    this.dataType = navParams.data['dataType'];
     this.data = navParams.data['data'];
-    if(!this.data.field) this.data.field = this.data.recommendedField;
+    if(!this.data['name']) this.isNew = true;
+    if(this.data.recommendingGoals) this.getRecommendingGoals();
+    this.isCustom = this.data.custom;
+    if(!this.data.field && this.data.recommendedField) this.data.field = this.data.recommendedField;
     if(!this.data.goal){
-      this.data.goal = {'freq': '', 'threshold': '', 'timespan': ''};
+      if(this.data.dataGoal) this.data.goal = this.data.dataGoal;
+      else this.data.goal = {'freq': null, 'threshold': null, 'timespan': null};
     }
-    this.numList = Array.from(new Array(30),(val,index)=>index+1);
-    this.getRecommendingGoals();
+  }
+
+  ionViewDidLoad() {
+    this.fieldList = this.dataDetails.getSupportedFields();
   }
 
   getRecommendingGoals(){
@@ -51,28 +57,41 @@ export class EditDataPage {
     }
   }
 
-  ionViewDidLoad() {
-    this.fieldList = this.dataDetails.getSupportedFields();
+
+  expandField(data){
+    if(!data.fieldSet) this.fieldButtonsExpanded = !this.fieldButtonsExpanded;
   }
+
 
   editedField(field){
-    this.data.field = field['name'];
-    this.data.fieldExplanation = field['explanation'];
     this.somethingEdited = true;
     this.fieldButtonsExpanded = false;
-  }
+    this.data.field = field['name'];
 
-  editedGoal(goal){
-    this.somethingEdited = true;
-  }
-
-  editData(type : string){
-    if(type==='field'){
-      this.editField = true;
-      delete this.data.fieldDescription; // CHANGE IF WE DON'T LET THEM EDIT FIELDS
+    if(this.data.field === this.data.recommendedField){
+      this.data.fieldExplanation = this.data['fieldDescription'];
+      if(this.data.dataGoal && !this.data.goal['freq']){
+        this.data.goal = this.data.dataGoal;
+      }
     }
-    else if (type==='goal') this.editGoal = true;
+    else{
+      this.data.fieldExplanation = field['explanation'];
+      this.data.goal = {'freq': null, 'threshold': null, 'timespan': null}; // because they don't make sense across fields
+    }
   }
+
+  editedGoal(goal, val=null){
+    this.somethingEdited = true;
+    this.goalTimeExpanded = false;
+    this.goalFreqExpanded = false;
+    if(goal==='remove'){
+      this.data.goal = {'freq': null, 'threshold': null, 'timespan': null};
+    }
+    else{
+      this.data.goal[goal] = val;
+    }
+  }
+
 
   backToConfig(choice : string){
     if(choice==='add') {
@@ -84,7 +103,6 @@ export class EditDataPage {
     else {
       this.viewCtrl.dismiss();
     }
-
   }
 
 }

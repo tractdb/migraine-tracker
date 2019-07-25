@@ -1,24 +1,25 @@
 [
-    {"name": "Changes",
+    {"dataType": "Change",
     "description": "What change(s) are you planning on making?",
     "conditionalGoals": ["1c"],
     "startDate": true,
     "dataGoals": true
     },
 
-    {"name": "Symptoms",
+    {"dataType": "Symptom",
     "dataGoals": false},
 
-    {"name": "Treatments",
+    {"dataType": "Treatment",
     "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
     "dataGoals": true},
 
-    {"name": "Contributors",
-    "toDisplay": "Contributors (\"Triggers\")",
+    {"dataType": "Contributor",
+    "toDisplay": "Contributor (\"Trigger\")",
     "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
+    "recommendForGoals": ["2"],
     "dataGoals": true},
 
-    {"name": "Other",
+    {"dataType": "Other",
     "description": "Is there anything else you want to track?",
     "dataGoals": true}
 

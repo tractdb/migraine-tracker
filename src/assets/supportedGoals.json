@@ -2,7 +2,7 @@
     {
         "goalName": "Monitoring",
         "goalID": "3",
-        "goodChoiceIf": "You just want to keep track of frequency",
+        "goodChoiceIf": "You just want to track frequency",
         "iconName": "calendar",
         "subgoals": true,
         "effort": "low"
@@ -10,7 +10,7 @@
     { 
         "goalName": "Learning",
         "goalID": "1",
-        "goodChoiceIf": "You want to learn about the symptoms you have or the factors that affect them",
+        "goodChoiceIf": "You want to learn about symptoms or the factors that affect them",
         "iconName": "school",
         "subgoals": true,
         "effort": "medium"
@@ -19,7 +19,7 @@
         "goalName": "Predicting",
         "goalID": "2",
         "goodChoiceIf":
-            "You already know what factors lead to symptoms and you want to track them to predict future symptoms",
+            "You know what factors lead to symptoms and you want to track to predict future symptoms",
         "iconName": "alarm",
         "subgoals": false,
         "effort": "high"

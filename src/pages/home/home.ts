@@ -30,9 +30,9 @@ export class HomePage {
   }
 
   ionViewDidEnter(){
-    if(this.navParams.data['goalIDs']){ //todo: notification stuff
+    if(this.navParams.data['goalIDs']){ //Came from setting a goal up.  todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
-      console.log(this.navParams.data)
+      console.log(this.navParams.data);
       this.addQuickTrackers();
     }
     else{

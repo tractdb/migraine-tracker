@@ -19,9 +19,7 @@ import { GoalDetailsServiceProvider } from '../providers/goal-details-service/go
 import { GlobalFunctionsServiceProvider } from '../providers/global-functions-service/global-functions-service';
 import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
-import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
 import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
-import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notifications/configure-notifications";
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
 import {TrackDataPage} from "../pages/track-data/track-data";
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
@@ -45,9 +43,7 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     GoalTypePage,
     LoginPage,
     DataConfigPage,
-    AddCustomDataPage,
     SelectTrackingFrequencyPage,
-    ConfigureNotificationsPage,
     EditDataPage,
     TrackDataPage,
     GoalModificationPage,
@@ -75,9 +71,7 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     GoalTypePage,
     LoginPage,
     DataConfigPage,
-    AddCustomDataPage,
     SelectTrackingFrequencyPage,
-    ConfigureNotificationsPage,
     EditDataPage,
     TrackDataPage,
     GoalModificationPage,

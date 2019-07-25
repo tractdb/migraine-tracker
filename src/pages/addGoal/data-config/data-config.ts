@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import {ModalController, NavController, NavParams, ViewController} from 'ionic-angular';
 import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
-import {AddCustomDataPage} from "../add-custom-data/add-custom-data";
 import {SelectTrackingFrequencyPage} from "../select-tracking-frequency/select-tracking-frequency";
-import {GlobalFunctionsServiceProvider} from "../../../providers/global-functions-service/global-functions-service";
 import {EditDataPage} from "../edit-data/edit-data";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 import * as moment from 'moment';
@@ -15,8 +13,7 @@ import * as moment from 'moment';
 })
 export class DataConfigPage {
 
-  private dataType : string;
-  private dataDesc : string;
+  private recommendTracking : boolean = false; // as in, recommend for a goal despite no specific recommendations
   private allGoals : string[];
   private dataObject : {[dataInfo: string] : string};
   private displayName : string;
@@ -32,108 +29,78 @@ export class DataConfigPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
               public dataDetailsServiceProvider: DataDetailsServiceProvider,
-              public modalCtrl: ModalController, public globalFunctions: GlobalFunctionsServiceProvider,
+              public modalCtrl: ModalController,
               private couchDBService: CouchDbServiceProvider) {
   }
 
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
-    let alreadyTracking = this.globalFunctions.getDataIDs(activeGoals['dataToTrack']); // need to add previously configured
+    let alreadyTracking = activeGoals['dataToTrack']; // need to add previously configured
     this.allGoals = activeGoals['goals'] ? activeGoals['goals'] : [];
 
     if(this.navParams.data['goalIDs']){ // got here via adding a goal
       this.allGoals = this.allGoals.concat(this.navParams.data['goalIDs']);
       this.dataObject = this.navParams.data['dataPage'];
-      this.startDate = this.dataObject.startDate ? new Date().toISOString() : null;
-      this.dataType = this.dataObject.name;
-      this.dataDesc = this.dataObject.description;
-      alreadyTracking = alreadyTracking.concat(this.globalFunctions.getDataIDs(this.navParams.data['selectedData']));
+      alreadyTracking = this.combineTracking(alreadyTracking, this.navParams.data['selectedData']);
     }
 
     else{ // got here via tracking routine modification page
-      this.dataType = this.navParams.data['dataPage'];
-      this.dataObject = this.dataDetailsServiceProvider.getConfigByName(this.dataType);
-      this.dataDesc = this.navParams.data['dataDesc'];
+      this.dataObject = this.dataDetailsServiceProvider.getConfigByName(this.navParams.data['dataType']);
+      this.dataObject['dataDesc'] = this.navParams.data['dataDesc'];
     }
 
-    this.displayName = this.dataDetailsServiceProvider.getDisplayName(this.dataType);
-    this.customData[this.dataType] = [];
+    this.displayName = this.dataObject.toDisplay ? this.dataObject.toDisplay : this.dataObject.dataType;
+    this.startDate = this.dataObject.startDate ? new Date().toISOString() : null;
+    this.customData[this.dataObject.dataType] = [];
 
     this.getAllRecs(alreadyTracking);
   }
 
+  combineTracking(dict1, dict2){
+    if(!this.navParams.data['selectedData']) return dict1;
+    let keys = Object.keys(dict2);
+    for(let i=0; i<keys.length; i++){
+      let key = keys[i];
+      if(dict1[key]){
+        dict1[key].concat(dict2[key]);
+      }
+      else{
+        dict1[key] = dict2[key];
+      }
+    }
+    return dict1;
+  }
+
+  recordTracking(alreadyTracking){
+    for(let i=0; i<alreadyTracking.length; i++){
+      if(alreadyTracking[i].custom) this.customData[this.dataObject.dataType].push(alreadyTracking[i]);
+      else this.selectedFromList.push(alreadyTracking[i]);
+    }
+  }
 
 
 
-  getAllRecs(alreadyTracking : string[]) {
-    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataType, this.allGoals);
+  getAllRecs(alreadyTracking : {[dataType:string]:any}) {
+    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataObject.dataType, this.allGoals);
     this.recommendedData = dataGroups[0];
     this.otherData = dataGroups[1];
-  }
+    this.recordTracking(alreadyTracking);
 
-
-
-  continueSetup() {
-    let selectedData = this.selectedFromList.concat(this.customData[this.dataType]);
-
-    if(this.navParams.data['goalIDs']){
-      if(selectedData.length > 0){
-        if (!this.navParams.data['selectedData']) {
-          this.navParams.data['selectedData'] = {};
+    if(this.dataObject.recommendForGoals){ // for ex we need them to track personalized contributors to predict
+      for(let i=0; i<this.allGoals.length; i++){
+        if(this.dataObject.recommendForGoals.indexOf(this.allGoals[i]) >-1){
+          this.recommendTracking = true;
+          break;
         }
-
-        if(this.startDate){
-          for(let i=0; i< selectedData.length; i++){        // specify for every change so if they add different ones
-            selectedData[i]['startDate'] = this.startDate;  // at different days we still know how to filter
-          }
-        }
-
-        this.navParams.data['selectedData'][this.dataType] = selectedData;
       }
-
-
-      let configData = this.dataDetailsServiceProvider.findNextConfigData(this.navParams.data['goalIDs'], this.dataObject);
-
-      if (configData !== null){
-        this.navParams.data['dataPage'] = configData;
-        this.navCtrl.push(DataConfigPage, this.navParams.data);
-      }
-
-      else {
-        this.navCtrl.push(SelectTrackingFrequencyPage, {'configPath': this.navParams.data['configPath'],
-          'goalIDs': this.navParams.data['goalIDs'],
-          'dataToTrack': this.navParams.data['selectedData'],
-          'textGoals': this.navParams.data['textGoals']});
-      }
-
     }
-
-    else{
-      this.viewCtrl.dismiss(selectedData);
-    }
-
-  }
-
-  cancelDataAdd(){
-    this.viewCtrl.dismiss([]);
   }
 
 
-
-  addCustomData() {
-    let customDataModal = this.modalCtrl.create(AddCustomDataPage,
-                                              {"type": this.dataType, 'goals':this.dataObject.dataGoals});
-    customDataModal.onDidDismiss(data => {
-      if(data){
-        data.selected = true;
-        this.customData[this.dataType].push(data);
-      }
-    });
-    customDataModal.present();
-  }
 
   replaceData(list : {[dataProps : string ] : any}[],
               oldData : {[dataProps : string ] : any}, newData : {[dataProps : string ] : any}){
+    // kinda dumb but ionic can't iterate dicts and we need all the data details somewhere, so eh
     let oldIndex = list.indexOf(oldData);
     if(oldIndex > -1){
       list.splice(oldIndex, 1, newData);
@@ -145,10 +112,10 @@ export class DataConfigPage {
 
   editData(oldData : {[dataProps : string ] : any}, type : string) {
     let editDataModal = this.modalCtrl.create(EditDataPage, {'data': oldData,
+          'dataType': this.dataObject.dataType,
           'selectedGoals': this.allGoals,
-          'allowsDataGoals': this.dataObject.dataGoals},
-                                                       {showBackdrop:true, cssClass: 'select-modal' });
-    editDataModal['showBackdrop'] = true;
+          'allowsDataGoals': this.dataObject.dataGoals},{showBackdrop:true, cssClass: 'select-modal' });
+
     editDataModal.onDidDismiss(newData => {
       if(newData){
 
@@ -159,7 +126,7 @@ export class DataConfigPage {
         else{
           newData.selected = true;
           if(type=="custom"){
-            this.replaceData(this.customData[this.dataType], oldData, newData);
+            this.replaceData(this.customData[this.dataObject.dataType], oldData, newData);
           }
           else if(type==='rec'){
             this.replaceData(this.recommendedData, oldData, newData);
@@ -183,18 +150,50 @@ export class DataConfigPage {
 
   remove(data : {[dataProps : string ] : any}, category : string){
     if(category === "custom") {
-      this.customData[this.dataType].splice(data, 1);
+      this.customData[this.dataObject.dataType].splice(this.customData[this.dataObject.dataType].indexOf(data), 1);
     }
     else{
-      // @ts-ignore
-      this.selectedFromList.splice(data, 1);
+      this.selectedFromList.splice(this.selectedFromList.indexOf(data), 1);
       data.selected = false;
     }
   }
 
 
-  toggleDetails(configStep : {[configDetails : string ] : any}) {
-    this.globalFunctions.toggleDetails(configStep);
+  continueSetup() {
+    let selectedData = this.selectedFromList.concat(this.customData[this.dataObject.dataType]);
+
+    if(this.navParams.data['goalIDs']){
+      if(selectedData.length > 0){
+        if (!this.navParams.data['selectedData']) this.navParams.data['selectedData'] = {};
+
+        if(this.startDate){
+          for(let i=0; i< selectedData.length; i++){        // specify for every change so if they add different ones
+            selectedData[i]['startDate'] = this.startDate;  // at different days we still know how to filter
+          }
+        }
+
+        this.navParams.data['selectedData'][this.dataObject.dataType] = selectedData;
+      }
+
+
+      let configData = this.dataDetailsServiceProvider.findNextConfigData(this.navParams.data['goalIDs'], this.dataObject);
+
+      if (configData !== null){
+        this.navParams.data['dataPage'] = configData;
+        this.navCtrl.push(DataConfigPage, this.navParams.data);
+      }
+
+      else {
+        delete this.navParams.data['dataPage'];
+        this.navCtrl.push(SelectTrackingFrequencyPage, this.navParams.data);
+      }
+
+    }
+
+    else{
+      this.viewCtrl.dismiss(selectedData);
+    }
+
   }
 
 }

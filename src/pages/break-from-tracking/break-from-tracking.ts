@@ -15,16 +15,14 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 })
 export class BreakFromTrackingPage {
 
-  currentBreak : {[breakProps: string] : any};
-  currentBreakStarted : string;
-
-  selected : string = '';
-
-
-  dateToSnoozeTo : string;
-  dateToCheckIn : string;
-
-  reasonForBreak : string;
+  private currentBreak : {[breakProps: string] : any};
+  private currentBreakStarted : string;
+  private selected : string = '';
+  private dateToSnoozeTo : string;
+  private dateToCheckIn : string;
+  private reasonForBreak : string;
+  private aboutExpanded : boolean = false;
+  private breakChanged = false;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBProvider: CouchDbServiceProvider) {
@@ -40,6 +38,12 @@ export class BreakFromTrackingPage {
       monthFromNow = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     }
     this.dateToCheckIn = monthFromNow.toISOString();
+  }
+
+
+  setSelected(val){
+    if(this.selected === val) this.selected = '';
+    else this.selected = val;
   }
 
   getStartDate(){
@@ -74,10 +78,8 @@ export class BreakFromTrackingPage {
       newBreak['noDates'] = true;
     }
     newBreak['started'] = new Date();
-    console.log(newBreak);
     this.couchDBProvider.setBreak(newBreak);
     this.currentBreak = newBreak;
-    this.dateToCheckIn = newBreak['checkInDate'];
     this.getStartDate();
   }
 
@@ -89,6 +91,7 @@ export class BreakFromTrackingPage {
     else{
       this.currentBreak['checkInDate'] = this.dateToCheckIn
     }
+    this.breakChanged=false;
     this.couchDBProvider.updateBreak(this.currentBreak);
   }
 
@@ -99,6 +102,8 @@ export class BreakFromTrackingPage {
     this.currentBreak = undefined;
     this.dateToSnoozeTo = undefined;
     this.dateToCheckIn = undefined;
+    this.selected = undefined;
+    this.reasonForBreak = undefined;
     this.setDates();
   }
 

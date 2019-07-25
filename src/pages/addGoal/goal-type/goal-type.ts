@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
+import {NavController, NavParams} from 'ionic-angular';
 import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
 import {DataConfigPage} from "../data-config/data-config";
 import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
+import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
+import {GoalModificationPage} from "../../goal-modification/goal-modification";
 
 @Component({
   selector: 'page-goal-type',
@@ -12,18 +14,27 @@ import {DataDetailsServiceProvider} from "../../../providers/data-details-servic
 export class GoalTypePage {
 
   private goalList : [{[goalDetails:string]: any;}];
+  private modifying : boolean = false;
   private selectedGoals : string[]= [];
   private textGoals;
   private textGoalExpand = false;
   private goalsWithoutSubgoals : string[] = [];
 
-  constructor(private navCtrl: NavController,
+  constructor(private navCtrl: NavController, public navParams: NavParams,
+              private couchDBService: CouchDbServiceProvider,
               private goalDetailsServiceProvider: GoalDetailsServiceProvider,
               private dataDetails: DataDetailsServiceProvider) {
     this.selectedGoals = [];
+    this.modifying = this.navParams.data['modifying'];
   }
 
   ionViewDidLoad() {
+    let activeGoals = this.couchDBService.getActiveGoals();
+    if(activeGoals){
+      this.selectedGoals = activeGoals['goals'];
+      this.textGoals = activeGoals.textGoals;
+      this.textGoalExpand = true;
+    }
     this.goalList = this.goalDetailsServiceProvider.getGoalList();
   }
 
@@ -87,20 +98,29 @@ export class GoalTypePage {
   }
 
 
-  continueSetup() {
+  continueSetup(exit=false) {
     let dataToSend = {'goalIDs': this.selectedGoals, 'textGoals': this.textGoals};
 
-    let configData = this.dataDetails.findNextConfigData(this.selectedGoals, '');
-
-    if (configData!== null){
-      dataToSend['dataPage'] = configData;
-      this.navCtrl.push(DataConfigPage, dataToSend);
+    if(exit){
+      dataToSend['goalsOnly'] = true;
+      this.navCtrl.push(GoalModificationPage, dataToSend);
     }
 
     else{
-      let error = new Error("All data conditional, no conditions met.");
-      throw(error);
+      let configData = this.dataDetails.findNextConfigData(this.selectedGoals, '');
+
+      if (configData!== null){
+        dataToSend['dataPage'] = configData;
+        this.navCtrl.push(DataConfigPage, dataToSend);
+      }
+
+      else{
+        let error = new Error("All data conditional, no conditions met.");
+        throw(error);
+      }
     }
 
   }
+
+
 }

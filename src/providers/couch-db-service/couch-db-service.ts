@@ -115,7 +115,7 @@ export class CouchDbServiceProvider {
       let goalSet = new Set(newGoals.concat(this.activeUserGoals['goals']));
       this.activeUserGoals = {'goals': Array.from(goalSet),
                       'dataToTrack':
-                        this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['dataToTrack']),
+                        this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['selectedData']),
                       'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
                       'dateAdded': new Date(),
                       'notifications': setupDict.notificationSettings ?
@@ -123,7 +123,7 @@ export class CouchDbServiceProvider {
     }
     else{
       this.activeUserGoals = {'goals': newGoals,
-                              'dataToTrack': setupDict.dataToTrack,
+                              'dataToTrack': setupDict.selectedData,
                               'textGoals': [setupDict.textGoals],
                               'dateAdded': new Date(),
                               'notifications': setupDict.notificationSettings};
@@ -132,7 +132,23 @@ export class CouchDbServiceProvider {
     return this.activeUserGoals;
   }
 
-  removeGoal(goal : string) {
+  modifyTrackingRoutine(dataType, newRoutine){
+    // todo: push!  And maybe change date added??
+    this.activeUserGoals.dataToTrack[dataType] = newRoutine;
+  }
+
+  modifyFrequency(newNotifications){
+    // todo: push!  And maybe change date added??
+    this.activeUserGoals.notifications = newNotifications;
+  }
+
+  modifyGoals(newGoalsObject){
+    // todo: push!  And maybe change date added??
+    this.activeUserGoals.goals = newGoalsObject['goalIDs'];
+    this.activeUserGoals.textGoals = newGoalsObject['textGoals'];
+  }
+
+  removeGoal(goal : string) { //todo: dunno if we need this
     // todo: push to database
     if(goal === 'textGoal'){
       this.activeUserGoals['textGoals'] = undefined;
@@ -143,7 +159,7 @@ export class CouchDbServiceProvider {
     }
   }
 
-  editTextGoal(newGoal : string){
+  editTextGoal(newGoal : string){ // todo: again, dunno if needed
     // todo: push to database
     this.activeUserGoals['textGoals'] = newGoal;
   }
@@ -153,8 +169,8 @@ export class CouchDbServiceProvider {
     if(Object.keys(this.activeUserGoals).length > 0){
       return this.activeUserGoals;
     }
-    // return this.getExampleGoal(); //todo: remove, use db
-   return {};
+    return this.getExampleGoal(); //todo: remove, use db
+   // return {};
   }
 
 
@@ -1194,10 +1210,10 @@ export class CouchDbServiceProvider {
           "3b"
         ],
         "dataToTrack": {
-          "Changes": [
+          "Change": [
             {
               "name": "Increasing Sleep",
-              "id": "sleepToday",
+              "id": "sleepChange",
               "explanation": "How much sleep you got today",
               "fieldDescription": "Hours of sleep",
               "field": "number",
@@ -1217,7 +1233,7 @@ export class CouchDbServiceProvider {
               "selected": true
             }
           ],
-          "Symptoms": [
+          "Symptom": [
             {
               "name": "Migraine today",
               "id": "migraineToday",
@@ -1274,7 +1290,7 @@ export class CouchDbServiceProvider {
               "custom": true
             }
           ],
-          "Treatments": [
+          "Treatment": [
             {
               "name": "As-needed medications today",
               "id": "asNeededMeds",
@@ -1345,7 +1361,7 @@ export class CouchDbServiceProvider {
               "custom": true
             }
           ],
-          "Contributors": [
+          "Contributor": [
             {
               "name": "Stress",
               "id": "stressToday",

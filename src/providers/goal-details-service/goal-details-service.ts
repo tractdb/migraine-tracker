@@ -36,6 +36,16 @@ export class GoalDetailsServiceProvider {
       });
   }
 
+  getSubgoals(goalID : string) : {[subgoalAtr : string ] : string}[]{
+    for(let i=0; i<this.goalList.length; i++) {
+      if (this.goalList[i].goalID === goalID) {
+        return this.goalList[i].subgoals;
+      }
+    }
+    return null;
+  }
+
+
 
   getGoalNameByID(goalID: string) : string{
     // for whenever we want to display the goals

@@ -23,18 +23,31 @@ html {
   font-size: 65%;
 }
 
+.headerIcon{
+  float:right;
+}
+
+.headerItem{
+  background-color: var(--ion-background-color);
+  font-size: 1.8rem;
+}
+
 ion-card{
-  padding:-1em !important;
-  padding-left:-2em !important;
-  padding-right:-2em !important;
+  padding: 0 !important;
+  border: 0 !important;
+  //padding:-1em !important;
+  //padding-left:-2em !important;
+  //padding-right:-2em !important;
 }
 
 ion-card-content h2{
   font-size: 1.9rem !important;
+  padding-bottom:0.25em;
 }
 
 ion-card-content h3{
   font-size: 1.7rem !important;
+  padding-bottom:0.25em;
 }
 
 

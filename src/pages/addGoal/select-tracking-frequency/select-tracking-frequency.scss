@@ -1,3 +1,100 @@
 page-select-tracking-frequency {
 
+  .settings{
+    padding-top:0.25em;
+  }
+
+  .boxDiv{
+    padding-left:0.25em;
+    padding-right:1em;
+  }
+
+
+
+  .selectText{
+    font-size:1.6rem;
+    padding-left:0.3em;
+    padding-right:0.3em;
+    padding-top:0.2em;
+  }
+
+
+  .fullSelect{
+    height: 1.8em;
+    //width: 4.6em !important;
+    padding: 0.1em 0.25em 0.1em 0.25em !important;
+    background-color: var(--input-config-background);
+    color:var(--input-config-text);
+    font-size:1.8rem !important;
+  }
+
+  .miniSelect{
+    height: 1.8em;
+    width: 4.6em !important;
+    padding: 0.1em 0.25em 0.1em 0.25em !important;
+    background-color: var(--input-config-background);
+    color:var(--input-config-text);
+    font-size:1.8rem !important;
+  }
+
+  .textBox{
+    padding-top:0.2em !important;
+    padding-bottom:0.1em !important;
+    max-width: 2.2em !important;
+    height: 1.8em !important;
+    text-align:center;
+    background-color: var(--input-config-background);
+    color:var(--input-config-text);
+    font-size:1.8rem !important;
+  }
+
+  .retroSettings{
+    display: flex;
+    width: 100% !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .regularSettings{
+    width: 100% !important;
+  }
+
+  .recommended{
+    color:var(--blue-accent);
+  }
+
+  .text-input{
+    padding-top: 0!important;
+    padding-right:0.1em !important;
+    padding-left:0 !important;
+    margin:0 !important;
+  }
+
+
+  .optionName{
+    padding-top:0.1em;
+    padding-bottom:0.1em;
+    max-width: 90%;
+    text-overflow: ellipsis !important;
+    white-space: nowrap;
+    overflow: hidden !important;
+    display: inline-block;
+
+  }
+
+  .datePicker{
+    background-color: var(--input-config-background);
+    color:var(--input-config-text) !important;
+    padding-left: 0 !important;
+  }
+
+  .dropdownIcon{
+    float:right;
+    padding-left:0.2em;
+    padding-top:0.1em;
+    padding-bottom:0.1em;
+  }
+
+
+
 }
