@@ -26,7 +26,7 @@
       <ion-card-header text-wrap>
         <h2>{{chartType['title']}}</h2>
         <p>Generated because of these current goals:</p>
-        <p *ngFor="let goal of chartType['goals']">{{goalDetailsService.getGoalNameByID(goal)}}</p>
+        <p *ngFor="let goal of chartType['goals']">{{goalDetailsService.getGoalByID(goal)['name']}}</p>
       </ion-card-header>
       <ion-card-content>
         <div *ngFor="let chart of chartType['charts']">

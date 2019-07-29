@@ -46,17 +46,15 @@ export class GoalDetailsServiceProvider {
   }
 
 
-
-  getGoalNameByID(goalID: string) : string{
-    // for whenever we want to display the goals
+  getGoalByID(goalID: string) : {[goalAttrs:string]: any}{
     for(let i=0; i<this.goalList.length; i++){
       if(this.goalList[i].goalID === goalID){
-        return this.goalList[i].goalName;
+        return this.goalList[i];
       }
       for(let j=0; j<this.goalList[i].subgoals.length; j++){
         // could check if the goalID is a number / has a number, but eh.  Tiny list.
         if(this.goalList[i].subgoals[j].goalID === goalID){
-          return this.goalList[i].subgoals[j].subgoalName;
+          return this.goalList[i];
         }
       }
     }

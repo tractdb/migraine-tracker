@@ -17,7 +17,7 @@ export class DataConfigPage {
   private allGoals : string[];
   private dataObject : {[dataInfo: string] : string};
   private displayName : string;
-  private customData : {[dataProps : string ] : any}[]= [];
+  private customData : {[dataAttr : string ] : any}[]= [];
   private recommendedData : {[dataProps : string ] : any}[]= [];
   private otherData : {[dataProps : string ] : any}[] = [];
   private selectedFromList : {[dataProps : string ] : any}[] = [];
@@ -35,7 +35,7 @@ export class DataConfigPage {
 
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
-    let alreadyTracking = activeGoals['dataToTrack']; // need to add previously configured
+    let alreadyTracking = activeGoals['dataToTrack'] ? activeGoals['dataToTrack'] : [];
     this.allGoals = activeGoals['goals'] ? activeGoals['goals'] : [];
 
     if(this.navParams.data['goalIDs']){ // got here via adding a goal
@@ -48,16 +48,14 @@ export class DataConfigPage {
       this.dataObject = this.dataDetailsServiceProvider.getConfigByName(this.navParams.data['dataType']);
       this.dataObject['dataDesc'] = this.navParams.data['dataDesc'];
     }
-
     this.displayName = this.dataObject.toDisplay ? this.dataObject.toDisplay : this.dataObject.dataType;
     this.startDate = this.dataObject.startDate ? new Date().toISOString() : null;
-    this.customData[this.dataObject.dataType] = [];
 
     this.getAllRecs(alreadyTracking);
   }
 
   combineTracking(dict1, dict2){
-    if(!this.navParams.data['selectedData']) return dict1;
+    if(!dict2) return dict1;
     let keys = Object.keys(dict2);
     for(let i=0; i<keys.length; i++){
       let key = keys[i];
@@ -71,20 +69,25 @@ export class DataConfigPage {
     return dict1;
   }
 
-  recordTracking(alreadyTracking){
-    for(let i=0; i<alreadyTracking.length; i++){
-      if(alreadyTracking[i].custom) this.customData[this.dataObject.dataType].push(alreadyTracking[i]);
-      else this.selectedFromList.push(alreadyTracking[i]);
+
+  recordTracking(trackingOfDatatype){
+    // put everything already being tracked into their correct lists so we can modify them accurately
+    if(trackingOfDatatype){
+      for(let i=0; i<trackingOfDatatype.length; i++){
+        if(trackingOfDatatype[i].custom) this.customData.push(trackingOfDatatype[i]);
+        else this.selectedFromList.push(trackingOfDatatype[i]);
+      }
     }
   }
 
 
 
   getAllRecs(alreadyTracking : {[dataType:string]:any}) {
-    let dataGroups = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataObject.dataType, this.allGoals);
-    this.recommendedData = dataGroups[0];
-    this.otherData = dataGroups[1];
-    this.recordTracking(alreadyTracking);
+    let dataInfo = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataObject.dataType, this.allGoals);
+    this.recommendedData = dataInfo['recData'];
+    this.otherData = dataInfo['otherData'];
+    this.commonExpanded = dataInfo['expandOther'];
+    this.recordTracking(alreadyTracking[this.dataObject.dataType]);
 
     if(this.dataObject.recommendForGoals){ // for ex we need them to track personalized contributors to predict
       for(let i=0; i<this.allGoals.length; i++){
@@ -126,7 +129,7 @@ export class DataConfigPage {
         else{
           newData.selected = true;
           if(type=="custom"){
-            this.replaceData(this.customData[this.dataObject.dataType], oldData, newData);
+            this.replaceData(this.customData, oldData, newData);
           }
           else if(type==='rec'){
             this.replaceData(this.recommendedData, oldData, newData);
@@ -150,7 +153,7 @@ export class DataConfigPage {
 
   remove(data : {[dataProps : string ] : any}, category : string){
     if(category === "custom") {
-      this.customData[this.dataObject.dataType].splice(this.customData[this.dataObject.dataType].indexOf(data), 1);
+      this.customData.splice(this.customData.indexOf(data), 1);
     }
     else{
       this.selectedFromList.splice(this.selectedFromList.indexOf(data), 1);
@@ -160,7 +163,7 @@ export class DataConfigPage {
 
 
   continueSetup() {
-    let selectedData = this.selectedFromList.concat(this.customData[this.dataObject.dataType]);
+    let selectedData = this.selectedFromList.concat(this.customData);
 
     if(this.navParams.data['goalIDs']){
       if(selectedData.length > 0){

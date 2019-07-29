@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>login</ion-title>
+    <ion-title>Log In</ion-title>
   </ion-navbar>
 
 </ion-header>
@@ -15,18 +15,21 @@
 
 <ion-content>
   <ion-card>
-    <ion-card-header>Logging In</ion-card-header>
+    <ion-card-header text-wrap>Enter your login information:</ion-card-header>
     <ion-card-content>
       <form (ngSubmit)="login()" [formGroup]="loginInfo">
         <ion-item>
-          <ion-label>User Name:</ion-label>
-          <ion-input type="text" autocapitalize="none" formControlName="account" placeholder="User Name..."></ion-input>
+          <ion-label class="label">User Name:</ion-label>
+          <ion-input type="text" autocapitalize="none" formControlName="account" placeholder="User Name"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-label>Password:</ion-label>
-          <ion-input type="password" formControlName="password" placeholder="Password..."></ion-input>
+          <ion-label class="label">Password:</ion-label>
+          <ion-input type="password" formControlName="password" placeholder="Password"></ion-input>
         </ion-item>
-        <button ion-button type="submit" [disabled]="!loginInfo.valid">Login</button>
+        <div class="text">Please email {{contactEmail}} if you need help!</div>
+        <div  class="loginButton">
+          <button ion-button float-right type="submit" [disabled]="!loginInfo.valid">Enter</button>
+        </div>
       </form>
     </ion-card-content>
   </ion-card>

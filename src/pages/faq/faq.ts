@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {GeneralInfoServiceProvider} from "../../providers/general-info-service/general-info-service";
+import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 
 /**
  * Generated class for the FaqPage page.
@@ -16,14 +17,15 @@ import {GeneralInfoServiceProvider} from "../../providers/general-info-service/g
 export class FaqPage {
 
   private faqList : {[categoryInfo: string]: any}[] = [];
+  private contactEmail: string = "";
 
   constructor(public generalInfoService: GeneralInfoServiceProvider,
               public navCtrl: NavController,
-              public navParams: NavParams
-              ) {
+              public navParams: NavParams, private globalFuns: GlobalFunctionsServiceProvider) {
   }
 
   ionViewDidLoad() {
+    this.contactEmail = this.globalFuns.getContactEmail();
     let actualThis = this;
     this.generalInfoService.getFaqData().subscribe(faqData => {
         actualThis.faqList = faqData;
@@ -34,12 +36,8 @@ export class FaqPage {
   }
 
   expandOrHide(question : {[questionProps: string]: any}){
-    if(question['expanded'] === undefined){
-      question['expanded'] = true;
-    }
-    else{
-      question['expanded'] = !question['expanded'];
-    }
+    if(!question['expanded']) question['expanded'] = true;
+    else question['expanded'] = !question['expanded'];
   }
 
 }

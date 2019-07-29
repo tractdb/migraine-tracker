@@ -52,7 +52,7 @@ export class EditDataPage {
   getRecommendingGoals(){
     for(let i=0; i<this.data.recommendingGoals.length; i++){
       if(this.navParams.data['selectedGoals'].indexOf(this.data.recommendingGoals[i]) > -1){
-        this.goalList.push(this.goalDetails.getGoalNameByID(this.data.recommendingGoals[i]));
+        this.goalList.push(this.goalDetails.getGoalByID(this.data.recommendingGoals[i])['name']);
       }
     }
   }

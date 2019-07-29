@@ -20,9 +20,9 @@
 
   <ion-card>
     <ion-card-header (click)="aboutExpanded = !aboutExpanded;" text-wrap>
-      <span class="aboutHeader">About Tracking Breaks</span>
-      <ion-icon class="aboutDrowpdown" item-right *ngIf="aboutExpanded" name="arrow-dropup"></ion-icon>
-      <ion-icon class="aboutDrowpdown" item-right *ngIf="!aboutExpanded" name="arrow-dropdown"></ion-icon>
+      <span class="headerItem">About Tracking Breaks</span>
+      <ion-icon class="headerIcon" item-right *ngIf="aboutExpanded" name="arrow-dropup"></ion-icon>
+      <ion-icon class="headerIcon" item-right *ngIf="!aboutExpanded" name="arrow-dropdown"></ion-icon>
     </ion-card-header>
     <ion-card-content *ngIf="aboutExpanded">
       When you decide to take a break from tracking, we'll disable notifications.  You can still
@@ -46,7 +46,7 @@
         <h2 *ngIf="currentBreak.notifyDate">Your break is ending on:</h2>
         <h2 *ngIf="!currentBreak.notifyDate">Your break does not have a scheduled end.  Schedule one now:</h2>
         <ion-item>
-          <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
+          <ion-datetime [min]="today" [max]="nextYear" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
                         [(ngModel)]="dateToSnoozeTo"  (ngModelChange)="breakChanged=true"></ion-datetime>
         </ion-item>
       </div>
@@ -54,7 +54,7 @@
       <div class="datePickDiv" *ngIf="currentBreak.checkInDate">
         <h2>We're planning to check in on the following date:</h2>
         <ion-item>
-          <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
+          <ion-datetime [min]="today" [max]="nextYear"  displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
                         [(ngModel)]="dateToCheckIn"  (ngModelChange)="breakChanged=true"></ion-datetime>
         </ion-item>
       </div>
@@ -80,7 +80,7 @@
         When do you want your break to end?
         <ion-item class="datePickerItem">
           <ion-datetime class="datePicker" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
-                        [(ngModel)]="dateToSnoozeTo"></ion-datetime>
+                        [min]="today" [max]="nextYear"  [(ngModel)]="dateToSnoozeTo"></ion-datetime>
         </ion-item>
       </div>
 
@@ -94,7 +94,7 @@
         We'll check in on:
         <ion-item class="datePickerItem">
           <ion-datetime class="datePicker" displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
-                        [(ngModel)]="dateToCheckIn"></ion-datetime>
+                        [min]="today" [max]="nextYear"  [(ngModel)]="dateToCheckIn"></ion-datetime>
         </ion-item>
       </div>
 

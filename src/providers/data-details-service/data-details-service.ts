@@ -8,7 +8,7 @@ export class DataDetailsServiceProvider {
   private supportedFields : any;
   private listedData : {[dataType: string] : any};
   private configData : any;
-  private medTrackingIDs : string[] = ['asNeededMeds', 'newAsNeededMedication'];
+  private medTrackingIDs : string[] = ['asNeededMeds', 'AsNeededMedChange'];
 
   constructor(public http: HttpClient) {
     this.openListedData();
@@ -155,7 +155,7 @@ export class DataDetailsServiceProvider {
   }
 
   getDataFromID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
-    if(!dataToTrack) return [];
+    if(!dataToTrack) return null;
     for(let i=0; i<dataToTrack.length; i++){
       if(dataToTrack[i].id === id){
         return dataToTrack[i];
@@ -168,11 +168,12 @@ export class DataDetailsServiceProvider {
 
 
   getRecsAndCommon(alreadyTracking: {[dataType:string]:any}, dataType: string,
-                   goalIDs: string[]) : any[]{
+                   goalIDs: string[]) : {[listInfo: string] : any}{
     let dataOfType = this.listedData[dataType];
     let otherData = [];
     let recData = [];
-    let trackingMeds = this.getWhetherTrackingMeds(this.getDataIDs(alreadyTracking['Treatments']));
+    let trackingMeds = this.getWhetherTrackingMeds(this.getDataIDs(alreadyTracking['Treatment']));
+    let expandOther = false;
 
     for(let i=0; i<dataOfType.length; i++){
       let dataObject = dataOfType[i];
@@ -203,13 +204,16 @@ export class DataDetailsServiceProvider {
           else recData.push(dataObject);
         }
         else{
-          if(trackingData) otherData.push(trackingData);
+          if(trackingData){
+            otherData.push(trackingData);
+            expandOther = true;
+          }
           else otherData.push(dataObject);
         }
       }
     }
 
-    return [recData, otherData];
+    return {'recData': recData, 'otherData':otherData, 'expandOther': expandOther};
 
 
   }

@@ -1,6 +1,5 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {GlobalFunctionsServiceProvider} from "../global-functions-service/global-functions-service";
 
 
 @Injectable()
@@ -11,7 +10,7 @@ export class CouchDbServiceProvider {
   private trackedData : {[trackedData:string]: any;}[] = [];
   private options : {[optionName:string]: any;} = {withCredentials: true};
 
-  constructor(public http: HttpClient, private globalFunctions: GlobalFunctionsServiceProvider) {
+  constructor(public http: HttpClient) {
   }
 
   getCurrentBreak() : {[breakDetails: string] : any}{
@@ -48,7 +47,7 @@ export class CouchDbServiceProvider {
   getQuickTrackers() : {[dataType: string] : any}{
     // todo: database, of course
     let defaultTrackers = {
-      "Symptoms": [
+      "Symptom": [
         {
           "name": "Migraine today",
           "explanation": "Whether you had a migraine.",
@@ -191,15 +190,15 @@ export class CouchDbServiceProvider {
     return [
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "17:39",
           "exerciseToday": 2,
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "01:22",
             "end": "16:49"
@@ -220,15 +219,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "03:32",
           "exerciseToday": 16
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "00:25",
             "end": "17:33"
@@ -247,16 +246,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "17:19",
           "nutritionToday": "No",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "14:51",
             "end": "22:56"
@@ -277,17 +276,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "00:13",
           "exerciseToday": 7,
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "04:21",
             "end": "19:46"
@@ -306,17 +305,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "23:49",
           "exerciseToday": 5,
           "nutritionToday": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "00:34",
             "end": "11:39"
@@ -337,17 +336,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "16:05",
           "exerciseToday": 9,
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "peakMigraineSeverity": 5,
           "migraineStartTime": "13:46",
           "migraineToday": "Yes"
@@ -364,16 +363,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "06:13",
           "exerciseToday": 17,
           "nutritionToday": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "08:30",
             "end": "15:30"
@@ -393,16 +392,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "06:05",
           "exerciseToday": 4,
           "nutritionToday": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "16:10",
             "end": "16:31"
@@ -421,14 +420,14 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "02:43"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "10:01",
             "end": "21:34"
@@ -446,18 +445,18 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "00:49",
           "exerciseToday": 7,
           "nutritionToday": "No",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "18:01",
             "end": "21:31"
@@ -478,16 +477,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "13:57",
           "exerciseToday": 13,
           "nutritionToday": "Yes",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "02:31",
             "end": "16:36"
@@ -508,15 +507,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "exerciseToday": 7,
           "nutritionToday": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "migraineToday": "No",
           "headacheToday": "Yes"
         },
@@ -532,14 +531,14 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "migraineStartTime": "01:15"
         },
         "Other": {
@@ -554,17 +553,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "08:19",
           "exerciseToday": 16,
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "19:17",
             "end": "20:59"
@@ -584,16 +583,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "03:35",
           "exerciseToday": 2,
           "nutritionToday": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "13:56",
             "end": "20:57"
@@ -615,17 +614,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "05:55",
           "exerciseToday": 12,
           "nutritionToday": "Yes",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "peakMigraineSeverity": 5,
           "migraineStartTime": "05:48",
           "migraineToday": "Yes",
@@ -640,16 +639,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "nutritionToday": "Yes",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "peakMigraineSeverity": 8,
           "migraineStartTime": "01:06",
           "migraineToday": "No",
@@ -664,17 +663,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "exerciseToday": 14,
           "nutritionToday": "No",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "05:29",
             "end": "11:38"
@@ -695,16 +694,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "12:27",
           "exerciseToday": 15,
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "06:22",
             "end": "06:34"
@@ -725,14 +724,14 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "06:58"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "00:40",
             "end": "08:47"
@@ -751,18 +750,18 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "11:39",
           "exerciseToday": 7,
           "nutritionToday": "No",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "22:29",
             "end": "22:29"
@@ -783,16 +782,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "08:35",
           "exerciseToday": 11,
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "12:21",
             "end": "12:46"
@@ -813,15 +812,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "exerciseToday": 16,
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "07:26",
             "end": "22:32"
@@ -841,17 +840,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "20:29",
           "exerciseToday": 4,
           "nutritionToday": "Yes",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "04:37",
             "end": "22:51"
@@ -869,17 +868,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "11:48",
           "exerciseToday": 13,
           "nutritionToday": "Yes",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "02:59",
             "end": "14:59"
@@ -899,16 +898,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "nutritionToday": "No",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "07:40",
             "end": "21:54"
@@ -928,17 +927,17 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "04:12",
           "exerciseToday": 14,
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "11:29",
             "end": "13:34"
@@ -958,18 +957,18 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "11:17",
           "exerciseToday": 15,
           "nutritionToday": "No",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "23:45",
             "end": "23:46"
@@ -987,15 +986,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "12:17",
           "nutritionToday": "Yes",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "18:29",
             "end": "20:41"
@@ -1014,18 +1013,18 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "12:47",
           "exerciseToday": 0,
           "nutritionToday": "Yes",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "03:28",
             "end": "13:59"
@@ -1047,15 +1046,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "exerciseToday": 4,
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "00:00",
             "end": "22:13"
@@ -1076,16 +1075,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "10:38",
           "nutritionToday": "Yes",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "22:39",
             "end": "22:49"
@@ -1104,15 +1103,15 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "None",
           "frequentMedUse": null
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "11:27",
           "asNeededMeds": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "02:21",
             "end": "02:43"
@@ -1132,18 +1131,18 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "alcoholToday": "Some",
           "frequentMedUse": null,
           "stressToday": "None"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "00:17",
           "exerciseToday": 9,
           "nutritionToday": "Yes",
           "asNeededMeds": "Yes"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "16:55",
             "end": "18:56"
@@ -1164,16 +1163,16 @@ export class CouchDbServiceProvider {
       },
       {
         "allDay": "true",
-        "Contributors": {
+        "Contributor": {
           "frequentMedUse": null,
           "stressToday": "Some"
         },
-        "Treatments": {
+        "Treatment": {
           "custom_timetookadvil": "12:39",
           "exerciseToday": 3,
           "nutritionToday": "No"
         },
-        "Symptoms": {
+        "Symptom": {
           "custom_migraineduration": {
             "start": "12:50",
             "end": "17:51"
@@ -1203,16 +1202,16 @@ export class CouchDbServiceProvider {
           "1",
           "2",
           "3",
+          "2a",
+          "2b",
+          "2c",
           "1a",
-          "1b",
-          "1c",
-          "3a",
-          "3b"
+          "1b"
         ],
         "dataToTrack": {
           "Change": [
             {
-              "name": "Increasing Sleep",
+              "name": "Healthy Sleep Schedule",
               "id": "sleepChange",
               "explanation": "How much sleep you got today",
               "fieldDescription": "Hours of sleep",

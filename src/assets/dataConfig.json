@@ -1,7 +1,7 @@
 [
     {"dataType": "Change",
     "description": "What change(s) are you planning on making?",
-    "conditionalGoals": ["1c"],
+    "conditionalGoals": ["2c"],
     "startDate": true,
     "dataGoals": true
     },
@@ -10,13 +10,13 @@
     "dataGoals": false},
 
     {"dataType": "Treatment",
-    "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
+    "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
     "dataGoals": true},
 
     {"dataType": "Contributor",
     "toDisplay": "Contributor (\"Trigger\")",
-    "conditionalGoals": ["1a", "1b", "2", "3a", "3b", "3c"],
-    "recommendForGoals": ["2"],
+    "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
+    "recommendForGoals": ["3"],
     "dataGoals": true},
 
     {"dataType": "Other",

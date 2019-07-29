@@ -9,9 +9,16 @@ export class GlobalFunctionsServiceProvider {
 
   private medIDs : string[] = this.dataDetailsProvider.getMedTrackingIDs();
 
+  private contactEmail = "jesscs@cs.washington.edu";
+
   constructor(private goalDetails: GoalDetailsServiceProvider,
               private dataDetailsProvider: DataDetailsServiceProvider,
               private dateFuns: DateFunctionServiceProvider) {
+  }
+
+
+  getContactEmail(){
+    return this.contactEmail;
   }
 
 
@@ -54,17 +61,17 @@ export class GlobalFunctionsServiceProvider {
 
 
   getGoalHierarchy(currentGoalIDs : string[]){
+    currentGoalIDs.sort();
     let goalHierarchy = {};
     for(let i=0; i<currentGoalIDs.length; i++){
       let goalID = currentGoalIDs[i];
-      let goalName = this.goalDetails.getGoalNameByID(goalID);
-      if(/^\d+$/.test(goalID)){ // it's not a subogal (no letters)
-        goalHierarchy[goalName] = [];
-        let allGoalSubgoals = this.goalDetails.getSubgoals(goalID);
-        if(!allGoalSubgoals) allGoalSubgoals = [];
+      let goalInfo = this.goalDetails.getGoalByID(goalID);
+      if(goalInfo['isTopGoal']){ // it's not a subogal
+        goalHierarchy[goalInfo.name] = [];
+        let allGoalSubgoals = goalInfo['subgoals'] ? goalInfo['subgoals'] : [];
         for(let j=0; j<allGoalSubgoals.length; j++){
           if(currentGoalIDs.indexOf(allGoalSubgoals[j].goalID) > -1){
-            goalHierarchy[goalName].push(allGoalSubgoals[j].subgoalName)
+            goalHierarchy[goalInfo.name].push(allGoalSubgoals[j].name)
           }
         }
       }
@@ -110,8 +117,6 @@ export class GlobalFunctionsServiceProvider {
     }
     return timesTracked;
   }
-
-
 
 
 }

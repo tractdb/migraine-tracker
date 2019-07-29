@@ -24,13 +24,12 @@ export class GoalTypePage {
               private couchDBService: CouchDbServiceProvider,
               private goalDetailsServiceProvider: GoalDetailsServiceProvider,
               private dataDetails: DataDetailsServiceProvider) {
-    this.selectedGoals = [];
-    this.modifying = this.navParams.data['modifying'];
   }
 
   ionViewDidLoad() {
+    this.modifying = this.navParams.data['modifying'];
     let activeGoals = this.couchDBService.getActiveGoals();
-    if(activeGoals){
+    if(Object.keys(activeGoals).length > 0){
       this.selectedGoals = activeGoals['goals'];
       this.textGoals = activeGoals.textGoals;
       this.textGoalExpand = true;

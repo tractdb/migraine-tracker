@@ -3,6 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {HomePage} from "../../home/home";
 import {GoalModificationPage} from "../../goal-modification/goal-modification";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
+import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
 
 /**
  * Generated class for the SelectTrackingFrequencyPage page.
@@ -18,7 +19,6 @@ import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-
 export class SelectTrackingFrequencyPage {
 
   recommended : string;
-  regularGoals : string[] = ['1b','1c', '2'];
   hasActiveGoals : boolean;
   isModal : boolean;
   dataChanged : boolean = false;
@@ -30,7 +30,8 @@ export class SelectTrackingFrequencyPage {
                   'delayScale': false, 'timescale': false, 'dayOfWeek':false, 'dayOfMonth': false};
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController,
-              public navParams: NavParams, public couchDBService: CouchDbServiceProvider) {
+              public navParams: NavParams, public couchDBService: CouchDbServiceProvider,
+              private goalDetails: GoalDetailsServiceProvider) {
   }
 
   ionViewDidLoad() {
@@ -63,11 +64,9 @@ export class SelectTrackingFrequencyPage {
   getRecommendation(goalIDs : string[]){
     let recommended = "post symptoms";
     for(let i=0; i<goalIDs.length; i++){
-      for(let j=0; j<this.regularGoals.length; j++){
-        if(goalIDs[i].indexOf(this.regularGoals[j]) >=0){
-          recommended = "regular";
-          break;
-        }
+      if(this.goalDetails.getGoalByID(goalIDs[i])['suggestedTracking'] === "regular"){
+        recommended = "regular";
+        break;
       }
     }
     this.recommended = recommended;

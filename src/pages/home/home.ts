@@ -32,7 +32,6 @@ export class HomePage {
   ionViewDidEnter(){
     if(this.navParams.data['goalIDs']){ //Came from setting a goal up.  todo: notification stuff
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
-      console.log(this.navParams.data);
       this.addQuickTrackers();
     }
     else{
@@ -46,6 +45,7 @@ export class HomePage {
   }
 
   login() {
+    // this.loggedIn(); migraineTest; test
     let customDataModal = this.modalCtrl.create(LoginPage);
     customDataModal.onDidDismiss(() => {
       this.loggedIn();
@@ -65,7 +65,7 @@ export class HomePage {
   }
 
   addQuickTrackers(){
-    this.isTrackingMeds = this.dataDetialsProvider.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatments']);
+    this.isTrackingMeds = this.dataDetialsProvider.getWhetherTrackingMeds(this.activeGoals['dataToTrack']['Treatment']);
     this.quickTrackers = this.couchDbService.getQuickTrackers();
     this.quickTrackerKeys = Object.keys(this.quickTrackers);
   }
@@ -76,7 +76,7 @@ export class HomePage {
     event['startTime'] = startAndEndDates[0];
     event['endTime'] = startAndEndDates[1];
     event['allDay'] = true;
-    event['title'] = this.globalFuns.getWhetherMigraine(event['Symptoms']) ? 'Migraine' : 'No Migraine';
+    event['title'] = this.globalFuns.getWhetherMigraine(event['Symptom']) ? 'Migraine' : 'No Migraine';
     return event;
   }
 

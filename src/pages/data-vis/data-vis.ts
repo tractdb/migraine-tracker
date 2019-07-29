@@ -1,7 +1,5 @@
-import {Component, Type} from '@angular/core';
+import {Component} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-
-// import { Chart } from 'chart.js';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import * as moment from "moment";
@@ -24,11 +22,6 @@ export class DataVisPage {
 
   allTrackedData : {[trackedData:string]: any;}[] = [];
   currentGoals : {[goalAspect:string]: any} = {};
-
-  allOverTimeGoals : string[] = ["1a", "3",];
-  allBeforeAfterGoals : string[] = ["1c"];
-  allCorrelationVisGoals : string[] = ["1b", "2"];
-
 
   dates : _date[] = [];
   symptoms : boolean[] = [];
@@ -506,14 +499,18 @@ export class DataVisPage {
     let goals = this.currentGoals['goals'];
     for(let i=0; i<goals.length; i++){
       let goal = goals[i];
-      if(this.allOverTimeGoals.indexOf(goal) > -1){
+      let visType = this.goalDetailsService.getGoalByID(goal)['visType'];
+      if(visType === 'overTime'){
         this.overTimeCharts['goals'].push(goal);
       }
-      else if(this.allBeforeAfterGoals.indexOf(goal) > -1){
+      else if(visType === 'beforeAfter'){
         this.beforeAfterCharts['goals'].push(goal);
       }
-      else if(this.allCorrelationVisGoals.indexOf(goal) > -1){
+      else if(visType === 'correlation'){
         this.correlationCharts['goals'].push(goal);
+      }
+      else{
+        console.log("Vis not supported: " + visType);
       }
     }
     this.organizeData();

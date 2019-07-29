@@ -7,7 +7,7 @@
                 "explanation": "Migraine experienced",
                 "fieldDescription": "Whether you had a migraine (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"]
+                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"]
             },
             {
                 "name": "Headache",
@@ -15,7 +15,7 @@
                 "explanation": "(Non-migraine) headache experienced",
                 "fieldDescription": "Whether you had a headache (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["3b", "3c"]
+                "recommendingGoals": ["1b", "1c"]
             },
             {
                 "name": "Peak Migraine Severity",
@@ -23,7 +23,7 @@
                 "explanation": "How bad the migraine was at its worst point",
                 "fieldDescription": "10-point Pain level (1=mild, 10=terrible)",
                 "recommendedField": "numeric scale",
-                "recommendingGoals": ["3b", "3c"]
+                "recommendingGoals": ["1b", "1c"]
             },
             {
                 "name": "Migraine Duration",
@@ -31,7 +31,7 @@
                 "explanation": "How long the migraine lasted",
                 "fieldDescription": "the number of hours the migraine lasted",
                 "recommendedField": "number",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": ["1b"]
             },
             {
                 "name": "Fatigue",
@@ -39,7 +39,7 @@
                 "explanation": "Fatigue experienced",
                 "fieldDescription": "3-point fatigue rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": ["1b"]
             },
             {
                 "name": "Aura",
@@ -95,7 +95,7 @@
                 "explanation": "Whether the migraine prevented you from doing the things you wanted or needed to do",
                 "fieldDescription": "3-point disability rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["3c"]
+                "recommendingGoals": ["1c"]
             },
             {
                 "name": "Location",
@@ -103,7 +103,7 @@
                 "explanation": "Where the pain was (right or left side, eyes, forehead, temples, face, back of head, neck, all over)",
                 "fieldDescription": "Text box where you can describe the location",
                 "recommendedField": "note",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": ["1b"]
             },
             {
                 "name": "Quality of the Pain",
@@ -111,7 +111,7 @@
                 "explanation": "What the pain was like (pulsating/throbbing, pressure, tension, stabbing, sharp, dull, burning, other)",
                 "fieldDescription": "Text box where you can describe the pain",
                 "recommendedField": "note",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": ["1b"]
             },
             {
                 "name": "Start time",
@@ -130,7 +130,7 @@
                 "explanation": "Medication taken in response to symptoms (for example, Advil, Excedrin, prescription rescue)",
                 "fieldDescription": "Whether you took any as-needed medication",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
                 "dataGoal": {
                     "freq": "Less",
                     "threshold": 4,
@@ -143,13 +143,13 @@
                 "explanation": "Routine (for example, daily) medication taken",
                 "fieldDescription": "Whether you took any routine medication",
                 "recommendedField": "binary",
-                "recommendingGoals": ["3b"]
+                "recommendingGoals": ["1b"]
             },
             {
                 "name": "Exercise",
                 "id": "exerciseToday",
                 "condition": true,
-                "skipIfGoals": ["1c"],
+                "skipIfGoals": ["2c"],
                 "explanation": "How much you exercised",
                 "fieldDescription": "Number of minutes of exercise",
                 "recommendedField": "number",
@@ -158,17 +158,17 @@
                     "threshold": 180,
                     "timespan": "Week"
                 },
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Supplements",
                 "id": "supplementsToday",
                 "condition": true,
-                "skipIfGoals": ["1c"],
+                "skipIfGoals": ["2c"],
                 "explanation": "Migraine prevention supplements taken (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
                 "fieldDescription": "Whether you took supplements (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Stress Management",
@@ -181,17 +181,17 @@
                     "threshold": 6,
                     "timespan": "Week"
                 },
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Nutrition",
                 "id": "nutritionToday",
                 "condition": true,
-                "skipIfGoals": ["1c"],
+                "skipIfGoals": ["2c"],
                 "explanation": "Whether you ate healthily. For example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar",
                 "fieldDescription": "Whether you ate healthily (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Warm/cold Compress on Head/Neck",
@@ -228,7 +228,7 @@
                 "fieldSet": true,
                 "recommendedField": "calculated medication use",
                 "condition": true,
-                "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"],
+                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
                 "dataGoal": {
                     "freq": "Less",
                     "threshold": 4,
@@ -239,11 +239,11 @@
                 "name": "Stress",
                 "id": "stressToday",
                 "condition": true,
-                "skipIfGoals": ["1c"],
+                "skipIfGoals": ["2c"],
                 "explanation": "How stressed you were",
                 "fieldDescription": "3-point stress rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Caffeine",
@@ -251,7 +251,7 @@
                 "explanation": "How much caffeine you had",
                 "fieldDescription": "3-point caffeine rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Alcohol",
@@ -259,7 +259,7 @@
                 "explanation": "How much alcohol you had",
                 "fieldDescription": "3-point alcohol rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Dehydration",
@@ -267,7 +267,7 @@
                 "explanation": "How dehydrated you were",
                 "fieldDescription": "3-point dehydration rating",
                 "recommendedField": "category scale",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Menstruation",
@@ -275,13 +275,13 @@
                 "explanation": "Whether you were menstruating",
                 "fieldDescription": "Whether you were menstruating",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Sleep",
                 "id": "sleepToday",
                 "condition": true,
-                "skipIfGoals": ["1c"],
+                "skipIfGoals": ["2c"],
                 "explanation": "How much sleep you got",
                 "fieldDescription": "Hours of sleep",
                 "recommendedField": "number",
@@ -290,7 +290,7 @@
                     "threshold": 8,
                     "timespan": "Day"
                 },
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Mood",
@@ -298,7 +298,7 @@
                 "explanation": "How you would rate your mood",
                 "fieldDescription": "10-point mood scale (1=terrible, 10=great)",
                 "recommendedField": "numeric scale",
-                "recommendingGoals": ["1b", "3b"]
+                "recommendingGoals": ["2b", "1b"]
             },
             {
                 "name": "Interrupted Routine",
@@ -386,7 +386,7 @@
                     "threshold": 180,
                     "timespan": "Week"
                 },
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
                 "name": "Starting Supplements",
@@ -394,7 +394,7 @@
                 "explanation": "Migraine prevention supplements taken (for example, magnesium, riboflavin, vitamin B12, vitamin D)",
                 "fieldDescription": "Whether you took supplements (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
                 "name": "Managing Stress",
@@ -407,7 +407,7 @@
                     "threshold": 6,
                     "timespan": "Week"
                 },
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
                 "name": "Eating a More Healthy Diet",
@@ -415,10 +415,10 @@
                 "explanation": "Whether you ate healthily (for example, we recommend 4-5 servings of veggies, eating regular meals, avoiding sugar)",
                 "fieldDescription": "Whether you ate healthily (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
-                "name": "Increasing Sleep",
+                "name": "Healthy Sleep Schedule",
                 "id": "sleepChange",
                 "explanation": "How much you slept",
                 "fieldDescription": "Hours of sleep",
@@ -428,7 +428,7 @@
                     "threshold": 8,
                     "timespan": "Day"
                 },
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
                 "name": "New As-Needed Medication",
@@ -436,7 +436,7 @@
                 "explanation": "Any new as-needed medication you're starting",
                 "fieldDescription": "Whether you took your new as-needed medication",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             },
             {
                 "name": "New Routine Medication",
@@ -444,7 +444,7 @@
                 "explanation": "Any new routine medication (like a daily preventative medication) you're starting",
                 "fieldDescription": "Whether you took your new routine medication",
                 "recommendedField": "binary",
-                "recommendingGoals": ["1c"]
+                "recommendingGoals": ["2c"]
             }
         ],
     "Other": 
@@ -456,7 +456,7 @@
                     "fieldDescription": "3-point symptoms improvement scale",
                     "recommendedField": "category scale",
                     "condition": true,
-                    "recommendingGoals": ["1b", "3c"]
+                    "recommendingGoals": ["2b", "1c"]
                 },
                 {
                     "name": "Other notes",
@@ -464,7 +464,7 @@
                     "explanation": "Anything else you want to note",
                     "fieldDescription": "Text box where you can record any notes",
                     "recommendedField": "note",
-                    "recommendingGoals": ["1a", "1b", "1c", "2", "3a", "3b", "3c"]
+                    "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"]
                 }
         ]
 }

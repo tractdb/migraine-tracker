@@ -22,7 +22,7 @@
       <ion-card-header (click)="selectedGoals.indexOf(goal.goalID)===-1 ? addGoal(goal) :  removeGoal(goal)">
           <ion-icon item-left color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)===-1" name="add-circle-outline"></ion-icon>
           <ion-icon item-left color="primary" *ngIf="selectedGoals.indexOf(goal.goalID)>-1" name="checkmark-circle"></ion-icon>
-          <span class="goalName">{{goal['goalName']}}</span>
+          <span class="goalName">{{goal['name']}}</span>
           <ion-icon class="goalIcon" item-right name="{{goal['iconName']}}"></ion-icon>
       </ion-card-header>
 
@@ -35,7 +35,7 @@
           <ion-item class="subgoalList" *ngFor="let subgoal of goal['subgoals']" text-wrap>
             <ion-icon item-left  color="primary" (click)="addGoal(goal, subgoal.goalID)" *ngIf="selectedGoals.indexOf(subgoal.goalID)===-1" name="add-circle-outline"></ion-icon>
             <ion-icon item-left  color="primary" (click)="removeGoal(goal, subgoal.goalID)" *ngIf="selectedGoals.indexOf(subgoal.goalID)>-1" name="checkmark-circle"></ion-icon>
-            <span (click)="selectedGoals.indexOf(subgoal.goalID)===-1 ? addGoal(goal, subgoal.goalID) : removeGoal(goal, subgoal.goalID)">{{subgoal['subgoalName']}}</span>
+            <span (click)="selectedGoals.indexOf(subgoal.goalID)===-1 ? addGoal(goal, subgoal.goalID) : removeGoal(goal, subgoal.goalID)">{{subgoal['name']}}</span>
             <ion-icon item-right color="primary" name="information-circle-outline" (click)="showInfo(subgoal)"></ion-icon>
           </ion-item>
         </ion-list>

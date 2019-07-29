@@ -27,8 +27,8 @@
     <ion-card-header>Custom</ion-card-header>
     <ion-card-content>
 
-      <ion-list *ngIf="customData[dataObject?.dataType]?.length>0">
-        <ion-item  *ngFor="let custom of customData[dataObject?.dataType]" text-wrap>
+      <ion-list *ngIf="customData.length>0">
+        <ion-item  *ngFor="let custom of customData" text-wrap>
           <ion-icon item-left color="primary" name="checkmark-circle" (click)="remove(custom, 'custom')"></ion-icon>
           <span (click)="remove(custom, 'custom')">{{custom.name}}</span>
           <ion-icon item-right color="primary" name="create" (click)="editData(custom, 'custom')"></ion-icon>
@@ -57,7 +57,7 @@
       </div>
 
       <div *ngIf="recommendedData.length==0 && recommendTracking">
-        Based on your goals, we recommend selecting or adding your personal known <span text-lowercase>{{dataObject?.dataType}}</span> data.
+        Based on your goals, we recommend adding any known personal <span text-lowercase>{{dataObject?.dataType}}</span> data.
       </div>
 
 
@@ -81,6 +81,7 @@
     </ion-card-header>
     <ion-card-content >
       <h3 class="otherExplanation" *ngIf="!recommendTracking">Tracking this data may not be necessary for your selected goals.</h3>
+      <h3 class="otherExplanation" *ngIf="recommendTracking && recommendedData.length > 0">Based on your goals, we recommend adding any known personal <span text-lowercase>{{dataObject?.dataType}}</span> data.</h3>
 
       <ion-list *ngIf="commonExpanded || recommendTracking">
         <ion-item  *ngFor="let data of otherData" text-wrap>
