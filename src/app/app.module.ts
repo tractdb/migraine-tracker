@@ -21,13 +21,11 @@ import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
 import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
-import {TrackDataPage} from "../pages/track-data/track-data";
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
 import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
 import {DataCalendarPage} from "../pages/data-calendar/data-calendar";
 import {DataSummaryPage} from "../pages/data-summary/data-summary";
 import {FaqPage} from "../pages/faq/faq";
-import {UsedQuickTrackPage} from "../pages/used-quick-track/used-quick-track";
 import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
 import { GeneralInfoServiceProvider } from '../providers/general-info-service/general-info-service';
 import { DateFunctionServiceProvider } from '../providers/date-function-service/date-function-service';
@@ -45,13 +43,11 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     DataConfigPage,
     SelectTrackingFrequencyPage,
     EditDataPage,
-    TrackDataPage,
     GoalModificationPage,
     TrackingModificationPage,
     DataCalendarPage,
     DataSummaryPage,
     FaqPage,
-    UsedQuickTrackPage,
     BreakFromTrackingPage,
     ViewDatapointPage,
     DataVisPage,
@@ -73,13 +69,11 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     DataConfigPage,
     SelectTrackingFrequencyPage,
     EditDataPage,
-    TrackDataPage,
     GoalModificationPage,
     TrackingModificationPage,
     DataCalendarPage,
     DataSummaryPage,
     FaqPage,
-    UsedQuickTrackPage,
     BreakFromTrackingPage,
     ViewDatapointPage,
     DataVisPage

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content padding>
-  <h3>Hello!</h3>
+  <h3 *ngIf="activeGoals['goals']===undefined">Hello!</h3>
 
   <ion-card *ngIf="activeGoals['goals']===undefined">
     <ion-card-header>No Goals Configured</ion-card-header>
@@ -81,18 +81,6 @@
       </ng-container>
     </ion-card-content>
   </ion-card>
-
-  <!--<ion-card *ngIf="activeGoals['goals']!==undefined">-->
-    <!--<ion-card-header>Your Goals:</ion-card-header>-->
-    <!--<ion-card-content>-->
-      <!--<ion-item text-wrap *ngFor="let goal of goalTypes">-->
-        <!--{{goal}}-->
-        <!--<ion-item *ngFor="let subgoal of goalHierarchy[goal]">-->
-          <!--{{subgoal}}-->
-        <!--</ion-item>-->
-      <!--</ion-item>-->
-    <!--</ion-card-content>-->
-  <!--</ion-card>-->
 
 
 </ion-content>

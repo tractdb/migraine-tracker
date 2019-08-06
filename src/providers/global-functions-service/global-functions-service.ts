@@ -31,7 +31,7 @@ export class GlobalFunctionsServiceProvider {
     else if('migraineDuration' in symptomDict && Number(symptomDict['migraineDuration']) > 0){
       return true;
     }
-    else if('migraineStartTime' in symptomDict){
+    else if('migraineStartTime' in symptomDict || 'impactOnDisability' in symptomDict){
       return true;
     }
     return false;

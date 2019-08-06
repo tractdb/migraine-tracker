@@ -1,7 +1,38 @@
 page-data-calendar {
 
-  .center{
+  .monthDiv{
     text-align: center;
+    padding-bottom: 0.5em;
+  }
+
+  .iconDiv{
+    display: inline-block;
+    vertical-align: middle;
+    width: 25%;
+  }
+
+  .monthLabel{
+    font-size: 1.8em;
+    display: inline-block;
+    vertical-align: middle;
+    width: 40%;
+    padding: 0;
+  }
+
+  td{
+    border: 0 !important;
+  }
+
+  th{
+    font-size: 2.2rem !important;
+    border-right: 0 !important;
+    border-left: 0 !important;
+    font-weight: bolder !important
+  }
+
+  .navIcon{
+    font-size: 3em;
+    padding: 0;
   }
 
   .scroll-content{
@@ -9,17 +40,22 @@ page-data-calendar {
   }
 
   .migraineDay{
-    color: #e50000 !important;
+    color: var(--red-text) !important;
     font-weight:bold;
   }
 
   .noMigraine{
-    color: green !important;
+    color: var(--green-text) !important;
     font-weight:bold;
   }
 
   .monthview-primary-with-event {
     background-color: transparent !important;
+    font-weight: bolder !important;
+  }
+
+  .monthview-primary{
+    font-weight: normal;
   }
 
   .monthview-secondary-with-event {
@@ -27,9 +63,26 @@ page-data-calendar {
     font-weight: normal !important;
   }
 
+  .monthview-datetable{
+    //border: none !important;
+  }
+
   .monthview-selected {
     font-weight:bolder !important;
     background-color: #a0cbdf !important;
   }
+
+  .monthview-current{
+    background-color: var(--lighter-grey) !important;
+  }
+
+  .monthview-current.text-muted{
+    color: white !important;
+  }
+
+  .event-detail-container{
+    padding-top: 0.5em;
+  }
+
 
 }

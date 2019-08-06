@@ -184,8 +184,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-03-14T00:00:00.000Z",
-        "endTime": "2019-03-15T00:00:00.000Z",
+        "startTime": "2019-06-14T00:00:00.000Z",
+        "endTime": "2019-06-15T00:00:00.000Z",
         "Changes": {
           "sleepToday": 13
         }
@@ -211,8 +211,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-04-27T00:00:00.000Z",
-        "endTime": "2019-04-28T00:00:00.000Z",
+        "startTime": "2019-07-27T00:00:00.000Z",
+        "endTime": "2019-07-28T00:00:00.000Z",
         "Changes": {
           "sleepToday": 0
         }
@@ -241,8 +241,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-01-17T00:00:00.000Z",
-        "endTime": "2019-01-18T00:00:00.000Z",
+        "startTime": "2019-04-17T00:00:00.000Z",
+        "endTime": "2019-04-18T00:00:00.000Z",
         "Changes": {
           "sleepToday": 1
         }
@@ -270,8 +270,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-02-08T00:00:00.000Z",
-        "endTime": "2019-02-09T00:00:00.000Z",
+        "startTime": "2019-05-08T00:00:00.000Z",
+        "endTime": "2019-05-09T00:00:00.000Z",
         "Changes": {
           "sleepToday": 11
         }
@@ -301,8 +301,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-03-17T00:00:00.000Z",
-        "endTime": "2019-03-18T00:00:00.000Z",
+        "startTime": "2019-06-17T00:00:00.000Z",
+        "endTime": "2019-06-18T00:00:00.000Z",
         "Changes": {
           "sleepToday": 13
         }
@@ -328,8 +328,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-04-25T00:00:00.000Z",
-        "endTime": "2019-04-26T00:00:00.000Z",
+        "startTime": "2019-07-25T00:00:00.000Z",
+        "endTime": "2019-07-26T00:00:00.000Z",
         "Changes": {
           "sleepToday": 16
         }
@@ -357,8 +357,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-01-20T00:00:00.000Z",
-        "endTime": "2019-01-21T00:00:00.000Z",
+        "startTime": "2019-04-20T00:00:00.000Z",
+        "endTime": "2019-04-21T00:00:00.000Z",
         "Changes": {
           "sleepToday": 0
         }
@@ -387,8 +387,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-01-04T00:00:00.000Z",
-        "endTime": "2019-01-05T00:00:00.000Z",
+        "startTime": "2019-04-04T00:00:00.000Z",
+        "endTime": "2019-04-05T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -410,8 +410,8 @@ export class CouchDbServiceProvider {
           "migraineToday": "No"
         },
         "Other": {},
-        "startTime": "2019-01-14T00:00:00.000Z",
-        "endTime": "2019-01-15T00:00:00.000Z",
+        "startTime": "2019-04-14T00:00:00.000Z",
+        "endTime": "2019-04-15T00:00:00.000Z",
         "Changes": {
           "sleepToday": 9
         }
@@ -442,8 +442,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-03-07T00:00:00.000Z",
-        "endTime": "2019-03-08T00:00:00.000Z",
+        "startTime": "2019-06-07T00:00:00.000Z",
+        "endTime": "2019-06-08T00:00:00.000Z",
         "Changes": {
           "sleepToday": 18
         }
@@ -472,8 +472,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-04-09T00:00:00.000Z",
-        "endTime": "2019-04-10T00:00:00.000Z",
+        "startTime": "2019-07-09T00:00:00.000Z",
+        "endTime": "2019-07-10T00:00:00.000Z",
         "Changes": {
           "sleepToday": 5
         }
@@ -496,8 +496,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-04-24T00:00:00.000Z",
-        "endTime": "2019-04-25T00:00:00.000Z",
+        "startTime": "2019-07-24T00:00:00.000Z",
+        "endTime": "2019-07-25T00:00:00.000Z",
         "Changes": {
           "sleepToday": 0
         }
@@ -518,8 +518,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-02-03T00:00:00.000Z",
-        "endTime": "2019-02-04T00:00:00.000Z",
+        "startTime": "2019-05-03T00:00:00.000Z",
+        "endTime": "2019-05-04T00:00:00.000Z",
         "Changes": {
           "sleepToday": 4
         }
@@ -548,8 +548,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-02-13T00:00:00.000Z",
-        "endTime": "2019-02-14T00:00:00.000Z",
+        "startTime": "2019-05-13T00:00:00.000Z",
+        "endTime": "2019-05-14T00:00:00.000Z",
         "Changes": {
           "sleepToday": 0
         }
@@ -579,8 +579,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-04-15T00:00:00.000Z",
-        "endTime": "2019-04-16T00:00:00.000Z",
+        "startTime": "2019-07-15T00:00:00.000Z",
+        "endTime": "2019-07-16T00:00:00.000Z",
         "Changes": {
           "sleepToday": 15
         }
@@ -606,8 +606,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-04-07T00:00:00.000Z",
-        "endTime": "2019-04-08T00:00:00.000Z",
+        "startTime": "2019-07-07T00:00:00.000Z",
+        "endTime": "2019-07-08T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -630,8 +630,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-01-05T00:00:00.000Z",
-        "endTime": "2019-01-06T00:00:00.000Z",
+        "startTime": "2019-04-05T00:00:00.000Z",
+        "endTime": "2019-04-06T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -659,8 +659,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-03-22T00:00:00.000Z",
-        "endTime": "2019-03-23T00:00:00.000Z",
+        "startTime": "2019-06-22T00:00:00.000Z",
+        "endTime": "2019-06-23T00:00:00.000Z",
         "Changes": {
           "sleepToday": 16
         }
@@ -689,8 +689,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-01-04T00:00:00.000Z",
-        "endTime": "2019-01-05T00:00:00.000Z",
+        "startTime": "2019-04-04T00:00:00.000Z",
+        "endTime": "2019-04-05T00:00:00.000Z",
         "Changes": {
           "sleepToday": 7
         }
@@ -715,8 +715,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-02-23T00:00:00.000Z",
-        "endTime": "2019-02-24T00:00:00.000Z",
+        "startTime": "2019-05-23T00:00:00.000Z",
+        "endTime": "2019-05-24T00:00:00.000Z",
         "Changes": {
           "sleepToday": 9
         }
@@ -747,8 +747,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-04-20T00:00:00.000Z",
-        "endTime": "2019-04-21T00:00:00.000Z",
+        "startTime": "2019-07-20T00:00:00.000Z",
+        "endTime": "2019-07-21T00:00:00.000Z",
         "Changes": {
           "sleepToday": 18
         }
@@ -777,8 +777,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-04-05T00:00:00.000Z",
-        "endTime": "2019-04-06T00:00:00.000Z",
+        "startTime": "2019-07-05T00:00:00.000Z",
+        "endTime": "2019-07-06T00:00:00.000Z",
         "Changes": {
           "sleepToday": 3
         }
@@ -805,8 +805,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-01-27T00:00:00.000Z",
-        "endTime": "2019-01-28T00:00:00.000Z",
+        "startTime": "2019-04-27T00:00:00.000Z",
+        "endTime": "2019-04-28T00:00:00.000Z",
         "Changes": {
           "sleepToday": 3
         }
@@ -835,8 +835,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-03-22T00:00:00.000Z",
-        "endTime": "2019-03-23T00:00:00.000Z",
+        "startTime": "2019-06-22T00:00:00.000Z",
+        "endTime": "2019-06-23T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -863,8 +863,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-04-11T00:00:00.000Z",
-        "endTime": "2019-04-12T00:00:00.000Z",
+        "startTime": "2019-07-11T00:00:00.000Z",
+        "endTime": "2019-07-12T00:00:00.000Z",
         "Changes": {
           "sleepToday": 12
         }
@@ -892,8 +892,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-03-03T00:00:00.000Z",
-        "endTime": "2019-03-04T00:00:00.000Z",
+        "startTime": "2019-06-03T00:00:00.000Z",
+        "endTime": "2019-06-04T00:00:00.000Z",
         "Changes": {
           "sleepToday": 15
         }
@@ -924,8 +924,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-03-13T00:00:00.000Z",
-        "endTime": "2019-03-14T00:00:00.000Z",
+        "startTime": "2019-06-13T00:00:00.000Z",
+        "endTime": "2019-06-14T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -951,8 +951,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-01-12T00:00:00.000Z",
-        "endTime": "2019-01-13T00:00:00.000Z",
+        "startTime": "2019-04-12T00:00:00.000Z",
+        "endTime": "2019-04-13T00:00:00.000Z",
         "Changes": {
           "sleepToday": 10
         }
@@ -978,8 +978,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "otherNotes": "note contents moot"
         },
-        "startTime": "2019-03-04T00:00:00.000Z",
-        "endTime": "2019-03-05T00:00:00.000Z",
+        "startTime": "2019-06-04T00:00:00.000Z",
+        "endTime": "2019-06-05T00:00:00.000Z",
         "Changes": {
           "sleepToday": 8
         }
@@ -1011,8 +1011,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-02-07T00:00:00.000Z",
-        "endTime": "2019-02-08T00:00:00.000Z",
+        "startTime": "2019-05-07T00:00:00.000Z",
+        "endTime": "2019-05-08T00:00:00.000Z",
         "Changes": {
           "sleepToday": 8
         }
@@ -1040,8 +1040,8 @@ export class CouchDbServiceProvider {
         "Other": {
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-04-18T00:00:00.000Z",
-        "endTime": "2019-04-19T00:00:00.000Z",
+        "startTime": "2019-07-18T00:00:00.000Z",
+        "endTime": "2019-07-19T00:00:00.000Z",
         "Changes": {
           "sleepToday": 10
         }
@@ -1070,8 +1070,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-02-16T00:00:00.000Z",
-        "endTime": "2019-02-17T00:00:00.000Z",
+        "startTime": "2019-05-16T00:00:00.000Z",
+        "endTime": "2019-05-17T00:00:00.000Z",
         "Changes": {}
       },
       {
@@ -1096,8 +1096,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-02-20T00:00:00.000Z",
-        "endTime": "2019-02-21T00:00:00.000Z",
+        "startTime": "2019-05-20T00:00:00.000Z",
+        "endTime": "2019-05-21T00:00:00.000Z",
         "Changes": {
           "sleepToday": 16
         }
@@ -1128,8 +1128,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "None"
         },
-        "startTime": "2019-03-07T00:00:00.000Z",
-        "endTime": "2019-03-08T00:00:00.000Z",
+        "startTime": "2019-06-07T00:00:00.000Z",
+        "endTime": "2019-06-08T00:00:00.000Z",
         "Changes": {
           "sleepToday": 8
         }
@@ -1159,8 +1159,8 @@ export class CouchDbServiceProvider {
           "otherNotes": "note contents moot",
           "whetherMedsWorked": "Some"
         },
-        "startTime": "2019-03-22T00:00:00.000Z",
-        "endTime": "2019-03-23T00:00:00.000Z",
+        "startTime": "2019-06-22T00:00:00.000Z",
+        "endTime": "2019-06-23T00:00:00.000Z",
         "Changes": {
           "sleepToday": 0
         }

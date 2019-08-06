@@ -1,9 +1,4 @@
-<!--
-  Generated template for the DataCalendarPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
 
   <ion-navbar>
@@ -18,15 +13,16 @@
 
 <ion-content padding>
 
-  <h3 style="text-align: center;">
-    <button float-left ion-button icon-only (click)="changeMonth('subtract')">
-      <ion-icon name="md-arrow-dropleft"></ion-icon>
-    </button>
-    {{currentMonth}}
-    <button ion-button float-right icon-only (click)="changeMonth('add')" [disabled]="isMaxMonth">
-      <ion-icon item-right name="md-arrow-dropright"></ion-icon>
-    </button>
-  </h3>
+  <div class="monthDiv">
+    <div class="iconDiv" (click)="changeMonth('subtract')">
+      <ion-icon class="navIcon" color="primary" item-left name="md-arrow-dropleft"></ion-icon>
+    </div>
+    <span class="monthLabel">{{currentMonth}}</span>
+    <div class="iconDiv" (click)="changeMonth('add')">
+      <ion-icon class="navIcon" [color]="isMaxMonth? 'mutedPrimary' : 'primary'" item-right name="md-arrow-dropright"></ion-icon>
+    </div>
+
+  </div>
 
 
 
@@ -42,25 +38,20 @@
 
 
     <ion-list class="event-detail-container list">
-      <ion-item class="item item-block" *ngFor="let event of selectedDate.events">
-        <ion-label>
+      <ion-item class="item item-block" *ngFor="let event of selectedDate.events" (click)="seeDataDetails(event)">
+        <!--<ion-label>-->
           <span class="monthview-eventdetail-timecolumn">Data Tracked</span>
-          <span class="event-detail">  |  {{isMigraineEvent(event) ? 'Migraine' : 'No Migraine'}}</span>
-          <button item-right ion-button icon-only (click)="seeDataDetails(event)">
-            <ion-icon name="information-circle-outline"></ion-icon>
-          </button>
-        </ion-label>
+          <span class="event-detail">  |  {{event?.title}}</span>
+          <ion-icon item-right color="primary" name="information-circle-outline"></ion-icon>
+        <!--</ion-label>-->
 
       </ion-item>
 
-      <ion-item *ngIf="selectedDate.events.length === 0">
-        <ion-label>
-          <div class="no-events-label">{{noEventsLabel}}
-            <button item-right ion-button icon-only float-right (click)="seeDataDetails(null)">
-              <ion-icon name="add-circle-outline"></ion-icon>
-            </button>
-          </div>
-        </ion-label>
+      <ion-item *ngIf="selectedDate.events.length === 0" (click)="seeDataDetails(null)">
+        <!--<ion-label>-->
+          <span class="no-events-label">{{noEventsLabel}}</span>
+          <ion-icon item-right color="primary" name="add-circle-outline"></ion-icon>
+        <!--</ion-label>-->
       </ion-item>
 
     </ion-list>
@@ -76,6 +67,7 @@
             [lockSwipes]="lockSwipes"
             [monthviewDisplayEventTemplate]="template"
             [monthviewEventDetailTemplate]="template2"
+            [formatDayHeader]="'EEEEE'"
             (onCurrentDateChanged)="onCurrentDateChanged($event)"
             step="30">
   </calendar>

@@ -15,7 +15,6 @@ export class HomePage {
 
   private activeGoals : {[goalAspect:string]: any;} = {};
   private quickTrackers : {[dataType:string]: any;} = {};
-  private quickTrackerKeys : string[] = [];
   private tracked : {[dataType : string] : any} = {};
   private goalProgresses : {[dataType : string] : any} = {};
   private dataToTrack : {[dataProps : string] : any}[] = [];
@@ -72,7 +71,7 @@ export class HomePage {
 
   setupTrackers(){
     if('dataToTrack' in this.activeGoals){
-      this.previouslyTracked = this.couchDbService.getTrackedData();
+      this.previouslyTracked = this.couchDbService.getTrackedData(); // todo: only need to grab this month's
       this.quickTrackers = this.activeGoals.quickTrackers;
       if(this.quickTrackers && this.quickTrackers.length >0){
         this.dataTypes = ['quickTracker'];

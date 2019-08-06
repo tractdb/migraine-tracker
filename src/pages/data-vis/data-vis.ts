@@ -486,7 +486,7 @@ export class DataVisPage {
     for(let i=0; i<this.allTrackedData.length; i++){
       let datapoint = this.allTrackedData[i];
       this.dates.push(datapoint['startTime']);
-      this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptoms']));
+      this.symptoms.push(this.globalFuns.getWhetherMigraine(datapoint['Symptom']));
       this.addDatapointToDict(datapoint['Treatments'], this.treatments);
       this.addDatapointToDict(datapoint['Contributors'], this.contributors);
       this.addDatapointToDict(datapoint['Changes'], this.changes);

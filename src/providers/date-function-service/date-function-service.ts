@@ -97,19 +97,23 @@ export class DateFunctionServiceProvider {
 
 
   getUTCDate(date){
+    // is sometimes the wrong date?
     if(!date) date = new Date();
     if(typeof date === 'string'){
       date = new Date(date);
     }
+    date.setHours(0,0,0,0);
     return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
   }
 
 
-  getStartAndEndDatesForCalendar(){
-    let dateTracked = new Date();
+  getStartAndEndDatesForCalendar(date=null){
+    let dateTracked = date ? new Date(date) : new Date();
+    let startDate = new Date(Date.UTC(dateTracked.getFullYear(), dateTracked.getMonth(), dateTracked.getDate()));
     dateTracked.setHours(0,0,0,0);
     let nextDay = moment(dateTracked).add(1, "day").toDate();
-    return [this.getUTCDate(dateTracked), this.getUTCDate(nextDay)]
+    let endDate = new Date(Date.UTC(nextDay.getFullYear(), nextDay.getMonth(), nextDay.getDate()));
+    return [startDate, endDate]
   }
 
 

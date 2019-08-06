@@ -26,7 +26,7 @@ export class DataCalendarPage {
     formatDayHeader: ''
   };
 
-  private noEventsLabel : string;
+  private noEventsLabel : string = "No data tracked";
   private allDayLabel : string = "Data Tracked";
 
   private eventSource : {[eventProps: string] : any}[] = [];
@@ -55,8 +55,8 @@ export class DataCalendarPage {
   ionViewDidLoad() {
     let dateFuns = this.dateFunctions;
     this.currentMonth = this.dateFunctions.getDate(this.calendar.currentDate).format("MMMM");
-    let events = this.couchDBService.getTrackedData();
-    events.map(function(event){
+    let events = this.couchDBService.getTrackedData(); // could pull month by month but I think this is better for short studies
+    events.map(function(event){ // shouldn't be necessary if we're pushing right originally
       event.startTime = dateFuns.getUTCDate(event.startTime);
       event.endTime = dateFuns.getUTCDate(event.endTime);
     });
@@ -65,16 +65,15 @@ export class DataCalendarPage {
   }
 
 
-  isMigraineEvent(event : {[evenProps: string] : any}) : boolean{
-    // todo: make smarter (like if they only have duration); probably put in service
-    return this.globalFuns.getWhetherMigraine(event['Symptoms']);
-  }
 
 
   getClass(view : {[dayAttributes: string] : any}) : string{
     if(view.events.length > 0){
-      for(let i=0; i<view.events.length; i++){
-        if(this.isMigraineEvent(view.events[i])){
+      for(let i=0; i<view.events.length; i++){ // (won't be necessary if we consolidate to 1/day)
+        if(!view.events[i].title){
+          view.events[i].title = this.globalFuns.getWhetherMigraine(view.events[i]['Symptom']) ? 'Migraine' : 'No Migraine';
+        }
+        if(view.events[i].title === 'Migraine'){ // if ANY report includes migraine
           return 'migraineDay';
         }
       }
@@ -85,30 +84,32 @@ export class DataCalendarPage {
 
 
   onCurrentDateChanged(event){
-    this.selectedDay = this.dateFunctions.getUTCDate(event);
-    let actualThis = this;
-    setTimeout(function() { // otherwise I get an "changed after checking" error ...
-      if(actualThis.dateFunctions.compareToToday(event, 'day')){
-        actualThis.noEventsLabel = 'No data tracked today';
-      }
-      else{
-        actualThis.noEventsLabel = 'No data tracked on ' +
-          actualThis.dateFunctions.getDate(event).format("MMM Do");
-      }
-    },50);
+    this.selectedDay = event;
   }
 
 
 
   seeDataDetails(event : {[evenProps: string] : any}){
+    let isNew = false;
     if(!event){
+      isNew = true;
       event = {'startTime': this.selectedDay.toISOString()}
     }
+    let actualThis = this;
     let dataDetailsModal = this.modalCtrl.create(ViewDatapointPage, event);
     dataDetailsModal.onDidDismiss(newData => {
       if(newData){
-        // todo: push?
-        console.log(newData);
+        // todo: push!!!
+        newData.title = actualThis.globalFuns.getWhetherMigraine(newData['Symptom']) ? 'Migraine' : 'No Migraine';
+        if(isNew){
+          let times =  actualThis.dateFunctions.getStartAndEndDatesForCalendar(actualThis.selectedDay);
+          newData.allDay = true;
+          newData.startTime = times[0];
+          newData.endTime = times[1];
+          actualThis.eventSource.push(newData);
+          this.calendar.currentDate = actualThis.selectedDay; // to actually update eventSource
+        }
+        else event = newData;
       }
     });
     dataDetailsModal.present();
@@ -121,11 +122,13 @@ export class DataCalendarPage {
   }
 
   changeMonth(direction : string){
-    this.lockSwipes = false;
-    let newMonth = this.dateFunctions.dateArithmatic(this.calendar.currentDate, direction, 1, "month");
-    this.calendar.currentDate = newMonth.toDate();
-    this.lockSwipes = true;
-    this.checkMinAndMax();
+    if(!(this.isMaxMonth && direction === 'add')){
+      this.lockSwipes = false;
+      let newMonth = this.dateFunctions.dateArithmatic(this.calendar.currentDate, direction, 1, "month");
+      this.calendar.currentDate = newMonth.toDate();
+      this.lockSwipes = true;
+      this.checkMinAndMax();
+    }
   }
 
 }
