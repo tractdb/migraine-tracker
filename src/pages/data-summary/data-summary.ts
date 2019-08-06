@@ -41,6 +41,7 @@ export class DataSummaryPage {
     this.allTrackedData = this.couchDBService.getTrackedData();
     this.currentlyTracking = this.couchDBService.getActiveGoals()['dataToTrack'];
     let allDataTypes = Object.keys(this.currentlyTracking);
+    console.log(this.currentlyTracking)
     for(let i=0; i<allDataTypes.length; i++){ // we won't report notes, so if it's all they have for a datatype, remove
       this.currentlyTracking[allDataTypes[i]] = this.currentlyTracking[allDataTypes[i]].filter(function(dataItem){
         return dataItem.field !== 'note';

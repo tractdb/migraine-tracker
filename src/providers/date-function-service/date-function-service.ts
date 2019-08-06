@@ -9,6 +9,12 @@ export class DateFunctionServiceProvider {
   constructor(public http: HttpClient) {
   }
 
+  compareTimes(time1, time2){
+    var beginningTime = moment(time1, 'ha');
+    var endTime = moment(time2, 'ha');
+    return beginningTime.isBefore(endTime);
+  }
+
   dateToPrettyDate(dateString, utc=false){
     let date = moment(dateString);
     if(utc){

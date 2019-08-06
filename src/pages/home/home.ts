@@ -79,7 +79,7 @@ export class HomePage {
       else{
         console.log("NO QUICK TRACKERS?!")
       }
-      this.dataToTrack = this.activeGoals['dataToTrack'];
+      this.dataToTrack = Object.assign({}, this.activeGoals['dataToTrack']); // otherwise we modify it >.<
       this.dataTypes = this.dataTypes.concat(Object.keys(this.dataToTrack));
       this.dataToTrack["quickTracker"] = this.quickTrackers;
       this.calculateGoalProgresses();

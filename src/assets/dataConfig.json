@@ -1,23 +1,35 @@
 [
-    {"dataType": "Change",
-    "description": "What change(s) are you planning on making?",
-    "conditionalGoals": ["2c"],
-    "startDate": true,
-    "dataGoals": true
+    {
+        "dataType": "Change",
+        "description": "What change(s) are you planning on making?",
+        "conditionalGoals": ["2c"],
+        "startDate": true,
+        "dataGoals": true,
+        "visTypes": ["beforeAfter", "overTime"]
     },
 
-    {"dataType": "Symptom",
-    "dataGoals": false},
+    {
+        "dataType": "Symptom",
+        "dataGoals": false,
+        "visTypes": ["overTime"]
+    },
 
-    {"dataType": "Treatment",
-    "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
-    "dataGoals": true},
+    {
+        "dataType": "Treatment",
+        "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
+        "dataGoals": true,
+        "visTypes": ["overTime"]
 
-    {"dataType": "Contributor",
-    "toDisplay": "Contributor (\"Trigger\")",
-    "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
-    "recommendForGoals": ["3"],
-    "dataGoals": true},
+    },
+
+    {
+        "dataType": "Contributor",
+        "toDisplay": "Contributor (\"Trigger\")",
+        "conditionalGoals": ["1a", "1b", "1c", "3", "2a", "2b"],
+        "recommendForGoals": ["3"],
+        "dataGoals": true,
+        "visTypes": ["correlation"]
+    },
 
     {"dataType": "Other",
     "description": "Is there anything else you want to track?",

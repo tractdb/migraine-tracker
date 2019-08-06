@@ -148,6 +148,7 @@ export class DataDetailsServiceProvider {
 
 
 
+
   findDataByID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
     // finds the data object in the list given the ID
     if(!dataToTrack) return null;
