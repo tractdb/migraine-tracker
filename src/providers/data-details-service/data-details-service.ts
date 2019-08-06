@@ -8,7 +8,6 @@ export class DataDetailsServiceProvider {
   private supportedFields : any;
   private listedData : {[dataType: string] : any};
   private configData : any;
-  private medTrackingIDs : string[] = ['asNeededMeds', 'AsNeededMedChange'];
 
   constructor(public http: HttpClient) {
     this.openListedData();
@@ -54,10 +53,6 @@ export class DataDetailsServiceProvider {
     return null;
   }
 
-  getWhetherGoals(dataType: string) : boolean{
-    return this.getConfigByName(dataType)['dataGoals'];
-  }
-
   getAllDataTypes() : string[]{
     let allDataTypes = [];
     for(let i=0; i<this.configData.length; i++){
@@ -87,15 +82,10 @@ export class DataDetailsServiceProvider {
   }
 
 
-  getMedTrackingIDs() : string[] {
-    return this.medTrackingIDs;
-  }
-
-
-  getWhetherTrackingMeds(treatmentsTracking: string[]) : boolean{
+  getWhetherTrackingMeds(treatmentsTracking: {[dataAttr: string] : any}[]) : boolean{
     if(!treatmentsTracking) return false;
-    for(let i=0; i<this.medTrackingIDs.length; i++){
-      if(treatmentsTracking.indexOf(this.medTrackingIDs[i]) > -1){
+    for(let i=0; i<treatmentsTracking.length; i++){
+      if(treatmentsTracking[i].isMed){
         return true;
       }
     }
@@ -145,16 +135,21 @@ export class DataDetailsServiceProvider {
     return null;
   }
 
-  getDataIDs(dataToTrack : {[dataType: string] : any}[]) : string[] {
-    if(!dataToTrack) return [];
-    let dataIDs = [];
-    for(let i=0; i<dataToTrack.length; i++){
-      dataIDs.push(dataToTrack[i].id);
+
+  getWhetherIsMed(dataType: string, id: string) : {[dataAttrs: string] : any}{
+    // uses the listed data to find the original data type
+    for(let i=0; i<this.listedData[dataType].length; i++) {
+      if (this.listedData[dataType][i].id === id) {
+        return this.listedData[dataType][i].isMed;
+      }
+      return null;
     }
-    return dataIDs;
   }
 
-  getDataFromID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
+
+
+  findDataByID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
+    // finds the data object in the list given the ID
     if(!dataToTrack) return null;
     for(let i=0; i<dataToTrack.length; i++){
       if(dataToTrack[i].id === id){
@@ -167,16 +162,21 @@ export class DataDetailsServiceProvider {
 
 
 
-  getRecsAndCommon(alreadyTracking: {[dataType:string]:any}, dataType: string,
-                   goalIDs: string[]) : {[listInfo: string] : any}{
+  getDataLists(alreadyTracking: {[dataType:string]:any}, dataType: string,
+               goalIDs: string[]) : {[listInfo: string] : any}{
     let dataOfType = this.listedData[dataType];
     let otherData = [];
     let recData = [];
-    let trackingMeds = this.getWhetherTrackingMeds(this.getDataIDs(alreadyTracking['Treatment']));
+    let alwaysQuickTrack = [];
+    let trackingMeds = this.getWhetherTrackingMeds(alreadyTracking['Treatment']);
     let expandOther = false;
 
     for(let i=0; i<dataOfType.length; i++){
       let dataObject = dataOfType[i];
+      if (dataObject['alwaysQuickTrack']){
+        dataObject['dataType'] = dataType;
+        alwaysQuickTrack.push(dataObject);
+      }
       let skip = false;
       let recommended = this.getWhetherRecommended(goalIDs, dataObject['recommendingGoals']);
       if(dataObject['condition']) {
@@ -198,7 +198,7 @@ export class DataDetailsServiceProvider {
         }
       }
       if(!skip){
-        let trackingData = this.getDataFromID(alreadyTracking[dataType], dataObject.id);
+        let trackingData = this.findDataByID(alreadyTracking[dataType], dataObject.id);
         if(recommended){
           if(trackingData) recData.push(trackingData);
           else recData.push(dataObject);
@@ -213,7 +213,7 @@ export class DataDetailsServiceProvider {
       }
     }
 
-    return {'recData': recData, 'otherData':otherData, 'expandOther': expandOther};
+    return {'recData': recData, 'otherData':otherData, 'expandOther': expandOther, 'alwaysTrack': alwaysQuickTrack};
 
 
   }

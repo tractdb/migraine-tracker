@@ -7,7 +7,11 @@
                 "explanation": "Migraine experienced",
                 "fieldDescription": "Whether you had a migraine (yes/no)",
                 "recommendedField": "binary",
-                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"]
+                "field": "binary",
+                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
+                "quickTrack": true,
+                "alwaysQuickTrack": true,
+                "fieldSet": true
             },
             {
                 "name": "Headache",
@@ -135,7 +139,10 @@
                     "freq": "Less",
                     "threshold": 4,
                     "timespan": "Month"
-                }
+                },
+                "quickTrack": true,
+                "isMed": true,
+                "fieldsAllowed": ["binary", "number", "time"]
             },
             {
                 "name": "Routine Medication Use",
@@ -436,7 +443,10 @@
                 "explanation": "Any new as-needed medication you're starting",
                 "fieldDescription": "Whether you took your new as-needed medication",
                 "recommendedField": "binary",
-                "recommendingGoals": ["2c"]
+                "recommendingGoals": ["2c"],
+                "isMed": true,
+                "quickTrack": true,
+                "fieldsAllowed": ["binary", "number", "time"]
             },
             {
                 "name": "New Routine Medication",

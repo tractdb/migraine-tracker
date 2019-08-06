@@ -24,7 +24,8 @@ export class DataConfigPage {
   private startDate : any = null;
   private today = moment().toISOString();
   private nextYear = moment().add(1, "year").toISOString();
-  private commonExpanded = false;
+  private commonExpanded : boolean = false;
+  private alwaysQuickTrack : {[dataAttr: string]: any}[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -83,10 +84,11 @@ export class DataConfigPage {
 
 
   getAllRecs(alreadyTracking : {[dataType:string]:any}) {
-    let dataInfo = this.dataDetailsServiceProvider.getRecsAndCommon(alreadyTracking, this.dataObject.dataType, this.allGoals);
+    let dataInfo = this.dataDetailsServiceProvider.getDataLists(alreadyTracking, this.dataObject.dataType, this.allGoals);
     this.recommendedData = dataInfo['recData'];
     this.otherData = dataInfo['otherData'];
     this.commonExpanded = dataInfo['expandOther'];
+    if(dataInfo['alwaysQuickTrack']) this.alwaysQuickTrack = dataInfo['alwaysQuickTrack'];
     this.recordTracking(alreadyTracking[this.dataObject.dataType]);
 
     if(this.dataObject.recommendForGoals){ // for ex we need them to track personalized contributors to predict
@@ -162,7 +164,21 @@ export class DataConfigPage {
   }
 
 
+  getQuickTrackers(selectedData: {[dataAttrs: string] : any}[]) : {[dataAttrs: string] : any}[]{
+    let quickTrackers = this.alwaysQuickTrack;
+    for(let i=0; i<selectedData.length; i++){
+      if(selectedData[i].quickTrack){
+        selectedData[i].dataType = this.dataObject.dataType;
+        quickTrackers.push(selectedData[i]);
+      }
+    }
+    return quickTrackers;
+  }
+
+
   continueSetup() {
+    let quickTrackers = this.getQuickTrackers(this.selectedFromList);
+
     let selectedData = this.selectedFromList.concat(this.customData);
 
     if(this.navParams.data['goalIDs']){
@@ -176,6 +192,12 @@ export class DataConfigPage {
         }
 
         this.navParams.data['selectedData'][this.dataObject.dataType] = selectedData;
+
+        if(quickTrackers.length > 0){
+          if(this.navParams.data['quickTrackers']) this.navParams.data['quickTrackers'].concat(quickTrackers);
+          else this.navParams.data['quickTrackers'] = quickTrackers;
+        }
+
       }
 
 
@@ -194,7 +216,7 @@ export class DataConfigPage {
     }
 
     else{
-      this.viewCtrl.dismiss(selectedData);
+      this.viewCtrl.dismiss({'selected': selectedData, 'quickTrackers': quickTrackers});
     }
 
   }

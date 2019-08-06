@@ -33,7 +33,6 @@ export class TrackingModificationPage {
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
     this.goals = activeGoals['goals'];
-    console.log(this.goals)
     this.notifications = activeGoals['notificationSettings'];
     this.currentData = activeGoals['dataToTrack'];
     if(this.notifications['regular'] && this.notifications['regular']['timeOfDay']){
@@ -70,8 +69,9 @@ export class TrackingModificationPage {
 
     addDataModal.onDidDismiss(newData => {
       console.log(newData);
-      this.currentData[dataType] = newData;
-      this.couchDBService.modifyTrackingRoutine(dataType, newData);
+      this.currentData[dataType] = newData['selected'];
+      if(newData['quickTrackers']) this.couchDBService.modifyQuickTrackers(newData['quickTrackers']);
+      this.couchDBService.modifyTrackingRoutine(dataType, newData['selected']);
     });
 
     addDataModal.present();

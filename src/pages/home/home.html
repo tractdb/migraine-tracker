@@ -22,26 +22,63 @@
   </ion-card>
 
 
-  <ion-card *ngIf="quickTrackerKeys.length > 0">
-    <ion-card-header>Quick Trackers:</ion-card-header>
-    <ion-card-content >
-      <ng-container *ngFor="let trackerType of quickTrackerKeys">
-        <ng-container *ngFor="let tracker of quickTrackers[trackerType]">
-          <button class="button quickTrackerButton" ion-button full icon-start (click)="quickTrack(tracker)">
-              {{tracker.name}}
-          </button>
-        </ng-container>
+
+  <ion-card *ngFor="let dataType of dataTypes" >
+
+    <ion-card-header (click)="cardExpanded[dataType] =! cardExpanded[dataType]">
+      <ng-container *ngIf="dataType !== 'quickTracker'">
+        <span class="headerItem trackingHeader">Track {{dataType}} Data</span>
+        <ion-icon class="headerIcon" item-right *ngIf="cardExpanded[dataType]" name="arrow-dropup"></ion-icon>
+        <ion-icon class="headerIcon" item-right *ngIf="!cardExpanded[dataType]" name="arrow-dropdown"></ion-icon>
+        <div class="dataExamples">
+          <span class="dataExamples">{{dataList[dataType]}}</span>
+        </div>
       </ng-container>
-    </ion-card-content>
-  </ion-card>
+      <ng-container *ngIf="dataType === 'quickTracker'">
+        <span class="headerItem trackingHeader">Quick Track</span>
+      </ng-container>
+    </ion-card-header>
 
 
-  <ion-card *ngIf="activeGoals['goals']!==undefined">
-    <ion-card-content>
-      <button class="button" ion-button full icon-start (click)="trackData()">
-        <ion-icon name="book"></ion-icon>
-        Track more data
-      </button>
+    <ion-card-content *ngIf="cardExpanded[dataType] || dataType === 'quickTracker'">
+
+      <ng-container *ngFor="let data of dataToTrack[dataType]">
+
+        <div class="dataInfo" *ngIf="!data.quickTrack || dataType === 'quickTracker'">
+
+          <h2 class="dataName">{{data.name}}</h2>
+
+          <data-element-tracking [data]="data" [trackedMedsToday] = trackedMeds() (valueChanged) = 'changeVals($event, data, dataType)'>
+          </data-element-tracking>
+
+          <div class="goalDiv" *ngIf="data.goal && data.goal.freq && dataType !== 'Symptom' ">
+            <div>
+              Goal: {{data.goal.freq}} than <span text-lowercase>{{data.goal.threshold}}
+              per {{data.goal.timespan}}</span>
+            </div>
+            <div *ngIf="data.goal.timespan!=='Day'">
+              Total this <span text-lowercase>{{data.goal.timespan}}</span> (including today):
+              {{totalTrackedTimes(data, dataType)}}
+            </div>
+            <div class="goalMet" *ngIf="goalProgress(data, dataType) === 'met'">
+              You met your goal!
+            </div>
+            <div class="goalMet" *ngIf="goalProgress(data, dataType) === 'below limit'">
+              You're under your limit!
+            </div>
+            <div class="goalOK" *ngIf="goalProgress(data, dataType) === 'under'">
+              Keep going!
+            </div>
+            <div class="overGoal" *ngIf="goalProgress(data, dataType) === 'over'">
+              Try to cut back!
+            </div>
+            <div class="goalOK" *ngIf="goalProgress(data, dataType) === 'at limit'">
+              You're at your limit!
+            </div>
+          </div>
+        </div>
+
+      </ng-container>
     </ion-card-content>
   </ion-card>
 

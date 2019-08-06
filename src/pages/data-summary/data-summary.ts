@@ -89,7 +89,7 @@ export class DataSummaryPage {
 
   aggregateData(filteredData : {[dataType: string] : {[dataID: string] : any}[]}[], append: boolean) {
     let trackedDict;
-    if (!append) {
+    if (!append) { // just initializes the dicts for each datapoint
       trackedDict = {};
       for (let i = 0; i < this.dataTypes.length; i++) {
         let trackingOfType = this.currentlyTracking[this.dataTypes[i]] ? this.currentlyTracking[this.dataTypes[i]] : [];
@@ -110,9 +110,9 @@ export class DataSummaryPage {
     for(let i=0; i<filteredData.length; i++){
       let trackedDataTypes = Object.keys(filteredData[i]);
       for(let j=0; j<trackedDataTypes.length; j++){
-        if(this.dataTypes.indexOf(trackedDataTypes[j]) > -1){
+        if(this.dataTypes.indexOf(trackedDataTypes[j]) > -1){ // if we're not still tracking we assume we don't care
           let dataItems = filteredData[i][trackedDataTypes[j]];
-          for(var dataID in dataItems) {
+          for(let dataID in dataItems) { // aggregate all of the values for each datatype into a single list
             if (trackedDict[dataID]) {
               if(trackedDict[dataID].field === 'time range'){
                 trackedDict[dataID]['vals'].push(this.getDuration(dataItems[dataID]))

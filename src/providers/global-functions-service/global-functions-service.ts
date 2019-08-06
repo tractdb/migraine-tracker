@@ -7,7 +7,6 @@ import {DateFunctionServiceProvider} from "../date-function-service/date-functio
 @Injectable()
 export class GlobalFunctionsServiceProvider {
 
-  private medIDs : string[] = this.dataDetailsProvider.getMedTrackingIDs();
 
   private contactEmail = "jesscs@cs.washington.edu";
 
@@ -40,19 +39,21 @@ export class GlobalFunctionsServiceProvider {
 
 
 
-  getWhetherTrackedMeds(treatmentDict: {[treatment:string] : any}) : boolean{
-    if(treatmentDict === undefined) return false;
-    for(let i=0; i<this.medIDs.length; i++){
-      if(this.medIDs[i] in treatmentDict){
-        let trackedVal = treatmentDict[this.medIDs[i]];
-        if(trackedVal === 'Yes'){
-          return true;
-        }
-        if(Number(trackedVal) && Number(trackedVal) > 0){
-          return true;
-        }
-        else{
-          console.log(trackedVal);
+  getWhetherTrackedMeds(trackedDict: {[dataType:string] : any}) : boolean{
+    let typesToCheck = ["Treatment", "Change"]; // kinda awful, should be in files or something.  Oh well...
+    for(let i=0; i<typesToCheck.length; i++){
+      let dataType = typesToCheck[i];
+      if(trackedDict[dataType] === undefined) continue;
+      let itemsTracked = Object.keys(trackedDict[dataType]);
+      for(let j=0; j<itemsTracked.length; j++){
+        if(this.dataDetailsProvider.getWhetherIsMed(dataType, itemsTracked[j])){
+          let trackedVal = trackedDict[dataType][itemsTracked[j]];
+          if(trackedVal === 'Yes'){
+            return true;
+          }
+          if(Number(trackedVal) && Number(trackedVal) > 0){
+            return true;
+          }
         }
       }
     }
@@ -65,7 +66,7 @@ export class GlobalFunctionsServiceProvider {
     let goalHierarchy = {};
     for(let i=0; i<currentGoalIDs.length; i++){
       let goalID = currentGoalIDs[i];
-      let goalInfo = this.goalDetails.getGoalByID(goalID);
+      let goalInfo = this.goalDetails.getGoalByID(goalID, false);
       if(goalInfo['isTopGoal']){ // it's not a subogal
         goalHierarchy[goalInfo.name] = [];
         let allGoalSubgoals = goalInfo['subgoals'] ? goalInfo['subgoals'] : [];
@@ -89,8 +90,8 @@ export class GlobalFunctionsServiceProvider {
       timespan = data.goal.timespan;
     }
     for(let i=0; i<previouslyTracked.length; i++){
-      if(previouslyTracked[i][dataType] === undefined
-        || (previouslyTracked[i][dataType][data.id] === undefined && data.id !== 'frequentMedUse')) {
+      if(data.id !== 'frequentMedUse' && (previouslyTracked[i][dataType] === undefined
+        || previouslyTracked[i][dataType][data.id] === undefined)) {
         continue;
       }
       let cutoff;
@@ -105,7 +106,7 @@ export class GlobalFunctionsServiceProvider {
       }
       if(new Date(previouslyTracked[i]['startTime']) > cutoff) {
         if(data.id === 'frequentMedUse'){ // the one calculated field
-          timesTracked += this.getWhetherTrackedMeds(previouslyTracked[i][dataType]) ? 1 : 0;
+          timesTracked += this.getWhetherTrackedMeds(previouslyTracked[i]) ? 1 : 0;
         }
         else if(data.field === 'number'){
           timesTracked += Number(previouslyTracked[i][dataType][data.id]);

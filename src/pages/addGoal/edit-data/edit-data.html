@@ -47,20 +47,22 @@
 
         <ng-container *ngIf="fieldButtonsExpanded">
           <ng-container *ngFor="let field of fieldList">
-            <div class="selectOption" *ngIf="field['name'] !== data.field" (click)="editedField(field)">
-              <div class="optionHeader">
-                <div class="optionName">{{field['name']}}</div>
+            <ng-container *ngIf="(!data.fieldsAllowed) || (data.fieldsAllowed.indexOf(field.name) > -1)">
+              <div class="selectOption" *ngIf="field['name'] !== data.field" (click)="editedField(field)">
+                <div class="optionHeader">
+                  <div class="optionName">{{field['name']}}</div>
+                </div>
+                <div class="optionDetails">
+                  <span *ngIf="!data.recommendedField || field['name']!==data.recommendedField">
+                    {{field['explanation']}}
+                  </span>
+                  <span *ngIf="data.recommendedField && field['name']===data.recommendedField">
+                    <div class="recommended">(recommended)</div>
+                    {{data.fieldDescription}}
+                  </span>
+                </div>
               </div>
-              <div class="optionDetails">
-                <span *ngIf="!data.recommendedField || field['name']!==data.recommendedField">
-                  {{field['explanation']}}
-                </span>
-                <span *ngIf="data.recommendedField && field['name']===data.recommendedField">
-                  <div class="recommended">(recommended)</div>
-                  {{data.fieldDescription}}
-                </span>
-              </div>
-            </div>
+            </ng-container>
           </ng-container>
         </ng-container>
       </div>

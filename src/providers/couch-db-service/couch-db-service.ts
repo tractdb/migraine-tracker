@@ -44,40 +44,6 @@ export class CouchDbServiceProvider {
     return this.http.get(this.baseUrl + '/authenticated', this.options);
   }
 
-  getQuickTrackers() : {[dataType: string] : any}{
-    // todo: database, of course
-    let defaultTrackers = {
-      "Symptom": [
-        {
-          "name": "Migraine today",
-          "explanation": "Whether you had a migraine.",
-          "fieldDescription": "Whether you had a migraine (yes/no)",
-          "field": "binary",
-          "goal": {
-            "freq": "Less",
-            "threshold": 1,
-            "timespan": "Week"
-          }
-        }
-      ],
-      "Treatments": [
-        {
-          "name": "As-needed medications today",
-          "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: advil, excedrin, tylenol, prescription medications you don't take daily.",
-          "fieldDescription": "Whether you took any as-needed medication today",
-          "field": "binary",
-          "goal": {
-            "freq": "Less",
-            "threshold": 2,
-            "timespan": "Week"
-          },
-        }
-      ]
-    };
-    let quickTrackers = defaultTrackers;
-    return quickTrackers;
-  }
-
 
   trackData(newData : {[dataType: string] : any}) {
     // todo: should store a datapoint in couch as a new object
@@ -107,28 +73,35 @@ export class CouchDbServiceProvider {
   }
 
   addGoalFromSetup(setupDict : {[configInfo: string] : any}) : {[goalsProps:string]: any;}{
-    // todo: actually push to database
+    // todo: actually push to database; make sure it's doing the right thing when we JUST modify goals!!!!
     let newGoals = setupDict['goalIDs'];
-    if('goals' in this.activeUserGoals) { // we're appending goals
+    if('goals' in this.activeUserGoals) { // we need to deactivate the previous goals
       this.activeUserGoals['deactivated'] = new Date(); // todo: push
-      let goalSet = new Set(newGoals.concat(this.activeUserGoals['goals']));
-      this.activeUserGoals = {'goals': Array.from(goalSet),
-                      'dataToTrack':
-                        this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['selectedData']),
-                      'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
-                      'dateAdded': new Date(),
-                      'notifications': setupDict.notificationSettings ?
-                                          setupDict.notificationSettings : this.activeUserGoals['notifications']};
+      // let goalSet = new Set(newGoals.concat(this.activeUserGoals['goals']));
+      // this.activeUserGoals = {'goals': Array.from(goalSet),
+      //                 'dataToTrack':
+      //                   this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['selectedData']),
+      //                 'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
+      //                 'quickTrackers': ,
+      //                 'dateAdded': new Date(),
+      //                 'notifications': setupDict.notificationSettings ?
+      //                                     setupDict.notificationSettings : this.activeUserGoals['notifications']};
     }
-    else{
-      this.activeUserGoals = {'goals': newGoals,
-                              'dataToTrack': setupDict.selectedData,
-                              'textGoals': [setupDict.textGoals],
-                              'dateAdded': new Date(),
-                              'notifications': setupDict.notificationSettings};
-    }
+    // else{
+    this.activeUserGoals = {'goals': newGoals,
+                            'dataToTrack': setupDict.selectedData,
+                            'quickTrackers': setupDict.quickTrackers,
+                            'textGoals': [setupDict.textGoals],
+                            'dateAdded': new Date(),
+                            'notifications': setupDict.notificationSettings};
+    // }
     console.log(this.activeUserGoals);
     return this.activeUserGoals;
+  }
+
+  modifyQuickTrackers(quickTrackers){
+    // todo: push!
+    this.activeUserGoals.quickTrackers = quickTrackers;
   }
 
   modifyTrackingRoutine(dataType, newRoutine){
@@ -1198,40 +1171,85 @@ export class CouchDbServiceProvider {
 
   getExampleGoal()  : {[goalAspect:string]: any;}{
     let exGoal = {
+      "quickTrackers": [
+        {
+          "name": "Migraine",
+          "id": "migraineToday",
+          "explanation": "Migraine experienced",
+          "fieldDescription": "Whether you had a migraine (yes/no)",
+          "recommendedField": "binary",
+          "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
+          "quickTrack": true,
+          "alwaysQuickTrack": true,
+          "field": "binary",
+          "fieldSet": true,
+          "dataType": "Symptom"
+        },
+        {
+          "name": "As-needed medications today",
+          "id": "asNeededMeds",
+          "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
+          "fieldDescription": "Whether you took any as-needed medication today",
+          "field": "binary",
+          "recommendingGoals": [
+            "1a",
+            "1b",
+            "1c",
+            "2a",
+            "2b",
+            "2c",
+            "3"
+          ],
+          "fieldsAllowed": ["binary", "number", "time"],
+          "goal": {
+            "freq": "Less",
+            "threshold": 4,
+            "timespan": "Month"
+          },
+          "opts": {
+            "showBackdrop": true,
+            "enableBackdropDismiss": true
+          },
+          "selected": true,
+          "quickTrack": true,
+          "dataType": "Treatment"
+        }
+      ],
         "goals": [
           "1",
           "2",
           "3",
           "2a",
           "2b",
-          "2c",
+          // "2c",
           "1a",
-          "1b"
+          "1b",
+          "1c"
         ],
         "dataToTrack": {
-          "Change": [
-            {
-              "name": "Healthy Sleep Schedule",
-              "id": "sleepChange",
-              "explanation": "How much sleep you got today",
-              "fieldDescription": "Hours of sleep",
-              "field": "number",
-              "goal": {
-                "freq": "More",
-                "threshold": 8,
-                "timespan": "Day"
-              },
-              "recommendingGoals": [
-                "1c"
-              ],
-              "startDate": "2019-04-11T16:22:17.264Z",
-              "opts": {
-                "showBackdrop": true,
-                "enableBackdropDismiss": true
-              },
-              "selected": true
-            }
-          ],
+          // "Change": [
+          //   {
+          //     "name": "Healthy Sleep Schedule",
+          //     "id": "sleepChange",
+          //     "explanation": "How much sleep you got today",
+          //     "fieldDescription": "Hours of sleep",
+          //     "field": "number",
+          //     "goal": {
+          //       "freq": "More",
+          //       "threshold": 8,
+          //       "timespan": "Day"
+          //     },
+          //     "recommendingGoals": [
+          //       "1c"
+          //     ],
+          //     "startDate": "2019-04-11T16:22:17.264Z",
+          //     "opts": {
+          //       "showBackdrop": true,
+          //       "enableBackdropDismiss": true
+          //     },
+          //     "selected": true
+          //   }
+          // ],
           "Symptom": [
             {
               "name": "Migraine today",
@@ -1243,15 +1261,27 @@ export class CouchDbServiceProvider {
                 "1a",
                 "1b",
                 "1c",
-                "2",
-                "3a",
-                "3b",
-                "3c"
+                "2a",
+                "2b",
+                "2c",
+                "3"
               ],
               "opts": {
                 "showBackdrop": true,
                 "enableBackdropDismiss": true
               },
+              "selected": true,
+              "quickTrack": true,
+              "fieldSet": true
+            },
+            {
+              "name": "Peak Migraine Severity",
+              "id": "peakMigraineSeverity",
+              "explanation": "How bad the migraine was at its worst point",
+              "fieldDescription": "10-point Pain level (1=mild, 10=terrible)",
+              "recommendedField": "numeric scale",
+              "field": "numeric scale",
+              "recommendingGoals": ["1b", "1c"],
               "selected": true
             },
             {
@@ -1261,7 +1291,7 @@ export class CouchDbServiceProvider {
               "fieldDescription": "Text box where you can describe the pain",
               "field": "note",
               "recommendingGoals": [
-                "3b"
+                "1b"
               ],
               "opts": {
                 "showBackdrop": true,
@@ -1293,6 +1323,7 @@ export class CouchDbServiceProvider {
             {
               "name": "As-needed medications today",
               "id": "asNeededMeds",
+              "fieldsAllowed": ["binary", "number", "time"],
               "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
               "fieldDescription": "Whether you took any as-needed medication today",
               "field": "binary",
@@ -1300,10 +1331,10 @@ export class CouchDbServiceProvider {
                 "1a",
                 "1b",
                 "1c",
-                "2",
-                "3a",
-                "3b",
-                "3c"
+                "2a",
+                "2b",
+                "2c",
+                "3"
               ],
               "goal": {
                 "freq": "Less",
@@ -1314,7 +1345,8 @@ export class CouchDbServiceProvider {
                 "showBackdrop": true,
                 "enableBackdropDismiss": true
               },
-              "selected": true
+              "selected": true,
+              "quickTrack": true
             },
             {
               "name": "Exercise",
@@ -1329,7 +1361,7 @@ export class CouchDbServiceProvider {
               },
               "recommendingGoals": [
                 "1b",
-                "3b"
+                "2b"
               ],
               "opts": {
                 "showBackdrop": true,
@@ -1345,7 +1377,7 @@ export class CouchDbServiceProvider {
               "field": "binary",
               "recommendingGoals": [
                 "1b",
-                "3b"
+                "2b"
               ],
               "opts": {
                 "showBackdrop": true,
@@ -1370,7 +1402,7 @@ export class CouchDbServiceProvider {
               "field": "category scale",
               "recommendingGoals": [
                 "1b",
-                "3b"
+                "2b"
               ],
               "opts": {
                 "showBackdrop": true,
@@ -1389,10 +1421,10 @@ export class CouchDbServiceProvider {
                 "1a",
                 "1b",
                 "1c",
-                "2",
-                "3a",
-                "3b",
-                "3c"
+                "2a",
+                "2b",
+                "2c",
+                "3"
               ],
               "goal": {
                 "freq": "Less",
@@ -1414,7 +1446,7 @@ export class CouchDbServiceProvider {
               "field": "category scale",
               "recommendingGoals": [
                 "1b",
-                "3b"
+                "2b"
               ],
               "opts": {
                 "showBackdrop": true,
@@ -1434,10 +1466,10 @@ export class CouchDbServiceProvider {
                 "1a",
                 "1b",
                 "1c",
-                "2",
-                "3a",
-                "3b",
-                "3c"
+                "2a",
+                "2b",
+                "2c",
+                "3"
               ],
               "opts": {
                 "showBackdrop": true,

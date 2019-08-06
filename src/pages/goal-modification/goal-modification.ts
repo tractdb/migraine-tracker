@@ -38,8 +38,6 @@ export class GoalModificationPage {
       this.textGoals = activeGoals.textGoals;
       this.goalHierarchy = this.globalFunctionsService.getGoalHierarchy(activeGoals.goals);
       this.goalTypes = Object.keys(this.goalHierarchy);
-      console.log(this.goalHierarchy);
-      console.log(activeGoals.goals);
     }
   }
 

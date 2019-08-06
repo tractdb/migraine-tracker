@@ -1,40 +1,33 @@
 <!-- Generated template for the DataElementTrackingComponent component -->
 
-<!--<div>{{text}}</div>-->
 
-<ng-container *ngIf="data.field === 'binary'">
-  <div class="row" >
-    <div class="col" text-left>
-      <button ion-button [color]="getColor('No')" value="No" (click)="catScale('No')">
-        No
-      </button>
-    </div>
-    <div class="col" text-left >
-      <button ion-button [color]="getColor('Yes')" value="Yes" (click)="catScale('Yes')">
-        Yes
-      </button>
-    </div>
-  </div>
+<ng-container class="binary trackItem" *ngIf="data.field === 'binary'">
+  <ion-row>
+    <ion-col>
+      <ion-icon class="binaryIcon" name="close-circle" [color]="getColor('No')" value="No" (click)="catScale('No')"></ion-icon>
+    </ion-col>
+    <ion-col>
+      <ion-icon class="binaryIcon" name="checkmark-circle" [color]="getColor('Yes')" value="Yes" (click)="catScale('Yes')"></ion-icon>
+    </ion-col>
+  </ion-row>
 </ng-container>
 
-<ion-item text-wrap *ngIf="data.field === 'number'">
-  <ion-label text-wrap>
-    <p>Enter number:</p>
-  </ion-label>
-  <ion-input type="number" text-right placeholder="---"
+<ng-container class="number trackItem" text-wrap *ngIf="data.field === 'number'">
+  <ion-input class="numberBox" type="number" text-right placeholder=" Enter number ... "
              (ngModelChange)="itemTracked($event,'val')" [(ngModel)]="dataVal"></ion-input>
-</ion-item>
+</ng-container>
 
-<ion-item text-wrap *ngIf="data.field === 'numeric scale'">
-  <ion-select [(ngModel)]="dataVal" (ngModelChange)="itemTracked($event,'val')" placeholder="---">
-    <ion-option *ngFor="let num of numericScaleVals">
-      {{num}}
-    </ion-option>
-  </ion-select>
-</ion-item>
+<ng-container class="numScale trackItem" text-wrap *ngIf="data.field === 'numeric scale'">
+  <ion-item class="trackItem">
+    <ion-range class="numRange" [(ngModel)]="dataVal" pin="true" step="1" snaps="true" min="1" max="10" color="primary" (ngModelChange)="itemTracked($event,'val')">
+      <ion-label slot="start">1</ion-label>
+      <ion-label slot="end">10</ion-label>
+    </ion-range>
+  </ion-item>
+</ng-container>
 
 
-<ng-container *ngIf="data.field === 'category scale'">
+<ng-container class="catScale trackItem" *ngIf="data.field === 'category scale'">
   <div class="row" >
     <div class="col" text-left>
       <button ion-button [color]="getColor('None')" value="None" (click)="catScale('None')">
@@ -55,40 +48,48 @@
 </ng-container>
 
 
-<ng-container *ngIf="data.field === 'note'">
-  <ion-textarea rows="1" (ngModelChange)="itemTracked($event,'val')" [(ngModel)]="dataVal"
-                placeholder="Enter note here"></ion-textarea>
+<ng-container  class="note trackItem" *ngIf="data.field === 'note'">
+  <ion-textarea class="noteBox" rows="4" (ngModelChange)="itemTracked($event,'val')" [(ngModel)]="dataVal"
+                placeholder=" Enter note ... "></ion-textarea>
 </ng-container>
 
 
 
-<ion-item text-wrap *ngIf="data.field === 'time'">
-  <ion-datetime displayFormat="h:mm a" placeholder="Select Time" pickerFormat="h:mm a"
-                (ngModelChange)="itemTracked($event,'val')" [(ngModel)]="dataVal">
-  </ion-datetime>
-</ion-item>
-
-
-
-<ng-container *ngIf="data.field === 'time range'">
-  <ion-item float-left>
-    <ion-datetime displayFormat="h:mm a" placeholder="Start Time" pickerFormat="h:mm a"
-                  (ngModelChange)="itemTracked($event,'start')" [(ngModel)]="dataStart">
+<ng-container class="trackItem time" text-wrap *ngIf="data.field === 'time'">
+  <ion-item class="datePicker trackItem">
+    <ion-datetime displayFormat="h:mm a" placeholder="Select Time" pickerFormat="h:mm a"
+                  (ngModelChange)="itemTracked($event,'val')" [(ngModel)]="dataVal">
     </ion-datetime>
   </ion-item>
+</ng-container>
 
-  <ion-item float-right>
-    <ion-datetime displayFormat="h:mm a" placeholder="End Time" pickerFormat="h:mm a"
-                  (ngModelChange)="itemTracked($event,'end')" [(ngModel)]="dataEnd">
-    </ion-datetime>
-  </ion-item>
+
+
+<ng-container class="timeRange trackItem" *ngIf="data.field === 'time range'">
+  <ion-row>
+    <ion-col>
+      <ion-item class="datePicker trackItem" float-left>
+        <ion-datetime color="primary" displayFormat="h:mm a" placeholder="Start Time" pickerFormat="h:mm a"
+                      (ngModelChange)="itemTracked($event,'start')" [(ngModel)]="dataStart">
+        </ion-datetime>
+      </ion-item>
+    </ion-col>
+    <ion-col>
+
+    <ion-item class="datePicker trackItem" float-right>
+      <ion-datetime displayFormat="h:mm a" placeholder="End Time" pickerFormat="h:mm a"
+                    (ngModelChange)="itemTracked($event,'end')" [(ngModel)]="dataEnd">
+      </ion-datetime>
+    </ion-item>
+    </ion-col>
+  </ion-row>
 
 </ng-container>
 
 
-<ng-container *ngIf="data.field === 'calculated medication use'">
+<ng-container class="calculated" *ngIf="data.field === 'calculated medication use'">
   <p text-wrap *ngIf="trackedMedsToday">
-    You took as-needed medication today.  Remember that too-frequent use of medication can cause more migraines!
+    You took as-needed medication today.  Remember that frequent use of medication can cause migraines!
   </p>
   <p text-wrap *ngIf="!trackedMedsToday">
     You did not report as-needed medication today!

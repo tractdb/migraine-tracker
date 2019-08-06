@@ -17,50 +17,54 @@
 
   <h1 text-center>{{trackDate}}</h1>
 
-  <ion-card *ngFor="let data of dataToTrack">
+  <ion-card>
+
+    <ion-card-header (click)="cardExpanded[dataType] =! cardExpanded[dataType]">
+      <span class="headerItem trackingHeader">Track {{dataType}}s</span>
+      <ion-icon class="headerIcon" item-right *ngIf="cardExpanded[dataType]" name="arrow-dropup"></ion-icon>
+      <ion-icon class="headerIcon" item-right *ngIf="!cardExpanded[dataType]" name="arrow-dropdown"></ion-icon>
+      <div class="dataExamples">
+        <span class="dataExamples">{{dataList}}</span>
+      </div>
+    </ion-card-header>
 
 
-    <ion-card-content>
+    <ion-card-content *ngIf="cardExpanded[dataType]">
 
-      <ion-item>
-        <ion-label text-wrap>
-          <h1>{{data.name}}</h1>
-          <h4 *ngIf="data.explanation">{{data.explanation}}</h4>
-          <h4 *ngIf="data.custom">(Custom data you configured)</h4>
-        </ion-label>
-      </ion-item>
+      <div class="dataInfo" *ngFor="let data of dataToTrack">
 
-      <data-element-tracking [data]="data" [trackedMedsToday] = trackedMedsToday (valueChanged) = 'changeVals($event, data)'>
-      </data-element-tracking>
+        <h2 class="dataName">{{data.name}}</h2>
 
-      <ion-item padding text-wrap *ngIf="data.goal && data.goal.freq">
-        <p>
-          Your goal is <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}}
-            times per {{data.goal.timespan}}.</span>
-          <span *ngIf="data.goal.timespan!=='Day'">
-            Including today, you have tracked
+        <data-element-tracking [data]="data" [trackedMedsToday] = trackedMedsToday (valueChanged) = 'changeVals($event, data)'>
+        </data-element-tracking>
+
+        <div class="goalDiv" *ngIf="data.goal && data.goal.freq">
+          <div>
+            Goal: {{data.goal.freq}} than <span text-lowercase>{{data.goal.threshold}}
+            per {{data.goal.timespan}}</span>
+          </div>
+          <div *ngIf="data.goal.timespan!=='Day'">
+            Total this <span text-lowercase>{{data.goal.timespan}}</span> (including today):
             {{totalTrackedTimes(data)}}
-            this <span text-lowercase>{{data.goal.timespan}}</span>.
-          </span>
-          <span *ngIf="goalProgress(data) === 'met'">
-            Good job, you met your goal!
-          </span>
-          <span *ngIf="goalProgress(data) === 'below limit'">
-            Good job, you're still under your limit!
-          </span>
-          <span *ngIf="goalProgress(data) === 'under'">
-            Keep striving for your goal!
-          </span>
-          <span *ngIf="goalProgress(data) === 'over'">
+          </div>
+          <div class="goalMet" *ngIf="goalProgress(data) === 'met'">
+            You met your goal!
+          </div>
+          <div class="goalMet" *ngIf="goalProgress(data) === 'below limit'">
+            You're under your limit!
+          </div>
+          <div class="goalOK" *ngIf="goalProgress(data) === 'under'">
+            Keep going!
+          </div>
+          <div class="overGoal" *ngIf="goalProgress(data) === 'over'">
             Try to cut back!
-          </span>
-          <span *ngIf="goalProgress(data) === 'at limit'">
+          </div>
+          <div class="goalOK" *ngIf="goalProgress(data) === 'at limit'">
             You're at your limit!
-          </span>
-        </p>
-      </ion-item>
+          </div>
+        </div>
 
-
+      </div>
     </ion-card-content>
   </ion-card>
 

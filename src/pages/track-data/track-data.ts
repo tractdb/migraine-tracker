@@ -19,11 +19,13 @@ export class TrackDataPage {
   private goalProgresses : {[dataID : string] : any} = {};
   private dataType : string;
   private dataToTrack : {[dataProps : string] : any}[] = [];
+  private dataList : string;
   private trackedMedsToday : boolean;
   private previouslyTracked : {[trackedDataID : string] : any}[];
   private somethingTracked : boolean;
   private durationItemStart : {[trackedDataID : string] : string} = {};
   private durationItemEnd : {[trackedDataID : string] : string} ={};
+  private cardExpanded : {[dataType: string] : boolean} = {};
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -51,10 +53,11 @@ export class TrackDataPage {
   ionViewDidLoad() {
     this.dataType = this.navParams.data['currentDataType'];
     this.dataToTrack = this.navParams.data['dataDict'][this.dataType];
+    this.dataList = this.dataToTrack.map(x => x.name).join(", ");
     if(!('tracked' in this.navParams.data)) {
       this.navParams.data['tracked'] = {};
     }
-    this.trackedMedsToday = this.globalFuns.getWhetherTrackedMeds(this.navParams.data['tracked']['Treatments']);
+    this.trackedMedsToday = this.globalFuns.getWhetherTrackedMeds(this.tracked);
     this.calculateGoalProgresses();
   }
 
