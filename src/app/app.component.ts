@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import {Events, ModalController, Nav, Platform} from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ErrorHandler, NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
@@ -25,12 +25,26 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform, public statusBar: StatusBar, public splashScreen: SplashScreen,
-              private couchDBService: CouchDbServiceProvider) {
+              private couchDBService: CouchDbServiceProvider,
+              public events: Events) {
+
+    events.subscribe('configSeen', () => {
+      this.pages = [
+        { title: 'Home', component: HomePage},
+        { title: 'About Migraine', component: FaqPage},
+        { title: 'Data Summary', component: DataSummaryPage},
+        { title: 'Data Calendar', component: DataCalendarPage},
+        { title: 'Data Visualizations', component: DataVisPage},
+        { title: 'Goals', component: GoalModificationPage},
+        { title: 'Tracking Routine', component: TrackingModificationPage},
+        { title: 'Take a Break from Tracking', component: BreakFromTrackingPage},
+      ];
+    });
+
     this.initializeApp();
 
     // used for an example of ngFor and navigation
-    if(Object.keys(this.couchDBService.getActiveGoals()).length === 0){
-      // todo: add FAQ page
+    if(this.couchDBService.getActiveGoals() === null){
       this.pages = [
         { title: 'Home', component: HomePage},
         { title: 'About Migraine', component: FaqPage}
@@ -50,6 +64,8 @@ export class MyApp {
     }
 
   }
+
+
 
   initializeApp() {
     this.platform.ready().then(() => {

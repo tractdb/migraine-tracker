@@ -6,6 +6,7 @@ import {DataConfigPage} from "../addGoal/data-config/data-config";
 import {SelectTrackingFrequencyPage} from "../addGoal/select-tracking-frequency/select-tracking-frequency";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {DataElement, Notification} from "../../interfaces/customTypes";
 
 
 
@@ -15,12 +16,12 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class TrackingModificationPage {
 
-  private currentData : {[dataType: string] : any[]} = {};
+  private currentData : {[dataType: string] : DataElement[]} = {};
   private allDataTypes : string[] = [];
   private displayNames : {[dataType: string] : string} = {};
   private timeToDisplay : string;
   private goals : string[];
-  private notifications : {[notificationType: string] : {}} = {};
+  private notifications : {[notificationType: string] : Notification} = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               private couchDBService: CouchDbServiceProvider,
@@ -33,7 +34,7 @@ export class TrackingModificationPage {
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
     this.goals = activeGoals['goals'];
-    this.notifications = activeGoals['notificationSettings'];
+    this.notifications = activeGoals['notifications'];
     this.currentData = activeGoals['dataToTrack'];
     if(this.notifications['regular'] && this.notifications['regular']['timeOfDay']){
       this.timeToDisplay = this.dateFuns.timeTo12Hour(this.notifications['regular']['timeOfDay']);

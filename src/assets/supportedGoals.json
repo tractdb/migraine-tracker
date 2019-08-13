@@ -4,9 +4,9 @@
         "goalID": "1",
         "goodChoiceIf": "You just want to track frequency",
         "iconName": "calendar",
-        "subgoals": true,
+        "hasSubgoals": true,
         "effort": "low",
-        "suggestedTracking": "retroactive",
+        "suggestedFrequency": "retroactive",
         "visType": "overTime",
         "isTopGoal": true
     },
@@ -15,9 +15,9 @@
         "goalID": "2",
         "goodChoiceIf": "You want to learn about symptoms or the factors that affect them",
         "iconName": "school",
-        "subgoals": true,
+        "hasSubgoals": true,
         "effort": "medium",
-        "suggestedTracking": "retroactive",
+        "suggestedFrequency": "retroactive",
         "visType": "",
         "isTopGoal": true
     },
@@ -27,9 +27,9 @@
         "goodChoiceIf":
             "You know what factors lead to symptoms and you want to track to predict future symptoms",
         "iconName": "alarm",
-        "subgoals": false,
+        "hasSubgoals": false,
         "effort": "high",
-        "suggestedTracking": "regular",
+        "suggestedFrequency": "regular",
         "visType": "correlation",
         "isTopGoal": true
     }

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {GeneralInfoServiceProvider} from "../../providers/general-info-service/general-info-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
+import {MigraineQACategories, MigraineQA} from "../../interfaces/customTypes";
 
 /**
  * Generated class for the FaqPage page.
@@ -16,7 +17,7 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 })
 export class FaqPage {
 
-  private faqList : {[categoryInfo: string]: any}[] = [];
+  private faqList : MigraineQACategories[] = [];
   private contactEmail: string = "";
 
   constructor(public generalInfoService: GeneralInfoServiceProvider,
@@ -35,7 +36,7 @@ export class FaqPage {
       });
   }
 
-  expandOrHide(question : {[questionProps: string]: any}){
+  expandOrHide(question : MigraineQA){
     if(!question['expanded']) question['expanded'] = true;
     else question['expanded'] = !question['expanded'];
   }

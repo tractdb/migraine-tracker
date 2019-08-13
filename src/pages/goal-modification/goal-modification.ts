@@ -12,7 +12,7 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 })
 export class GoalModificationPage {
   private goalTypes : string[];
-  private goalHierarchy;
+  private goalHierarchy : {[goal: string] : string[]};
   private textGoals : string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,

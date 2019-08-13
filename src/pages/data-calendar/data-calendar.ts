@@ -89,7 +89,7 @@ export class DataCalendarPage {
 
 
 
-  seeDataDetails(event : {[evenProps: string] : any}){
+  seeDataDetails(event : {[eventProps: string] : any}){
     let isNew = false;
     if(!event){
       isNew = true;

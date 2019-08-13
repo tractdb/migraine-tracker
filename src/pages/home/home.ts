@@ -6,6 +6,8 @@ import {LoginPage} from "../login/login";
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-service/global-functions-service";
+import { Events } from 'ionic-angular';
+import {ConfiguredRoutine, DataElement} from "../../interfaces/customTypes";
 
 @Component({
   selector: 'page-home',
@@ -13,11 +15,13 @@ import {GlobalFunctionsServiceProvider} from "../../providers/global-functions-s
 })
 export class HomePage {
 
-  private activeGoals : {[goalAspect:string]: any;} = {};
-  private quickTrackers : {[dataType:string]: any;} = {};
+  private skipConfig = true;
+
+  private activeGoals : ConfiguredRoutine;
+  private quickTrackers : DataElement[] = [];
   private tracked : {[dataType : string] : any} = {};
   private goalProgresses : {[dataType : string] : any} = {};
-  private dataToTrack : {[dataProps : string] : any}[] = [];
+  private dataToTrack : {[dataType:string] : DataElement[]} = {};
   private dataList : {[dataType : string] : string} = {};
   private dataTypes : string[];
   private previouslyTracked : {[dataType : string] : any}[];
@@ -32,11 +36,13 @@ export class HomePage {
               private dataDetialsProvider: DataDetailsServiceProvider,
               private dateFunctionsProvider: DateFunctionServiceProvider,
               private globalFuns: GlobalFunctionsServiceProvider,
-              private modalCtrl: ModalController){
+              private modalCtrl: ModalController,
+              public events: Events){
   }
 
   ionViewDidEnter(){
     if(this.navParams.data['goalIDs']){ //Came from setting a goal up.  todo: notification stuff
+      this.events.publish('configSeen');
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
       this.setupTrackers();
     }
@@ -60,8 +66,9 @@ export class HomePage {
   }
 
   loggedIn(){
+    if(this.skipConfig) this.events.publish('configSeen'); // just jumps to ex goals
     this.activeGoals = this.couchDbService.getActiveGoals();
-    this.setupTrackers();
+    if(this.activeGoals !== null) this.setupTrackers();
   }
 
   addFirstGoal() {  // only if they don't have a goal setup yet
@@ -70,6 +77,7 @@ export class HomePage {
 
 
   setupTrackers(){
+    console.log(this.activeGoals);
     if('dataToTrack' in this.activeGoals){
       this.previouslyTracked = this.couchDbService.getTrackedData(); // todo: only need to grab this month's
       this.quickTrackers = this.activeGoals.quickTrackers;
@@ -175,7 +183,10 @@ export class HomePage {
       let dataType = this.dataTypes[i];
       if(dataType === 'quickTracker') continue;
       this.goalProgresses[dataType] = {};
-      this.dataList[dataType] = this.dataToTrack[dataType].map(x => x.name).join(", ");
+      this.dataList[dataType] = this.dataToTrack[dataType].filter(function(x){
+        if(!x.quickTrack) return x;
+      }).map(x => x.name).join(", ");
+      console.log(this.dataList[dataType])
       for(let j=0; j<this.dataToTrack[dataType].length; j++){
         let data = this.dataToTrack[dataType][j];
         if(data.id === 'frequentMedUse'){

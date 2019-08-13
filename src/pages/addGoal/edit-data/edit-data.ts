@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
 import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
 import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
+import {DataElement, DataField} from "../../../interfaces/customTypes";
 
 /**
  * Generated class for the EditDataPage page.
@@ -16,10 +17,10 @@ import {GoalDetailsServiceProvider} from "../../../providers/goal-details-servic
 })
 export class EditDataPage {
 
-  private data : {[dataInfo: string] : any} = {};
+  private data : DataElement = null;
   private dataType : string;
   private goalList = [];
-  private fieldList : {[fieldProp: string] : any}[]= [];
+  private fieldList : DataField[]= [];
   private allowsGoals: boolean;
   private somethingEdited : boolean = false;
   private fieldButtonsExpanded : boolean = false;
@@ -40,7 +41,7 @@ export class EditDataPage {
     this.isCustom = this.data.custom;
     if(!this.data.field && this.data.recommendedField) this.data.field = this.data.recommendedField;
     if(!this.data.goal){
-      if(this.data.dataGoal) this.data.goal = this.data.dataGoal;
+      if(this.data.suggestedGoal) this.data.goal = this.data.suggestedGoal;
       else this.data.goal = {'freq': null, 'threshold': null, 'timespan': null};
     }
   }
@@ -52,7 +53,6 @@ export class EditDataPage {
   getRecommendingGoals(){
     for(let i=0; i<this.data.recommendingGoals.length; i++){
       if(this.navParams.data['selectedGoals'].indexOf(this.data.recommendingGoals[i]) > -1){
-        console.log(this.data.recommendingGoals[i])
         let goal = this.goalDetails.getGoalByID(this.data.recommendingGoals[i], true, false);
         if(goal) this.goalList.push(goal['name']);
       }
@@ -60,29 +60,29 @@ export class EditDataPage {
   }
 
 
-  expandField(data){
+  expandField(data : DataElement){
     if(!data.fieldSet) this.fieldButtonsExpanded = !this.fieldButtonsExpanded;
   }
 
 
-  editedField(field){
+  editedField(field : DataField){
     this.somethingEdited = true;
     this.fieldButtonsExpanded = false;
     this.data.field = field['name'];
 
     if(this.data.field === this.data.recommendedField){
-      this.data.fieldExplanation = this.data['fieldDescription'];
-      if(this.data.dataGoal && !this.data.goal['freq']){
-        this.data.goal = this.data.dataGoal;
+      this.data.explanation = this.data['fieldDescription'];
+      if(this.data.suggestedGoal && !this.data.goal['freq']){
+        this.data.goal = this.data.suggestedGoal;
       }
     }
     else{
-      this.data.fieldExplanation = field['explanation'];
+      this.data.explanation = field['explanation'];
       this.data.goal = {'freq': null, 'threshold': null, 'timespan': null}; // because they don't make sense across fields
     }
   }
 
-  editedGoal(goal, val=null){
+  editedGoal(goal : string, val : any=null){
     this.somethingEdited = true;
     this.goalTimeExpanded = false;
     this.goalFreqExpanded = false;

@@ -4,7 +4,8 @@ import {HomePage} from "../../home/home";
 import {GoalModificationPage} from "../../goal-modification/goal-modification";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 import {GoalDetailsServiceProvider} from "../../../providers/goal-details-service/goal-details-service";
-
+import {Notification} from "../../../interfaces/customTypes";
+import {ConfiguredRoutine} from "../../../interfaces/customTypes";
 /**
  * Generated class for the SelectTrackingFrequencyPage page.
  *
@@ -22,7 +23,7 @@ export class SelectTrackingFrequencyPage {
   hasActiveGoals : boolean;
   isModal : boolean;
   dataChanged : boolean = false;
-  notificationData : {[notificationField:string]: any;} = {};
+  notificationData : {[notificationType:string]: Notification} = {};
   dates : Number[];
   days : string[];
   expansions : {[expansionName:string] : boolean} = {'retroactive': false,
@@ -35,12 +36,12 @@ export class SelectTrackingFrequencyPage {
   }
 
   ionViewDidLoad() {
-    let activeGoals = this.couchDBService.getActiveGoals();
-    this.hasActiveGoals = (Object.keys(activeGoals).length > 0);
+    let activeGoals : ConfiguredRoutine = this.couchDBService.getActiveGoals();
+    this.hasActiveGoals = (activeGoals !== null);
     if(this.hasActiveGoals){ // if they have configured notifications, display those
-      this.notificationData = activeGoals['notificationSettings'];
-      this.expansions['regular'] = !!activeGoals['notificationSettings']['regular'];
-      this.expansions['retroactive'] = !!activeGoals['notificationSettings']['retroactive'];
+      this.notificationData = activeGoals['notifications'];
+      this.expansions['regular'] = !!activeGoals['notifications']['regular'];
+      this.expansions['retroactive'] = !!activeGoals['notifications']['retroactive'];
     }
     else{ // automatically set goal to retroactive, the day after reporting symptoms
       this.notificationData['retroactive'] = {'delayScale': 'Day', 'delayNum': 1};
@@ -64,7 +65,7 @@ export class SelectTrackingFrequencyPage {
   getRecommendation(goalIDs : string[]){
     let recommended = "post symptoms";
     for(let i=0; i<goalIDs.length; i++){
-      if(this.goalDetails.getGoalByID(goalIDs[i])['suggestedTracking'] === "regular"){
+      if(this.goalDetails.getGoalByID(goalIDs[i])['suggestedFrequency'] === "regular"){
         recommended = "regular";
         break;
       }
@@ -72,11 +73,11 @@ export class SelectTrackingFrequencyPage {
     this.recommended = recommended;
   }
 
-  isSelected(type, element, val) : boolean{
+  isSelected(type : string, element : string, val : any) : boolean{
     return this.notificationData[type][element] && this.notificationData[type][element].indexOf(val) >-1;
   }
 
-  changeVal(type, element, val, multi=false){
+  changeVal(type : string, element : string, val : any, multi=false){
     this.dataChanged = true;
     if(multi){
       if(!this.notificationData[type][element]) this.notificationData[type][element] = [val];
@@ -140,7 +141,7 @@ export class SelectTrackingFrequencyPage {
       this.viewCtrl.dismiss(this.notificationData);
     }
     else{
-      this.navParams.data['notificationSettings'] = this.notificationData;
+      this.navParams.data['notifications'] = this.notificationData;
       if(this.hasActiveGoals){
         this.navCtrl.setRoot(GoalModificationPage, this.navParams.data);
       }

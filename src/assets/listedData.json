@@ -135,7 +135,7 @@
                 "fieldDescription": "Whether you took any as-needed medication",
                 "recommendedField": "binary",
                 "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "Less",
                     "threshold": 4,
                     "timespan": "Month"
@@ -160,7 +160,7 @@
                 "explanation": "How much you exercised",
                 "fieldDescription": "Number of minutes of exercise",
                 "recommendedField": "number",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 180,
                     "timespan": "Week"
@@ -183,7 +183,7 @@
                 "explanation": "Stress management practiced (for example, yoga, meditation)",
                 "fieldDescription": "Whether you did any stress management (yes/no)",
                 "recommendedField": "binary",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 6,
                     "timespan": "Week"
@@ -235,12 +235,7 @@
                 "fieldSet": true,
                 "recommendedField": "calculated medication use",
                 "condition": true,
-                "recommendingGoals": ["2a", "2b", "2c", "3", "1a", "1b", "1c"],
-                "dataGoal": {
-                    "freq": "Less",
-                    "threshold": 4,
-                    "timespan": "Month"
-                }
+                "recommendingGoals": []
             },
             {
                 "name": "Stress",
@@ -292,7 +287,7 @@
                 "explanation": "How much sleep you got",
                 "fieldDescription": "Hours of sleep",
                 "recommendedField": "number",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 8,
                     "timespan": "Day"
@@ -388,7 +383,7 @@
                 "explanation": "How much you exercised",
                 "fieldDescription": "Number of minutes of exercise",
                 "recommendedField": "number",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 180,
                     "timespan": "Week"
@@ -409,7 +404,7 @@
                 "explanation": "Stress management practiced (for example, yoga, meditation)",
                 "fieldDescription": "Whether you did any stress management (yes/no)",
                 "recommendedField": "binary",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 6,
                     "timespan": "Week"
@@ -430,7 +425,7 @@
                 "explanation": "How much you slept",
                 "fieldDescription": "Hours of sleep",
                 "recommendedField": "number",
-                "dataGoal": {
+                "suggestedGoal": {
                     "freq": "More",
                     "threshold": 8,
                     "timespan": "Day"

@@ -1,13 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {DataElement, DataField, DataType} from "../../interfaces/customTypes";
 
 
 @Injectable()
 export class DataDetailsServiceProvider {
 
-  private supportedFields : any;
-  private listedData : {[dataType: string] : any};
-  private configData : any;
+  private supportedFields : DataField[];
+  private listedData : {[dataType: string] : DataElement[]};
+  private configData : DataType[];
 
   constructor(public http: HttpClient) {
     this.openListedData();
@@ -16,7 +17,7 @@ export class DataDetailsServiceProvider {
   }
 
   openDataConfig() {
-    this.http.get('assets/dataConfig.json', {},).subscribe(configData => {
+    this.http.get<DataType[]>('assets/dataConfig.json', {},).subscribe(configData => {
         this.configData = configData;
       },
       error => {
@@ -25,7 +26,7 @@ export class DataDetailsServiceProvider {
   }
 
   openSupportedFields() {
-    this.http.get('assets/supportedFields.json', {},).subscribe(fieldList => {
+    this.http.get<DataField[]>('assets/supportedFields.json', {},).subscribe(fieldList => {
         this.supportedFields = fieldList;
       },
       error => {
@@ -34,7 +35,7 @@ export class DataDetailsServiceProvider {
   }
 
   openListedData() {
-    this.http.get('assets/listedData.json', {},).subscribe(listedData => {
+    this.http.get<{[dataType: string] : DataElement[]}>('assets/listedData.json', {},).subscribe(listedData => {
         this.listedData = listedData;
       },
       error => {
@@ -43,7 +44,7 @@ export class DataDetailsServiceProvider {
   }
 
 
-  getConfigByName(dataType: string) : {[dataTypeProps:string]:any}{
+  getConfigByName(dataType: string) : DataType{
     for(let i=0; i<this.configData.length; i++){
       if(this.configData[i]['dataType'] === dataType){
         return this.configData[i];
@@ -64,10 +65,14 @@ export class DataDetailsServiceProvider {
   getDataList(goals) : any[]{
     let dataList = [];
     for(let i=0; i<this.configData.length; i++){
-      let condGoal = this.configData[i].conditionalGoal;
-      if(condGoal){
-        if(goals.indexOf(condGoal) > -1){
-          dataList.push(this.configData[i].dataType);
+      let condGoals = this.configData[i].conditionalGoals;
+      if(condGoals){
+        for(let j=0; j<condGoals.length; j++){
+          let condGoal = condGoals[j];
+          if(goals.indexOf(condGoal) > -1){
+            dataList.push(this.configData[i].dataType);
+            break;
+          }
         }
       }
       else{
@@ -77,20 +82,24 @@ export class DataDetailsServiceProvider {
     return dataList;
   }
 
-  getSupportedFields() : [{[fieldProp : string]:any}] {
+  getSupportedFields() : DataField[] {
     return this.supportedFields;
   }
 
 
-  getWhetherTrackingMeds(treatmentsTracking: {[dataAttr: string] : any}[]) : boolean{
-    if(!treatmentsTracking) return false;
-    for(let i=0; i<treatmentsTracking.length; i++){
-      if(treatmentsTracking[i].isMed){
-        return true;
+  getWhetherTrackingMeds(tracking: {[dataType:string]:DataElement[]}) : boolean {
+    let typesToCheck = ["Treatment", "Change"];
+    for (let i = 0; i < typesToCheck.length; i++) {
+      let dataOfType = tracking[typesToCheck[i]];
+      for (let j = 0; j < dataOfType.length; j++) {
+        if (dataOfType[j].isMed) {
+          return true;
+        }
       }
     }
     return false;
   }
+
 
   getDisplayName(dataType : string) : string{
     for(let i=0; i<this.configData.length; i++){
@@ -117,8 +126,10 @@ export class DataDetailsServiceProvider {
   }
 
 
-  findNextConfigData(goalIDs, currentlyConfiguring) {
-    let newDataIndex = this.configData.indexOf(currentlyConfiguring) + 1;
+  findNextConfigData(goalIDs : string[], currentlyConfiguring : DataType) {
+    let newDataIndex;
+    if(!currentlyConfiguring) newDataIndex = 0;
+    else newDataIndex = this.configData.indexOf(currentlyConfiguring) + 1;
     for(let i = newDataIndex; i < this.configData.length; i++) {
       let dataType = this.configData[i];
       if(!(dataType.conditionalGoals)){
@@ -136,7 +147,7 @@ export class DataDetailsServiceProvider {
   }
 
 
-  getWhetherIsMed(dataType: string, id: string) : {[dataAttrs: string] : any}{
+  getWhetherIsMed(dataType: string, id: string) : boolean{
     // uses the listed data to find the original data type
     for(let i=0; i<this.listedData[dataType].length; i++) {
       if (this.listedData[dataType][i].id === id) {
@@ -149,7 +160,7 @@ export class DataDetailsServiceProvider {
 
 
 
-  findDataByID(dataToTrack: {[dataType: string] : any}[], id : string) : {[dataAttrs: string] : any}{
+  findDataByID(dataToTrack: DataElement[], id : string) : DataElement{
     // finds the data object in the list given the ID
     if(!dataToTrack) return null;
     for(let i=0; i<dataToTrack.length; i++){
@@ -163,14 +174,14 @@ export class DataDetailsServiceProvider {
 
 
 
-  getDataLists(alreadyTracking: {[dataType:string]:any}, dataType: string,
+  getDataLists(alreadyTracking: {[dataType:string]:DataElement[]}, dataType: string,
                goalIDs: string[]) : {[listInfo: string] : any}{
-    let dataOfType = this.listedData[dataType];
-    let otherData = [];
-    let recData = [];
-    let alwaysQuickTrack = [];
-    let trackingMeds = this.getWhetherTrackingMeds(alreadyTracking['Treatment']);
-    let expandOther = false;
+    let dataOfType  : DataElement[] = this.listedData[dataType];
+    let otherData : DataElement[] = [];
+    let recData : DataElement[] = [];
+    let alwaysQuickTrack : DataElement[] = [];
+    let trackingMeds : boolean = this.getWhetherTrackingMeds(alreadyTracking);
+    let expandOther: boolean = false;
 
     for(let i=0; i<dataOfType.length; i++){
       let dataObject = dataOfType[i];

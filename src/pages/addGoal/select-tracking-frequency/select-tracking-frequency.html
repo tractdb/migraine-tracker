@@ -157,7 +157,7 @@
 
         <div class="selectText">at</div>
           <ion-item class="datePicker">
-            <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" (change)="dataChanged = true"
+            <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" (ngModelChange)="dataChanged = true"
                         [(ngModel)]="notificationData['regular']['timeOfDay']"></ion-datetime>
           </ion-item>
         </div>

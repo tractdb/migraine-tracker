@@ -1,11 +1,11 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-
+import {Goal} from "../../interfaces/customTypes";
 
 @Injectable()
 export class GoalDetailsServiceProvider {
 
-  private goalList : any;
+  private goalList : Goal[];
 
   constructor(public http: HttpClient) {
     this.loadGoalList();
@@ -14,7 +14,7 @@ export class GoalDetailsServiceProvider {
 
   loadSubgoalList() {
     // we just separated the files so it's easier to modify; want them appended now
-    this.http.get('assets/subgoals.json', {},).subscribe(subgoalData => {
+    this.http.get<Goal[]>('assets/subgoals.json', {},).subscribe(subgoalData => {
         for(let i=0; i<this.goalList.length; i++){
           if(subgoalData[this.goalList[i]['goalID']]){
             this.goalList[i]['subgoals'] = subgoalData[this.goalList[i]['goalID']];
@@ -27,7 +27,7 @@ export class GoalDetailsServiceProvider {
   }
 
   loadGoalList() {
-    this.http.get('assets/supportedGoals.json', {},).subscribe(goalData => {
+    this.http.get<Goal[]>('assets/supportedGoals.json', {},).subscribe(goalData => {
         this.goalList = goalData;
         this.loadSubgoalList();
       },
@@ -36,7 +36,7 @@ export class GoalDetailsServiceProvider {
       });
   }
 
-  getSubgoals(goalID : string) : {[subgoalAtr : string ] : string}[]{
+  getSubgoals(goalID : string) : Goal[]{
     for(let i=0; i<this.goalList.length; i++) {
       if (this.goalList[i].goalID === goalID) {
         return this.goalList[i].subgoals;
@@ -47,7 +47,7 @@ export class GoalDetailsServiceProvider {
 
 
 
-  getGoalByID(goalID: string, subgoalLevel = true, includeSupergoals = true) : {[goalAttrs:string]: any}{
+  getGoalByID(goalID: string, subgoalLevel = true, includeSupergoals = true) : Goal{
     for(let i=0; i<this.goalList.length; i++){
       if(this.goalList[i].goalID === goalID){
         if (includeSupergoals
@@ -67,7 +67,7 @@ export class GoalDetailsServiceProvider {
 
 
 
-  getGoalList() : [{[goalDetails:string]: any;}] {
+  getGoalList() : Goal[] {
     return this.goalList;
   }
 

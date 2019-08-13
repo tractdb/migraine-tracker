@@ -5,6 +5,7 @@ import {SelectTrackingFrequencyPage} from "../select-tracking-frequency/select-t
 import {EditDataPage} from "../edit-data/edit-data";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 import * as moment from 'moment';
+import {DataElement, DataType} from "../../../interfaces/customTypes";
 
 
 @Component({
@@ -14,18 +15,18 @@ import * as moment from 'moment';
 export class DataConfigPage {
 
   private recommendTracking : boolean = false; // as in, recommend for a goal despite no specific recommendations
-  private allGoals : string[];
-  private dataObject : {[dataInfo: string] : string};
+  private allGoals : string[] = [];
+  private dataObject : DataType;
   private displayName : string;
-  private customData : {[dataAttr : string ] : any}[]= [];
-  private recommendedData : {[dataProps : string ] : any}[]= [];
-  private otherData : {[dataProps : string ] : any}[] = [];
-  private selectedFromList : {[dataProps : string ] : any}[] = [];
+  private customData : DataElement[]= [];
+  private recommendedData : DataElement[]= [];
+  private otherData : DataElement[] = [];
+  private selectedFromList : DataElement[] = [];
   private startDate : any = null;
   private today = moment().toISOString();
   private nextYear = moment().add(1, "year").toISOString();
   private commonExpanded : boolean = false;
-  private alwaysQuickTrack : {[dataAttr: string]: any}[] = [];
+  private alwaysQuickTrack : DataElement[] = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public viewCtrl: ViewController,
@@ -36,8 +37,11 @@ export class DataConfigPage {
 
   ionViewDidLoad() {
     let activeGoals = this.couchDBService.getActiveGoals();
-    let alreadyTracking = activeGoals['dataToTrack'] ? activeGoals['dataToTrack'] : [];
-    this.allGoals = activeGoals['goals'] ? activeGoals['goals'] : [];
+    let alreadyTracking = {};
+    if(activeGoals !== null){
+      alreadyTracking = activeGoals['dataToTrack'] ? activeGoals['dataToTrack'] : {};
+      this.allGoals = activeGoals['goals'] ? activeGoals['goals'] : [];
+    }
 
     if(this.navParams.data['goalIDs']){ // got here via adding a goal
       this.allGoals = this.allGoals.concat(this.navParams.data['goalIDs']);
@@ -71,7 +75,7 @@ export class DataConfigPage {
   }
 
 
-  recordTracking(trackingOfDatatype){
+  recordTracking(trackingOfDatatype : DataElement[]){
     // put everything already being tracked into their correct lists so we can modify them accurately
     if(trackingOfDatatype){
       for(let i=0; i<trackingOfDatatype.length; i++){
@@ -83,7 +87,7 @@ export class DataConfigPage {
 
 
 
-  getAllRecs(alreadyTracking : {[dataType:string]:any}) {
+  getAllRecs(alreadyTracking : {[dataType:string]:DataElement[]}) {
     let dataInfo = this.dataDetailsServiceProvider.getDataLists(alreadyTracking, this.dataObject.dataType, this.allGoals);
     this.recommendedData = dataInfo['recData'];
     this.otherData = dataInfo['otherData'];
@@ -103,8 +107,7 @@ export class DataConfigPage {
 
 
 
-  replaceData(list : {[dataProps : string ] : any}[],
-              oldData : {[dataProps : string ] : any}, newData : {[dataProps : string ] : any}){
+  replaceData(list : DataElement[], oldData : DataElement, newData : DataElement){
     // kinda dumb but ionic can't iterate dicts and we need all the data details somewhere, so eh
     let oldIndex = list.indexOf(oldData);
     if(oldIndex > -1){
@@ -115,7 +118,7 @@ export class DataConfigPage {
     }
   }
 
-  editData(oldData : {[dataProps : string ] : any}, type : string) {
+  editData(oldData : DataElement, type : string) {
     let editDataModal = this.modalCtrl.create(EditDataPage, {'data': oldData,
           'dataType': this.dataObject.dataType,
           'selectedGoals': this.allGoals,
@@ -148,12 +151,12 @@ export class DataConfigPage {
     editDataModal.present();
   }
 
-  track(data : {[dataProps : string ] : any}) {
+  track(data : DataElement) {
     data.selected = true;
     this.selectedFromList.push(data);
   }
 
-  remove(data : {[dataProps : string ] : any}, category : string){
+  remove(data : DataElement, category : string){
     if(category === "custom") {
       this.customData.splice(this.customData.indexOf(data), 1);
     }
@@ -164,12 +167,12 @@ export class DataConfigPage {
   }
 
 
-  getQuickTrackers(selectedData: {[dataAttrs: string] : any}[]) : {[dataAttrs: string] : any}[]{
+  getQuickTrackers() : DataElement[]{
     let quickTrackers = this.alwaysQuickTrack;
-    for(let i=0; i<selectedData.length; i++){
-      if(selectedData[i].quickTrack){
-        selectedData[i].dataType = this.dataObject.dataType;
-        quickTrackers.push(selectedData[i]);
+    for(let i=0; i<this.selectedFromList.length; i++){
+      if(this.selectedFromList[i].quickTrack){
+        this.selectedFromList[i].dataType = this.dataObject.dataType;
+        quickTrackers.push(this.selectedFromList[i]);
       }
     }
     return quickTrackers;
@@ -177,9 +180,9 @@ export class DataConfigPage {
 
 
   continueSetup() {
-    let quickTrackers = this.getQuickTrackers(this.selectedFromList);
+    let quickTrackers : DataElement[] = this.getQuickTrackers();
 
-    let selectedData = this.selectedFromList.concat(this.customData);
+    let selectedData : DataElement[] = this.selectedFromList.concat(this.customData);
 
     if(this.navParams.data['goalIDs']){
       if(selectedData.length > 0){
@@ -194,7 +197,9 @@ export class DataConfigPage {
         this.navParams.data['selectedData'][this.dataObject.dataType] = selectedData;
 
         if(quickTrackers.length > 0){
-          if(this.navParams.data['quickTrackers']) this.navParams.data['quickTrackers'].concat(quickTrackers);
+          if(this.navParams.data['quickTrackers']){
+            this.navParams.data['quickTrackers'] = this.navParams.data['quickTrackers'].concat(quickTrackers);
+          }
           else this.navParams.data['quickTrackers'] = quickTrackers;
         }
 

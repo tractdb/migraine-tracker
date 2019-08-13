@@ -45,7 +45,7 @@ export class DataVisPage {
           fontSize: 14,
           fontColor: '#fff',
           beginAtZero: true,
-          stepSize: 1,
+          stepSize: 5,
         }
       }],
       xAxes: [{
@@ -349,41 +349,39 @@ export class DataVisPage {
 
 
   makeBeforeAfterChart(change){
-    console.log(change)
-
-    let cutoffDate = moment(change['startDate']);
+    let cutoffDate = moment(change['startDate']),
+        today = moment();
     let prettyDate = this.dateFuns.dateToPrettyDate(cutoffDate);
-    let daysInMonth = cutoffDate.daysInMonth();
+    let daysInCutoffMonth = cutoffDate.daysInMonth(),
+        daysInThisMonth = today.daysInMonth();
     let symptomsBefore = 0,
-        symptomsAfter = 0,
-        monthsBefore = new Set(),
-        monthsAfter = new Set();
+        symptomsAfter = 0;
+    let monthsBeforeCutoff = cutoffDate.diff(this.dates[0], 'month', true),
+        monthsAfterCutoff = today.diff(cutoffDate, 'month', true);
 
     for(let j=0; j<this.dates.length; j++){
-      let monthOfReport = moment(this.dates[j]).format("MMM YYYY");
       let symptoms = this.symptomBinaryByDate[j] ? 0 : 1;
-      if(cutoffDate.isBefore(this.dates[j], 'month')){
-        symptomsBefore += symptoms;
-        monthsBefore.add(monthOfReport);
+      if(cutoffDate.isBefore(this.dates[j], 'month')
+          && today.isAfter(this.dates[j], 'month')){
+        symptomsAfter += symptoms;
+      }
+      else if(cutoffDate.isBefore(this.dates[j], 'month')){ // this month, so project
+        symptomsAfter += symptoms / today.date() * daysInThisMonth;
       }
       else if(cutoffDate.isAfter(this.dates[j], 'month')){
-        symptomsAfter += symptoms;
-        monthsAfter.add(monthOfReport);
+        symptomsBefore += symptoms;
       }
       else { // same month, so project
         if(cutoffDate.isAfter(this.dates[j], 'day')){
-          symptomsAfter += symptoms / (daysInMonth - cutoffDate.date() ) * daysInMonth;
-          monthsAfter.add(monthOfReport);
+          symptomsBefore += symptoms / cutoffDate.date() * daysInCutoffMonth;
         }
         else{
-          symptomsBefore += symptoms / cutoffDate.date() * daysInMonth;
-          monthsBefore.add(monthOfReport);
+          symptomsAfter += symptoms / (daysInCutoffMonth - cutoffDate.date() ) * daysInCutoffMonth;
         }
       }
     }
 
-
-    let data = [symptomsBefore / monthsBefore.size, symptomsAfter / monthsAfter.size ];
+    let data = [symptomsBefore / monthsBeforeCutoff, symptomsAfter  / monthsAfterCutoff];
 
 
     this.beforeAfterCharts.charts.push(

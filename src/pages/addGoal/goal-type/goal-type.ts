@@ -5,6 +5,7 @@ import {DataConfigPage} from "../data-config/data-config";
 import {DataDetailsServiceProvider} from "../../../providers/data-details-service/data-details-service";
 import {CouchDbServiceProvider} from "../../../providers/couch-db-service/couch-db-service";
 import {GoalModificationPage} from "../../goal-modification/goal-modification";
+import {Goal} from "../../../interfaces/customTypes";
 
 @Component({
   selector: 'page-goal-type',
@@ -13,11 +14,11 @@ import {GoalModificationPage} from "../../goal-modification/goal-modification";
 
 export class GoalTypePage {
 
-  private goalList : [{[goalDetails:string]: any;}];
+  private goalList : Goal[];
   private modifying : boolean = false;
   private selectedGoals : string[]= [];
-  private textGoals;
-  private textGoalExpand = false;
+  private textGoals : string;
+  private textGoalExpand : boolean = false;
   private goalsWithoutSubgoals : string[] = [];
 
   constructor(private navCtrl: NavController, public navParams: NavParams,
@@ -29,7 +30,7 @@ export class GoalTypePage {
   ionViewDidLoad() {
     this.modifying = this.navParams.data['modifying'];
     let activeGoals = this.couchDBService.getActiveGoals();
-    if(Object.keys(activeGoals).length > 0){
+    if(activeGoals !== null){
       this.selectedGoals = activeGoals['goals'];
       this.textGoals = activeGoals.textGoals;
       this.textGoalExpand = true;
@@ -37,7 +38,7 @@ export class GoalTypePage {
     this.goalList = this.goalDetailsServiceProvider.getGoalList();
   }
 
-  removeAllSubgoals(subgoals){
+  removeAllSubgoals(subgoals : Goal[]){
     // if someone unselects a goal we need to unselect all the subgoals as well
     for(let i=0; i<subgoals.length; i++){
       const index = this.selectedGoals.indexOf(subgoals[i].goalID);
@@ -47,11 +48,11 @@ export class GoalTypePage {
     }
   }
 
-  showInfo(subgoal){
+  showInfo(subgoal : Goal){
     console.log(subgoal);
   }
 
-  checkForSubgoals(goal){
+  checkForSubgoals(goal : Goal){
     // see if there's still at least one subgoal selected for the goal; if not don't let them continue
     let subgoal = false;
     for(let i=0; i<goal.subgoals.length; i++){
@@ -63,14 +64,14 @@ export class GoalTypePage {
     if(!subgoal) this.goalsWithoutSubgoals.push(goal.goalID);
   }
 
-  subgoalRequirementMet(goalID){
+  subgoalRequirementMet(goalID : string){
     const missingSubgoalIndex = this.goalsWithoutSubgoals.indexOf(goalID);
     if(missingSubgoalIndex > -1){ // if you now have a subgoal for all goals that need it, you can continue
       this.goalsWithoutSubgoals.splice(missingSubgoalIndex);
     }
   }
 
-  addGoal(goal : {string : any}, subgoalID : string = null) {
+  addGoal(goal : Goal, subgoalID : string = null) {
     if(subgoalID){ // it's a subgoal
       this.selectedGoals.push(subgoalID);
       this.subgoalRequirementMet(goal['goalID']);
@@ -84,15 +85,16 @@ export class GoalTypePage {
   }
 
 
-  removeGoal(goal : {string:any}, subgoalID : string = null) {
+  removeGoal(goal : Goal, subgoalID : string = null) {
     if(subgoalID){ // it's a subgoal; check if any of that goal's subgoals are still selected
       this.selectedGoals.splice(this.selectedGoals.indexOf(subgoalID), 1);
       this.checkForSubgoals(goal);
     }
     if(!subgoalID){ // it's not a subgoal; remove all of its subgoals
+      console.log(goal)
       this.selectedGoals.splice(this.selectedGoals.indexOf(goal['goalID']), 1);
       this.subgoalRequirementMet(goal['goalID']);
-      this.removeAllSubgoals(goal['subgoals']);
+      if(goal['subgoals']) this.removeAllSubgoals(goal['subgoals']);
     }
   }
 
@@ -102,11 +104,11 @@ export class GoalTypePage {
 
     if(exit){
       dataToSend['goalsOnly'] = true;
-      this.navCtrl.push(GoalModificationPage, dataToSend);
+      this.navCtrl.setRoot(GoalModificationPage, dataToSend);
     }
 
     else{
-      let configData = this.dataDetails.findNextConfigData(this.selectedGoals, '');
+      let configData = this.dataDetails.findNextConfigData(this.selectedGoals, null);
 
       if (configData!== null){
         dataToSend['dataPage'] = configData;

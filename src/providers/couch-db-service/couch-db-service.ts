@@ -1,19 +1,31 @@
 import {HttpClient} from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {Events} from "ionic-angular";
+
+import {ConfiguredRoutine} from "../../interfaces/customTypes";
+import {DataReport} from "../../interfaces/customTypes";
+import {Break} from "../../interfaces/customTypes";
 
 
 @Injectable()
 export class CouchDbServiceProvider {
 
+  private seenConfig : boolean = false; // for demo-ing
+
   private baseUrl : string = 'https://tractdb.org/api';
-  private activeUserGoals : {[goalAspect:string]: any;} = {}; // only ONE entry is active at a given time; "goals" lists all current goals
-  private trackedData : {[trackedData:string]: any;}[] = [];
+  private activeUserGoals : ConfiguredRoutine; // only ONE entry is active at a given time; "goals" lists all current goals
+  private trackedData : DataReport[] = [];
   private options : {[optionName:string]: any;} = {withCredentials: true};
 
-  constructor(public http: HttpClient) {
+  constructor(public http: HttpClient,
+              public events: Events) {
+    let actualThis = this;
+    events.subscribe('configSeen', () => {
+      actualThis.seenConfig = true;
+    });
   }
 
-  getCurrentBreak() : {[breakDetails: string] : any}{
+  getCurrentBreak() : Break {
     // todo: pull from db, make sure it's current
     return null;
     // return {
@@ -23,12 +35,12 @@ export class CouchDbServiceProvider {
     // }
   }
 
-  updateBreak(currentBreak : {[breakDetails: string] : any}){
+  updateBreak(currentBreak : Break){
     // todo: push to db
     console.log(currentBreak);
   }
 
-  setBreak(newBreak : {[breakDetails: string] : any}){
+  setBreak(newBreak : Break){
     //todo: push to db
     console.log(newBreak);
   }
@@ -45,7 +57,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  trackData(newData : {[dataType: string] : any}) {
+  trackData(newData : DataReport) {
     // todo: should store a datapoint in couch as a new object
     // console.log(newData); // push to db
     // todo: needs to append start and end time!!!
@@ -72,29 +84,19 @@ export class CouchDbServiceProvider {
     return oldDataToTrack;
   }
 
-  addGoalFromSetup(setupDict : {[configInfo: string] : any}) : {[goalsProps:string]: any;}{
+  addGoalFromSetup(setupDict : {[configInfo: string] : any}) : ConfiguredRoutine{
     // todo: actually push to database; make sure it's doing the right thing when we JUST modify goals!!!!
     let newGoals = setupDict['goalIDs'];
-    if('goals' in this.activeUserGoals) { // we need to deactivate the previous goals
+    if(this.activeUserGoals) { // we need to deactivate the previous goals
       this.activeUserGoals['deactivated'] = new Date(); // todo: push
-      // let goalSet = new Set(newGoals.concat(this.activeUserGoals['goals']));
-      // this.activeUserGoals = {'goals': Array.from(goalSet),
-      //                 'dataToTrack':
-      //                   this.combineDataToTrack(this.activeUserGoals['dataToTrack'], setupDict['selectedData']),
-      //                 'textGoals': this.activeUserGoals['textGoals'] + "; " + setupDict['textGoals'],
-      //                 'quickTrackers': ,
-      //                 'dateAdded': new Date(),
-      //                 'notifications': setupDict.notificationSettings ?
-      //                                     setupDict.notificationSettings : this.activeUserGoals['notifications']};
+      this.activeUserGoals = null; // since we're creating a new one
     }
-    // else{
     this.activeUserGoals = {'goals': newGoals,
                             'dataToTrack': setupDict.selectedData,
                             'quickTrackers': setupDict.quickTrackers,
-                            'textGoals': [setupDict.textGoals],
+                            'textGoals': setupDict.textGoals,
                             'dateAdded': new Date(),
-                            'notifications': setupDict.notificationSettings};
-    // }
+                            'notifications': setupDict.notificationSettings}; // todo: push
     console.log(this.activeUserGoals);
     return this.activeUserGoals;
   }
@@ -137,8 +139,12 @@ export class CouchDbServiceProvider {
   }
 
 
-  getActiveGoals() : {[goalAspect:string]: any}{
-    if(Object.keys(this.activeUserGoals).length > 0){
+
+  getActiveGoals() : ConfiguredRoutine {
+    if(!this.seenConfig){
+      return null;
+    }
+    if(this.activeUserGoals){
       return this.activeUserGoals;
     }
     return this.getExampleGoal(); //todo: remove, use db
@@ -148,6 +154,9 @@ export class CouchDbServiceProvider {
 
   getTrackedData() : {[trackedData:string]: any;}[]{
     // todo!
+    if(!this.seenConfig){
+      return [];
+    }
     console.log(this.trackedData);
     if(this.trackedData.length > 0){
       return this.trackedData;
@@ -162,7 +171,7 @@ export class CouchDbServiceProvider {
 
 
 
-  getExampleGoal()  : {[goalAspect:string]: any;}{
+  getExampleGoal()  : ConfiguredRoutine{
     let exGoal = {
       "quickTrackers": [
         {
@@ -181,6 +190,7 @@ export class CouchDbServiceProvider {
         {
           "name": "As-needed medications today",
           "id": "asNeededMeds",
+          "isMed": true,
           "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
           "fieldDescription": "Whether you took any as-needed medication today",
           "field": "binary",
@@ -193,7 +203,6 @@ export class CouchDbServiceProvider {
             "2c",
             "3"
           ],
-          "fieldsAllowed": ["binary", "number", "time"],
           "goal": {
             "freq": "Less",
             "threshold": 4,
@@ -316,6 +325,7 @@ export class CouchDbServiceProvider {
             {
               "name": "As-needed medications today",
               "id": "asNeededMeds",
+              "isMed": true,
               "fieldsAllowed": ["binary", "number", "time"],
               "explanation": "Any medication you take on an as-needed basis (in response to symptoms).  For example: Advil, Excedrin, Tylenol, prescription medications you don't take regularly.",
               "fieldDescription": "Whether you took any as-needed medication today",
@@ -472,11 +482,10 @@ export class CouchDbServiceProvider {
             }
           ]
         },
-        "textGoals": [
-          "Get <1 migraine per week"
-        ],
+        "textGoals":
+          "Get <1 migraine per week",
         "dateAdded": "2019-04-11T16:22:17.264Z",
-        "notificationSettings": {
+        "notifications": {
           "retroactive": {
             "delayScale": "Day",
             "delayNum": 1
@@ -489,7 +498,7 @@ export class CouchDbServiceProvider {
 
 
 
-  getExamplePreviouslyTracked() : {[trackedData:string]: any;}[] {
+  getExamplePreviouslyTracked() : DataReport[] {
     return [
       {
         "allDay": "true",
@@ -499,7 +508,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "17:39",
           "exerciseToday": 2,
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -556,7 +565,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "17:19",
           "nutritionToday": "No",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -647,7 +656,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "16:05",
           "exerciseToday": 9,
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "peakMigraineSeverity": 5,
@@ -757,7 +766,7 @@ export class CouchDbServiceProvider {
           "custom_timetookadvil": "00:49",
           "exerciseToday": 7,
           "nutritionToday": "No",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -787,7 +796,7 @@ export class CouchDbServiceProvider {
           "custom_timetookadvil": "13:57",
           "exerciseToday": 13,
           "nutritionToday": "Yes",
-          "asNeededMeds": "No"
+          // "asNeededMeds": "No"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -949,7 +958,7 @@ export class CouchDbServiceProvider {
         },
         "Treatment": {
           "nutritionToday": "Yes",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "peakMigraineSeverity": 8,
@@ -1004,7 +1013,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "12:27",
           "exerciseToday": 15,
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -1121,7 +1130,7 @@ export class CouchDbServiceProvider {
         },
         "Treatment": {
           "exerciseToday": 16,
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -1269,7 +1278,7 @@ export class CouchDbServiceProvider {
           "custom_timetookadvil": "11:17",
           "exerciseToday": 15,
           "nutritionToday": "No",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -1295,7 +1304,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "12:17",
           "nutritionToday": "Yes",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -1385,7 +1394,7 @@ export class CouchDbServiceProvider {
         "Treatment": {
           "custom_timetookadvil": "10:38",
           "nutritionToday": "Yes",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {
@@ -1443,7 +1452,7 @@ export class CouchDbServiceProvider {
           "custom_timetookadvil": "00:17",
           "exerciseToday": 9,
           "nutritionToday": "Yes",
-          "asNeededMeds": "Yes"
+          // "asNeededMeds": "Yes"
         },
         "Symptom": {
           "custom_migraineduration": {

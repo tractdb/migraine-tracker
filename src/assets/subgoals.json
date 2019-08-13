@@ -4,35 +4,35 @@
             "name": "Monitor for my own knowledge",
             "goalID": "1a",
             "visType": "overTime",
-            "suggestedTracking": "retroactive",
+            "suggestedFrequency": "retroactive",
             "goodChoiceIf": "You want to keep track of symptom frequency for your own knowledge"
         },
         {
             "name": "Monitor for my doctor",
             "goalID": "1b",
             "visType": "overTime",
-            "suggestedTracking": "retroactive",
+            "suggestedFrequency": "retroactive",
             "goodChoiceIf": "Your doctor wants more detailed symptom or treatment information"
         },
         {
             "name": "Monitor for insurance",
             "goalID": "1c",
             "visType": "overTime",
-            "suggestedTracking": "retroactive",
+            "suggestedFrequency": "retroactive",
             "goodChoiceIf": "Your insurance needs more detailed symptom information to cover your prescription"
         }
     ],
     "2": [
         {
             "name": "Learn migraine frequency",
-            "suggestedTracking": "retroactive",
+            "suggestedFrequency": "retroactive",
             "goalID": "2a",
             "visType": "overTime",
             "goodChoiceIf": "You want to know how often you experience symptoms (or pursue treatment)"
         },
         {
             "name": "Learn what factors may contribute to symmptoms",
-            "suggestedTracking": "regular",
+            "suggestedFrequency": "regular",
             "goalID": "2b",
             "visType": "correlation",
             "goodChoiceIf": "You want to identify potential contributors (\"triggers\")"
@@ -42,7 +42,7 @@
             "name": "Learn whether a specific change affects symptoms",
             "goalID": "2c",
             "visType": "beforeAfter",
-            "suggestedTracking": "retroactive",
+            "suggestedFrequency": "retroactive",
             "goodChoiceIf": "You are making a specific change (like starting a new treatment or eliminating a potential contributor) and want to see how it affects your symptoms"
         }
     ]

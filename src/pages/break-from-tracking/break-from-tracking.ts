@@ -3,6 +3,7 @@ import { NavController, NavParams } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import * as moment from 'moment';
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {Break} from "../../interfaces/customTypes";
 
 /**
  * Generated class for the BreakFromTrackingPage page.
@@ -17,7 +18,7 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class BreakFromTrackingPage {
 
-  private currentBreak : {[breakProps: string] : any};
+  private currentBreak : Break;
   private currentBreakStarted : string;
   private selected : string = '';
   private dateToSnoozeTo : string;
@@ -32,7 +33,7 @@ export class BreakFromTrackingPage {
               public couchDBProvider: CouchDbServiceProvider, private dateFuns: DateFunctionServiceProvider) {
   }
 
-  setSelected(val){
+  setSelected(val : string){
     if(this.selected === val) this.selected = '';
     else this.selected = val;
   }
@@ -52,7 +53,7 @@ export class BreakFromTrackingPage {
 
   takeBrake(){
     //todo: push to couch, deal with notifications, etc
-    let newBreak = {};
+    let newBreak = {'started': new Date()};
     newBreak['reasonForBreak'] = this.reasonForBreak;
     if(this.selected==='Yes' && this.dateToSnoozeTo){
       newBreak['notifyDate'] = this.dateToSnoozeTo;
@@ -63,7 +64,6 @@ export class BreakFromTrackingPage {
     else{
       newBreak['noDates'] = true;
     }
-    newBreak['started'] = new Date();
     this.couchDBProvider.setBreak(newBreak);
     this.currentBreak = newBreak;
     this.dateToCheckIn = newBreak['checkInDate'];

@@ -61,7 +61,7 @@ export class GlobalFunctionsServiceProvider {
   }
 
 
-  getGoalHierarchy(currentGoalIDs : string[]){
+  getGoalHierarchy(currentGoalIDs : string[]) : {[goal:string] : string[]}{
     currentGoalIDs.sort();
     let goalHierarchy = {};
     for(let i=0; i<currentGoalIDs.length; i++){
