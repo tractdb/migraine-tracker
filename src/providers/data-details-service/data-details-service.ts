@@ -91,6 +91,7 @@ export class DataDetailsServiceProvider {
     let typesToCheck = ["Treatment", "Change"];
     for (let i = 0; i < typesToCheck.length; i++) {
       let dataOfType = tracking[typesToCheck[i]];
+      if(!dataOfType) continue;
       for (let j = 0; j < dataOfType.length; j++) {
         if (dataOfType[j].isMed) {
           return true;

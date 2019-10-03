@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {DataElement, DataReport} from "../../interfaces/customTypes";
 
 
 
@@ -11,14 +12,14 @@ import {DateFunctionServiceProvider} from "../../providers/date-function-service
 })
 export class DataSummaryPage {
 
-  private currentlyTracking : {[dataType: string] : {[dataElementProps: string] : any}[]};
-  private allTrackedData : {[dataType: string] : {[dataID: string] : any}[]}[];
+  private currentlyTracking : {[dataType:string] : DataElement[]};
+  private allTrackedData : DataReport[];
   private filteredDataByID : {[dataID: string] : {[reportProps: string] : any}[]};
   private dataTypes : string[];
   private earliestDateFilter : string;
   private latestDateFilter : string;
   private today : any;
-  private expanded: {[dataType:string] : any} = {};
+  private expanded: {[dataType:string] : boolean} = {};
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public couchDBService: CouchDbServiceProvider, public dateFunctions: DateFunctionServiceProvider) {
@@ -88,7 +89,7 @@ export class DataSummaryPage {
   }
 
 
-  aggregateData(filteredData : {[dataType: string] : {[dataID: string] : any}[]}[], append: boolean) {
+  aggregateData(filteredData : DataReport[], append: boolean) {
     let trackedDict;
     if (!append) { // just initializes the dicts for each datapoint
       trackedDict = {};

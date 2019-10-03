@@ -3,6 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
+import {DataReport} from "../../interfaces/customTypes";
 
 /**
  * Generated class for the ViewDatapointPage page.
@@ -17,7 +18,7 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 })
 export class ViewDatapointPage {
   dataTypes: string[] = [];
-  dataDict : {[datapointProps: string] : any} = {};
+  dataDict : DataReport;
   today : any = new Date();
   edit: {[dataType: string]: boolean} = {};
 

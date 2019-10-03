@@ -95,7 +95,6 @@ export class SelectTrackingFrequencyPage {
         delete this.notificationData[type]['dayOfMonth'];
       }
     }
-    console.log(this.notificationData)
   }
 
 

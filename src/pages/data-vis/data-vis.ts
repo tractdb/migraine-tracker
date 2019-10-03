@@ -7,6 +7,7 @@ import _date = moment.unitOfTime._date;
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 import {GoalDetailsServiceProvider} from "../../providers/goal-details-service/goal-details-service";
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
+import {DataReport} from "../../interfaces/customTypes";
 
 
 @Component({
@@ -15,10 +16,10 @@ import {DataDetailsServiceProvider} from "../../providers/data-details-service/d
 })
 export class DataVisPage {
 
-  allTrackedData : {[trackedData:string]: any;}[] = [];
+  allTrackedData : DataReport[] = [];
   currentGoals : {[goalAspect:string]: any} = {};
 
-  dates : _date[] = [];
+  dates : moment.Moment[] = [];
   symptomBinaryByDate : boolean[] = [];
   dataByType = {};
 
@@ -108,9 +109,9 @@ export class DataVisPage {
     this.setVisTypes();
   }
 
-  sortByDate(allData : {[trackedData:string]: any;}[]) : {[trackedData:string]: any;}[]{
+  sortByDate(allData : DataReport[]) : DataReport[]{
     allData.sort(function(d1, d2){
-      return new Date(d1.startTime) > new Date(d2.startTime) ? 1: -1;
+      return moment(d1.startTime).isAfter(moment(d2.startTime)) ? 1: -1;
     });
     return allData;
   }
@@ -152,7 +153,7 @@ export class DataVisPage {
 
     for(let i=0; i<this.allTrackedData.length; i++){ // add the data
       let datapoint = this.allTrackedData[i];
-      this.dates.push(datapoint['startTime']);
+      this.dates.push(moment(datapoint['startTime']));
       this.symptomBinaryByDate.push(this.globalFuns.getWhetherMigraine(datapoint['Symptom'])); // maybe remove
       this.addDatapoint(datapoint);
     }
@@ -193,7 +194,7 @@ export class DataVisPage {
     
   }
 
-  addDatapoint(dataPoint : {[dataType: string] : any}){
+  addDatapoint(dataPoint : DataReport){
     // wrangle into necessary data format for the vis lib
     let allDataTypes = Object.keys(this.dataByType);
     for(let i=0; i<allDataTypes.length; i++){
@@ -380,7 +381,6 @@ export class DataVisPage {
         }
       }
     }
-
     let data = [symptomsBefore / monthsBeforeCutoff, symptomsAfter  / monthsAfterCutoff];
 
 
@@ -514,13 +514,6 @@ export class DataVisPage {
   //   }
   //
   // }
-
-
-
-
-
-
-
 
 
 

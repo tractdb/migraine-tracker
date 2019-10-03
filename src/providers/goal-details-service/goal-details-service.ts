@@ -51,7 +51,7 @@ export class GoalDetailsServiceProvider {
     for(let i=0; i<this.goalList.length; i++){
       if(this.goalList[i].goalID === goalID){
         if (includeSupergoals
-          || (!this.goalList[i].subgoals || this.goalList[i].subgoals.length === 0)) return this.goalList[i];
+          || (!this.goalList[i].hasSubgoals || this.goalList[i].subgoals.length === 0)) return this.goalList[i];
         else return null;
       }
       for(let j=0; j<this.goalList[i].subgoals.length; j++){

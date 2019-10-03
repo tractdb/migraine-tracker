@@ -19,7 +19,7 @@ export class CouchDbServiceProvider {
 
   constructor(public http: HttpClient,
               public events: Events) {
-    let actualThis = this;
+    let actualThis = this; // just for testing!
     events.subscribe('configSeen', () => {
       actualThis.seenConfig = true;
     });
@@ -47,6 +47,7 @@ export class CouchDbServiceProvider {
 
 
   login(credentials : {[login: string] : string}) {
+    console.log(credentials);
     // log the user in based on the credentials
     return this.http.post(this.baseUrl + '/login', JSON.stringify(credentials), this.options);
   }
@@ -96,7 +97,7 @@ export class CouchDbServiceProvider {
                             'quickTrackers': setupDict.quickTrackers,
                             'textGoals': setupDict.textGoals,
                             'dateAdded': new Date(),
-                            'notifications': setupDict.notificationSettings}; // todo: push
+                            'notifications': setupDict.notifications}; // todo: push
     console.log(this.activeUserGoals);
     return this.activeUserGoals;
   }
@@ -152,7 +153,7 @@ export class CouchDbServiceProvider {
   }
 
 
-  getTrackedData() : {[trackedData:string]: any;}[]{
+  getTrackedData() : DataReport[]{
     // todo!
     if(!this.seenConfig){
       return [];

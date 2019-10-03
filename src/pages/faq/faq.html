@@ -23,7 +23,7 @@
     <ion-card-content>
       <ion-list>
         <ng-container *ngFor="let question of faqSection['questions']" >
-          <ion-item class="question" (click)="expandOrHide(question)">
+          <ion-item class="question" (click)="question['expanded'] = !question['expanded']">
             <span text-wrap class="headerItem">{{question.question}}</span>
             <ion-icon class="headerIcon" item-right *ngIf="question.expanded" name="arrow-dropup"></ion-icon>
             <ion-icon class="headerIcon" item-right *ngIf="!question.expanded" name="arrow-dropdown"></ion-icon>

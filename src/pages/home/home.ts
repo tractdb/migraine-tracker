@@ -15,7 +15,8 @@ import {ConfiguredRoutine, DataElement} from "../../interfaces/customTypes";
 })
 export class HomePage {
 
-  private skipConfig = true;
+  private skipConfig = false;
+  // private skipConfig = true;
 
   private activeGoals : ConfiguredRoutine;
   private quickTrackers : DataElement[] = [];
@@ -43,16 +44,18 @@ export class HomePage {
   ionViewDidEnter(){
     if(this.navParams.data['goalIDs']){ //Came from setting a goal up.  todo: notification stuff
       this.events.publish('configSeen');
+      console.log(this.navParams.data)
       this.activeGoals = this.couchDbService.addGoalFromSetup(this.navParams.data);
       this.setupTrackers();
     }
     else{
-      this.couchDbService.userLoggedIn().subscribe(
-        resp => {
-          this.loggedIn();
-        }, error => {
-          this.login();
-        });
+      this.loggedIn() // TODO: skips auth step.  Remove!!
+      // this.couchDbService.userLoggedIn().subscribe(
+      //   resp => {
+      //     this.loggedIn();
+      //   }, error => {
+      //     this.login();
+      //   });
     }
   }
 

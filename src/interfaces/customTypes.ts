@@ -10,7 +10,7 @@ export interface Goal {
   visType: string, // for the data visualizations
   iconName?: string, // only for top goals
   hasSubgoals?: boolean,
-  subgoals?: [Goal],
+  subgoals?: Goal[],
   effort?: "low" | "medium" | "high", // only for top goals
   isTopGoal?: boolean // meaning not a subgoal
 }
@@ -25,7 +25,7 @@ export interface DataType {
   startDate?: boolean, // currently only for before/after
   recommendForGoals?: string[], // when we don't recommend SPECIFIC ones but they need to track some
   toDisplay?: string,
-  visTypes?: "beforeAfter" | "overTime" | "correlation" [] // "other" currently has no visualizations :-/
+  visTypes?: string[] // "beforeAfter" | "overTime" | "correlation" [] "other" currently has no visualizations :-/
 }
 
 
@@ -83,8 +83,12 @@ export interface ConfiguredRoutine {
 }
 
 export interface DataReport {
-//   date: string | Date,
-//   // dataType: string
+  [dataType: string] : any, // should be {[dataElementName: string] : any} but it won't let me
+  allDay: string | Date, // horrible but it's not always parsing right; need to figure out with couch stuff
+  startTime: string | Date,
+  endTime: string | Date,
+  date?: string,
+  dateChanged?: string[]
 }
 
 

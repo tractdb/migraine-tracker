@@ -36,9 +36,11 @@ export class FaqPage {
       });
   }
 
-  expandOrHide(question : MigraineQA){
-    if(!question['expanded']) question['expanded'] = true;
-    else question['expanded'] = !question['expanded'];
-  }
+  // expandOrHide(question : MigraineQA){
+  //   question['expanded'] = false;
+  //   question['expanded'] = true;
+  //   if(!question['expanded']) question['expanded']= true;
+  //   else question['expanded'] = false;
+  // }
 
 }
