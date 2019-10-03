@@ -1,42 +1,36 @@
 [
-    { 
-        "goalName": "Learning about my migraines",
+    {
+        "name": "Monitoring",
         "goalID": "1",
-        "goodChoiceIf": [
-            "You are new to migraine tracking",
-            "You are making a change"
-        ],
-        "iconName": "school",
-        "examples": [
-            "I want to know know what factors affect my migraines.",
-            "I want to know whether changing my diet is affecing my migraines."
-        ],
-        "subgoals": true,
-        "effort": "medium"
-    },
-    {
-        "goalName": "Predicting future migraines",
-        "goalID": "2",
-        "goodChoiceIf": [
-            "You know what factors affect your migraine and are willing to track frequently so you know when those factors are accumulating"
-        ],
-        "iconName": "alarm",
-        "examples": ["I want to know if I'm likely to get a migraine today."],
-        "subgoals": false,
-        "effort": "high"
-    },
-    {
-        "goalName": "Monitoring my migraines",
-        "goalID": "3",
-        "goodChoiceIf": [
-            "You just want to keep track of your migraines (or related data)"
-        ],
-        "examples": [
-            "I want to know how often I get migraines or use medication",
-            "I need to track for my insurance or doctor"
-        ],
+        "goodChoiceIf": "You just want to track frequency",
         "iconName": "calendar",
-        "subgoals": true,
-        "effort": "low"
+        "hasSubgoals": true,
+        "effort": "low",
+        "suggestedFrequency": "retroactive",
+        "visType": "overTime",
+        "isTopGoal": true
+    },
+    { 
+        "name": "Learning",
+        "goalID": "2",
+        "goodChoiceIf": "You want to learn about symptoms or the factors that affect them",
+        "iconName": "school",
+        "hasSubgoals": true,
+        "effort": "medium",
+        "suggestedFrequency": "retroactive",
+        "visType": "",
+        "isTopGoal": true
+    },
+    {
+        "name": "Predicting",
+        "goalID": "3",
+        "goodChoiceIf":
+            "You know what factors lead to symptoms and you want to track to predict future symptoms",
+        "iconName": "alarm",
+        "hasSubgoals": false,
+        "effort": "high",
+        "suggestedFrequency": "regular",
+        "visType": "correlation",
+        "isTopGoal": true
     }
 ]

@@ -3,6 +3,7 @@ import {NavController, NavParams, ViewController} from 'ionic-angular';
 import {DataDetailsServiceProvider} from "../../providers/data-details-service/data-details-service";
 import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
+import {DataReport} from "../../interfaces/customTypes";
 
 /**
  * Generated class for the ViewDatapointPage page.
@@ -17,18 +18,37 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 })
 export class ViewDatapointPage {
   dataTypes: string[] = [];
-  dataDict : {[datapointProps: string] : any} = {};
-  displayNames : {[shortName : string] : string}= {};
+  dataDict : DataReport;
   today : any = new Date();
-  edit: boolean = false;
+  edit: {[dataType: string]: boolean} = {};
 
   constructor(public navCtrl: NavController, public viewCtrl: ViewController, public navParams: NavParams,
               public dataDetailsService:DataDetailsServiceProvider, public dateFunctions: DateFunctionServiceProvider,
               public couchDBService: CouchDbServiceProvider) {
   }
 
+  ionViewDidLoad() {
+    this.dataDict = this.navParams.data;
+    if(!this.dataDict['dateChanged']) this.dataDict['dateChanged'] = []; // keep track of modifications
+    this.dataDict['date'] = this.dateFunctions.dateToPrettyDate(this.dataDict['startTime'], true);
+    let configuredGoals = this.couchDBService.getActiveGoals();
+
+    let allDataTypes = this.dataDetailsService.getAllDataTypes();
+    for(let i=0; i<allDataTypes.length; i++){
+      let dataType = allDataTypes[i];
+      if(configuredGoals['dataToTrack'][dataType]){
+        if(!this.dataDict[dataType]) this.dataDict[dataType] = {};
+        this.dataDict[dataType]['dataArray'] = this.transformIntoArray(dataType,
+          configuredGoals['dataToTrack'][dataType]);
+        if(this.dataDict[dataType]['dataArray'].length > 0){
+          this.dataTypes.push(dataType);
+        }
+      }
+    }
+  }
+
   closeModal(){
-    this.viewCtrl.dismiss();
+    this.viewCtrl.dismiss(this.dataDict);
   }
 
 
@@ -59,11 +79,6 @@ export class ViewDatapointPage {
   }
 
 
-  startEditing(){
-    this.edit = true;
-  }
-
-
 
   transformIntoArray(dataType : string, dataInRoutine : {[dataProp: string] : any}[]) : {[dataProp: string] : any}[]{
     //since ionic won't allow iteration on dicts.  Fun.
@@ -75,9 +90,8 @@ export class ViewDatapointPage {
       let dataInfo = dataInRoutine[i];
       if(dataInfo.field === 'calculated medication use') continue;
       let element = {'data' : dataInfo};
-      let found = false;
       for(let j=0; j<dataElements.length; j++){
-        if(dataInfo.id === dataElements[j] && dataTypeDict[dataElements[j]] != ''){
+        if(dataInfo.id === dataElements[j] && dataTypeDict[dataElements[j]] != ''){ // element was tracked on the day; show val
           if (dataInfo.field === 'time range') {
             element['value'] = {
               'start': this.dateFunctions.timeTo12Hour(dataTypeDict[dataElements[j]].start),
@@ -91,41 +105,14 @@ export class ViewDatapointPage {
           else {
             element['value'] =  dataTypeDict[dataElements[j]];
           }
-          allData.push(element);
-          found=true;
           break;
         }
       }
-      if(!found){
-        allData.push(element);
-      }
+      allData.push(element);
     }
     return allData;
   }
 
-  ionViewDidLoad() {
-    this.dataDict = this.navParams.data;
-    console.log(this.dataDict);
-    console.log(this.dateFunctions.dateToPrettyDate(this.dataDict['startTime'], true))
-    if(!this.dataDict['dateChanged']){
-      this.dataDict['dateChanged'] = [];
-    }
-    this.dataDict['date'] = this.dateFunctions.dateToPrettyDate(this.dataDict['startTime'], true);
-    let configuredGoals = this.couchDBService.getActiveGoals();
 
-    let allDataTypes = this.dataDetailsService.getAllDataTypes();
-    for(let i=0; i<allDataTypes.length; i++){
-      let dataType = allDataTypes[i];
-      if(configuredGoals['dataToTrack'][dataType]){
-        if(!this.dataDict[dataType]) this.dataDict[dataType] = {};
-        this.dataDict[dataType]['dataArray'] = this.transformIntoArray(dataType,
-                                                                          configuredGoals['dataToTrack'][dataType]);
-        if(this.dataDict[dataType]['dataArray'].length > 0){
-          this.displayNames[dataType] = this.dataDetailsService.getDisplayName(dataType);
-          this.dataTypes.push(dataType);
-        }
-      }
-    }
-  }
 
 }

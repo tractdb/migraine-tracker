@@ -1,7 +1,18 @@
 page-tracking-modification {
 
-  .adjust{
-    margin-top: 0.6em;
+  .addCustom{
+    padding-top: 1em;
+    font-size: 2rem;
+  }
+
+  .addItem{
+    background-color: var(--ion-background-color);
+    font-size:1.8rem;
+    padding: 0 !important;
+  }
+
+  .addIcon{
+    margin-right: 0.2em !important;
   }
 
 }

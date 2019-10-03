@@ -1,3 +1,33 @@
 data-element-tracking {
+  .noteBox{
+    border: solid 1px var(--lighter-grey);
+    border-radius: 15px;
+    margin-bottom: 0.5em;
+  }
 
+
+
+  .numberBox{
+    border: solid 1px var(--lighter-grey);
+    border-radius: 15px;
+    max-width: 35vw;
+    margin-top:0.2em;
+    margin-bottom:0.2em;
+  }
+
+  .numRange{
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    width: 90%;
+  }
+
+  .trackItem{
+    background-color: var(--ion-background-color);
+    color: var(--ion-text-color);
+    padding: 0;
+  }
+
+  .binaryIcon{
+    font-size: 7.75rem;
+  }
 }

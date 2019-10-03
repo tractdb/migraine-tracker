@@ -22,7 +22,7 @@
   <ion-item>
     <ion-label>
       <h2>Showing data since:</h2>
-      <p>(defaults to 1 month ago)</p>
+      <p>defaults to 1 month ago</p>
     </ion-label>
     <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
                   (ngModelChange)="filterData($event, 'early')" [max]="today"
@@ -31,7 +31,7 @@
   <ion-item>
     <ion-label>
       <h2>Showing data until:</h2>
-      <p>(defaults to today)</p>
+      <p>defaults to today</p>
     </ion-label>
     <ion-datetime displayFormat="MMM DD, YYYY" pickerFormat="MMM DD, YYYY" placeholder="Select Date"
                   [min]="earliestDateFilter" (ngModelChange)="filterData($event, 'late')"
@@ -39,34 +39,52 @@
   </ion-item>
 
   <ion-card *ngFor="let dataType of dataTypes">
-    <ion-card-header>{{dataType}}</ion-card-header>
-    <ion-card-content *ngFor="let data of currentlyTracking[dataType]">
-      <ion-list>
-        <ion-item>
-          <ion-label>
-            <ion-text>
-              <h2>
-                {{data.name}}
-              </h2>
+    <ion-card-header (click)="expanded[dataType] = !expanded[dataType]">
+      <span class="headerItem dataTypeHeader">{{dataType}}s</span>
+      <ion-icon class="headerIcon" item-right *ngIf="expanded[dataType]" name="arrow-dropup"></ion-icon>
+      <ion-icon class="headerIcon" item-right *ngIf="!expanded[dataType]" name="arrow-dropdown"></ion-icon>
+      </ion-card-header>
+    <ion-card-content *ngIf="expanded[dataType]">
+      <div class="trackedItem" *ngFor="let data of currentlyTracking[dataType]">
+        <div class="dataName">
+          {{data.name}}
+        </div>
 
-              <ng-container *ngIf="filteredDataByID[data.id]">
-                <h3 text-wrap>
-                  {{filteredDataByID[data.id]['toReport']}}
-                </h3>
+        <div class="dataReport" *ngIf="filteredDataByID[data.id]['timesReported'] === 0" text-wrap>
+          Not reported
+        </div>
 
-                <p text-wrap *ngIf="filteredDataByID[data.id]['goal'] &&
-                                                                       filteredDataByID[data.id]['goal'].freq">
-                  Your goal is <span text-lowercase>{{filteredDataByID[data.id]['goal'].freq}}
-                  than {{filteredDataByID[data.id]['goal'].threshold}}
-                  per {{filteredDataByID[data.id]['goal'].timespan}}.</span>
-                </p>
+        <div class="dataReport"  *ngIf="filteredDataByID[data.id]['timesSaidTrue']">
+          True: {{filteredDataByID[data.id]['timesSaidTrue']}} times
+        </div>
 
-              </ng-container>
+        <div class="dataReport"  *ngIf="filteredDataByID[data.id]['totalReported']">
+          Total: {{filteredDataByID[data.id]['totalReported']}}
+        </div>
 
-            </ion-text>
-          </ion-label>
-        </ion-item>
-      </ion-list>
+        <div class="dataReport" *ngIf="filteredDataByID[data.id]['average']">
+          Average: {{filteredDataByID[data.id]['average']}}
+        </div>
+
+        <div class="dataReport" *ngIf="filteredDataByID[data.id]['counts'] && filteredDataByID[data.id]['counts']['keys'].length > 0">
+          <div>Total Responses:</div>
+          <div class="catResponses" *ngFor="let key of filteredDataByID[data.id]['counts']['keys']">
+            {{key}}: {{filteredDataByID[data.id]['counts'][key]}}
+          </div>
+        </div>
+
+        <div class="timesReported"  *ngIf="filteredDataByID[data.id]['timesReported'] > 0" text-wrap>
+          Reported {{filteredDataByID[data.id]['timesReported']}} times total
+        </div>
+
+        <div class="dataGoal" text-wrap *ngIf="filteredDataByID[data.id]['goal'] &&
+                                                               filteredDataByID[data.id]['goal'].freq">
+          Goal: <span text-lowercase>{{filteredDataByID[data.id]['goal'].freq}}
+          than {{filteredDataByID[data.id]['goal'].threshold}}
+          per {{filteredDataByID[data.id]['goal'].timespan}}</span>
+        </div>
+
+        </div>
     </ion-card-content>
   </ion-card>
 

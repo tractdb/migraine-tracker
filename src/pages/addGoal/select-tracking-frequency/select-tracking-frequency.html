@@ -15,38 +15,156 @@
 
 <ion-content padding>
 
-  <h3 *ngIf="activeGoals === {} || isModal">How frequently do you want to track?</h3>
-  <h3 *ngIf="activeGoals !== {} && !isModal">Do you want to modify your tracking frequency?</h3>
+  <h3 *ngIf="!hasActiveGoals || isModal">How frequently do you want to track?</h3>
+  <h3 *ngIf="hasActiveGoals && !isModal">Do you want to modify your tracking frequency?</h3>
 
   <ion-card>
-    <ion-card-header>Regular Tracking</ion-card-header>
+    <ion-card-header (click)="addOrRemove('retroactive')">
+      <ion-icon item-left color="primary" *ngIf="!notificationData['retroactive']" name="add-circle-outline"></ion-icon>
+      <ion-icon item-left color="primary" *ngIf="notificationData['retroactive']" name="checkmark-circle"></ion-icon>
+      <span class="goalName">Post-Symptom Tracking</span>
+    </ion-card-header>
+
     <ion-card-content>
+      <h2 class="recommended" *ngIf="recommended === 'post symptoms'">Recommended for your goals!</h2>
+      <p>
+        To minimize screen interaction during a migraine, you can indicate symptoms only and get a reminder to track more later.
+        If you decide to only track when you experience symptoms, you will spend less time tracking but have less consistent/accurate data.
+      </p>
 
-      <p> Pros: more consistent and accurate data </p>
-      <p> Cons: you’ll spend more time tracking </p>
+      <div class="settings" *ngIf="expansions['retroactive']">
+        <h2>Notification Settings:</h2>
 
-      <p *ngIf="recommended === 'regular'">Recommended for your goals!</p>
+        <div class="retroSettings">
+          <div class="boxDiv">
+            <ion-input type="number" text-right class="textBox"  no-padding no-border
+                       [placeholder]="notificationData['retroactive'].delayNum ? notificationData['retroactive'].delayNum : '---'"
+                       [(ngModel)]="notificationData['retroactive'].delayNum" (ngModelChange)="dataChanged = true"></ion-input>
+          </div>
 
-      <button full ion-button [ngClass]="notificationData['regular'] ? 'selectedSlider' : 'unselectedSlider'"
-              (click)="configureNotifications('regular')">
-        Track regularly<br>(can configure tracking notifications)
-      </button>
+
+          <div>
+            <div class="miniSelect" (click)="expansions['delayScale'] = !expansions['delayScale'];">
+              <div class="optionName">{{notificationData['retroactive'].delayScale}}<span *ngIf="notificationData['retroactive']?.delayNum>1">s</span></div>
+              <ion-icon class="dropdownIcon" *ngIf="!expansions['delayScale']" name="arrow-dropdown"></ion-icon>
+              <ion-icon class="dropdownIcon" *ngIf="expansions['delayScale']" name="arrow-dropup"></ion-icon>
+            </div>
+            <ng-container *ngIf="expansions['delayScale']">
+              <div class="miniSelect" *ngIf="notificationData['retroactive'].delayScale!=='Hour'" (click)="changeVal('retroactive', 'delayScale', 'Hour')">
+                Hour<span *ngIf="notificationData['retroactive']?.delayNum>1">s</span>
+              </div>
+              <div class="miniSelect" *ngIf="notificationData['retroactive'].delayScale!=='Day'" (click)="changeVal('retroactive', 'delayScale', 'Day')">
+                Day<span *ngIf="notificationData['retroactive']?.delayNum>1">s</span>
+              </div>
+            </ng-container>
+          </div>
+
+          <div class="selectText">after symptoms</div>
+        </div>
+      </div>
 
     </ion-card-content>
   </ion-card>
 
+
+
+
   <ion-card>
-    <ion-card-header>Post-Symptom Tracking</ion-card-header>
+    <ion-card-header (click)="addOrRemove('regular')">
+      <ion-icon item-left color="primary" *ngIf="!notificationData['regular']" name="add-circle-outline"></ion-icon>
+      <ion-icon item-left color="primary" *ngIf="notificationData['regular']" name="checkmark-circle"></ion-icon>
+      <span class="goalName">Regular Tracking</span>
+    </ion-card-header>
+
     <ion-card-content>
-      <p> Pros: spend less time tracking </p>
-      <p> Cons: less consistent/accurate data </p>
+      <h2 class="recommended" *ngIf="recommended === 'regular'">Recommended for your goals!</h2>
+      <p>
+        Tracking regularly will allow more consistent and accurate data, but you will have to spend more time tracking.
+      </p>
 
-      <p *ngIf="recommended === 'post symptoms'">Recommended for your goals!</p>
+      <div class="settings" *ngIf="expansions['regular']">
+        <h2>Notification Settings:</h2>
 
-      <button full ion-button [ngClass]="notificationData['retroactive'] ? 'selectedSlider' : 'unselectedSlider'"
-              (click)="configureNotifications('retroactive')">
-        Track after symptoms occur<br>(notifications the day after symptoms)
-      </button>
+        <div class="regularSettings">
+
+          <div>
+            <div class="fullSelect" (click)="expansions['timescale'] = !expansions['timescale'];">
+              <div class="optionName">{{notificationData['regular'].timescale?.length > 0 ? notificationData['regular'].timescale : 'Select frequency'}}</div>
+              <ion-icon class="dropdownIcon" *ngIf="!expansions['timescale']" name="arrow-dropdown"></ion-icon>
+              <ion-icon class="dropdownIcon" *ngIf="expansions['timescale']" name="arrow-dropup"></ion-icon>
+            </div>
+            <ng-container *ngIf="expansions['timescale']">
+              <div class="fullSelect" *ngIf="notificationData['regular'].timescale!=='Daily'" (click)="changeVal('regular', 'timescale', 'Daily')">
+                Daily
+              </div>
+              <div class="fullSelect" *ngIf="notificationData['regular'].timescale!=='Weekly'" (click)="changeVal('regular', 'timescale', 'Weekly')">
+                Weekly
+              </div>
+              <div class="fullSelect" *ngIf="notificationData['regular'].timescale!=='Monthly'" (click)="changeVal('regular', 'timescale', 'Monthly')">
+                Monthly
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="notificationData['regular']['timescale']==='Weekly'" class="selectText">on</div>
+
+          <div *ngIf="notificationData['regular']['timescale']==='Weekly'">
+            <div class="fullSelect" (click)="expansions['dayOfWeek'] = !expansions['dayOfWeek'];">
+              <div  *ngIf="!expansions['dayOfWeek'] && notificationData['regular'].dayOfWeek?.length>0" class="optionName">
+                {{notificationData['regular'].dayOfWeek.join(", ")}}
+              </div>
+              <div  *ngIf="expansions['dayOfWeek']" class="optionName">
+                Select days
+              </div>
+              <ion-icon class="dropdownIcon" *ngIf="!expansions['dayOfWeek']" name="arrow-dropdown"></ion-icon>
+              <ion-icon class="dropdownIcon" *ngIf="expansions['dayOfWeek']" name="arrow-dropup"></ion-icon>
+            </div>
+            <ng-container *ngIf="expansions['dayOfWeek']">
+              <div *ngFor="let day of days">
+                <div class="fullSelect" (click)="changeVal('regular', 'dayOfWeek', day, true)">
+                  <ion-icon item-left color="primary" *ngIf="!isSelected('regular', 'dayOfWeek', day)" name="add-circle-outline"></ion-icon>
+                  <ion-icon item-left color="primary" *ngIf="isSelected('regular', 'dayOfWeek', day)" name="checkmark-circle"></ion-icon>
+                  {{day}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+          <div *ngIf="notificationData['regular']['timescale']==='Monthly'" class="selectText">on the</div>
+
+          <div *ngIf="notificationData['regular']['timescale']==='Monthly'">
+            <div class="fullSelect" (click)="expansions['dayOfMonth'] = !expansions['dayOfMonth'];">
+              <div  *ngIf="!expansions['dayOfMonth'] && notificationData['regular'].dayOfMonth?.length>0" class="optionName">
+                {{notificationData['regular'].dayOfMonth.join(", ")}}
+              </div>
+              <div  *ngIf="expansions['dayOfMonth']" class="optionName">
+                Select dates
+              </div>
+              <ion-icon class="dropdownIcon" *ngIf="!expansions['dayOfMonth']" name="arrow-dropdown"></ion-icon>
+              <ion-icon class="dropdownIcon" *ngIf="expansions['dayOfMonth']" name="arrow-dropup"></ion-icon>
+            </div>
+            <ng-container *ngIf="expansions['dayOfMonth']">
+              <div *ngFor="let date of dates">
+                <div class="fullSelect" (click)="changeVal('regular', 'dayOfMonth', date, true)">
+                  <ion-icon item-left color="primary" *ngIf="!isSelected('regular', 'dayOfMonth', date)" name="add-circle-outline"></ion-icon>
+                  <ion-icon item-left color="primary" *ngIf="isSelected('regular', 'dayOfMonth', date)" name="checkmark-circle"></ion-icon>
+                  {{date}}
+                </div>
+              </div>
+            </ng-container>
+          </div>
+
+
+        <div class="selectText">at</div>
+          <ion-item class="datePicker">
+            <ion-datetime displayFormat="h:mm a" pickerFormat="h:mm a" placeholder="Select Time" (ngModelChange)="dataChanged = true"
+                        [(ngModel)]="notificationData['regular']['timeOfDay']"></ion-datetime>
+          </ion-item>
+        </div>
+      </div>
+
+
+
 
     </ion-card-content>
   </ion-card>
@@ -58,21 +176,19 @@
       Cancel
     </button>
 
-    <button float-right ion-button [disabled]="!dataChanged" (click)="continue()">
+    <button float-right ion-button [disabled]="!dataChanged || !canContinue()" (click)="continue()">
       Save Changes
     </button>
 
   </ng-container>
 
 
-
-
-  <button float-right ion-button *ngIf="hasActiveGoals && !isModal" (click)="continue()">
-    <ng-container *ngIf="activeGoals['notifications']">Keep my current routine</ng-container>
-    <ng-container *ngIf="!activeGoals['notifications']">Continue</ng-container>
+  <button float-right ion-button *ngIf="hasActiveGoals && !isModal" [disabled]="!canContinue()" (click)="continue()">
+    <ng-container *ngIf="!dataChanged">Keep my current routine</ng-container>
+    <ng-container *ngIf="dataChanged">Continue</ng-container>
   </button>
 
-  <button float-right ion-button *ngIf="!hasActiveGoals && !isModal" (click)="continue()">
+  <button float-right ion-button *ngIf="!hasActiveGoals && !isModal" [disabled]="!canContinue()" (click)="continue()">
     Continue
   </button>
 

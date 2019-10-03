@@ -16,22 +16,16 @@ import { CouchDbServiceProvider } from '../providers/couch-db-service/couch-db-s
 import {GoalTypePage} from "../pages/addGoal/goal-type/goal-type";
 import {LoginPage} from "../pages/login/login";
 import { GoalDetailsServiceProvider } from '../providers/goal-details-service/goal-details-service';
-import {SelectSubgoalsPage} from "../pages/addGoal/select-subgoals/select-subgoals";
 import { GlobalFunctionsServiceProvider } from '../providers/global-functions-service/global-functions-service';
-import {EnterTextGoalPage} from "../pages/addGoal/enter-text-goal/enter-text-goal";
 import {DataConfigPage} from "../pages/addGoal/data-config/data-config";
 import { DataDetailsServiceProvider } from '../providers/data-details-service/data-details-service';
-import {AddCustomDataPage} from "../pages/addGoal/add-custom-data/add-custom-data";
 import {SelectTrackingFrequencyPage} from "../pages/addGoal/select-tracking-frequency/select-tracking-frequency";
-import {ConfigureNotificationsPage} from "../pages/addGoal/configure-notifications/configure-notifications";
 import {EditDataPage} from "../pages/addGoal/edit-data/edit-data";
-import {TrackDataPage} from "../pages/track-data/track-data";
 import {GoalModificationPage} from "../pages/goal-modification/goal-modification";
 import {TrackingModificationPage} from "../pages/tracking-modification/tracking-modification";
 import {DataCalendarPage} from "../pages/data-calendar/data-calendar";
 import {DataSummaryPage} from "../pages/data-summary/data-summary";
 import {FaqPage} from "../pages/faq/faq";
-import {UsedQuickTrackPage} from "../pages/used-quick-track/used-quick-track";
 import {BreakFromTrackingPage} from "../pages/break-from-tracking/break-from-tracking";
 import { GeneralInfoServiceProvider } from '../providers/general-info-service/general-info-service';
 import { DateFunctionServiceProvider } from '../providers/date-function-service/date-function-service';
@@ -45,21 +39,15 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     MyApp,
     HomePage,
     GoalTypePage,
-    SelectSubgoalsPage,
     LoginPage,
-    EnterTextGoalPage,
     DataConfigPage,
-    AddCustomDataPage,
     SelectTrackingFrequencyPage,
-    ConfigureNotificationsPage,
     EditDataPage,
-    TrackDataPage,
     GoalModificationPage,
     TrackingModificationPage,
     DataCalendarPage,
     DataSummaryPage,
     FaqPage,
-    UsedQuickTrackPage,
     BreakFromTrackingPage,
     ViewDatapointPage,
     DataVisPage,
@@ -78,20 +66,14 @@ import {DataElementTrackingComponent} from "../components/data-element-tracking/
     HomePage,
     GoalTypePage,
     LoginPage,
-    SelectSubgoalsPage,
-    EnterTextGoalPage,
     DataConfigPage,
-    AddCustomDataPage,
     SelectTrackingFrequencyPage,
-    ConfigureNotificationsPage,
     EditDataPage,
-    TrackDataPage,
     GoalModificationPage,
     TrackingModificationPage,
     DataCalendarPage,
     DataSummaryPage,
     FaqPage,
-    UsedQuickTrackPage,
     BreakFromTrackingPage,
     ViewDatapointPage,
     DataVisPage

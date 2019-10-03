@@ -22,6 +22,28 @@ $app-direction: ltr;
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/theming/overriding-ionic-variables/
 
+:root {
+  /* Set the background of the entire app */
+  --ion-background-color: #4a4a4a;
+
+  --placeholder-color: white;
+
+  --ion-text-color: #FFFFFF;
+
+  --input-config-background: #bdbdbd;
+  --input-config-text: black;
+  --input-placeholder-text:  #3B3B3B;
+
+  --blue-accent: #4A90E2;
+  --lighter-grey: #979797;
+  --sublist-color: #3B3B3B;
+
+
+  --green-text: #5aa35a;
+  --red-text: #b33636;
+
+}
+
 
 
 
@@ -34,11 +56,14 @@ $app-direction: ltr;
 // The "primary" color is the only required color in the map.
 
 $colors: (
-  primary:    #488aff,
+  primary:    #4A90E2,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222
+  dark:       #222,
+  base:       #4a4a4a,
+  midgrey:       #979797,
+  mutedPrimary: #c8ddf6,
 );
 
 
@@ -70,7 +95,30 @@ $colors: (
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import "ionic.theme.default";
+
+// see https://ionicframework.com/docs/v3/theming/overriding-ionic-variables/ to set!
+@import "ionic.theme.dark";
+$background-color: #4a4a4a;
+$card-ios-background-color: #4a4a4a;
+$action-sheet-md-title-color: #4a4a4a;
+$card-md-background-color: #4a4a4a;
+$card-wp-background-color: #4a4a4a;
+$list-background-color: #3B3B3B;
+$text-color:        #FFFFFF;
+$card-ios-text-color: #FFFFFF;
+$card-md-text-color: #FFFFFF;
+$card-wp-text-color: #FFFFFF;
+$card-ios-title-text-color: #FFFFFF;
+$card-md-title-text-color: #FFFFFF;
+$card-wp-title-text-color: #FFFFFF;
+//$button-ios-background-color: #4a4a4a;
+//$button-md-background-color: #4a4a4a;
+//$button-wp-background-color: #4a4a4a;
+//$font-size-base: 24px;
+$card-ios-header-font-size: 2rem;
+$card-ios-font-size: 1.5rem;
+$h3-font-size: 2rem;
+$h2-font-size:2rem;
 
 
 // Ionicons

@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-service";
+import * as moment from 'moment';
+import {DateFunctionServiceProvider} from "../../providers/date-function-service/date-function-service";
+import {Break} from "../../interfaces/customTypes";
 
 /**
  * Generated class for the BreakFromTrackingPage page.
@@ -15,46 +18,34 @@ import {CouchDbServiceProvider} from "../../providers/couch-db-service/couch-db-
 })
 export class BreakFromTrackingPage {
 
-  currentBreak : {[breakProps: string] : any};
-  currentBreakStarted : string;
-
-  selected : string = '';
-
-
-  dateToSnoozeTo : string;
-  dateToCheckIn : string;
-
-  reasonForBreak : string;
+  private currentBreak : Break;
+  private currentBreakStarted : string;
+  private selected : string = '';
+  private dateToSnoozeTo : string;
+  private dateToCheckIn : string;
+  private reasonForBreak : string;
+  private aboutExpanded : boolean = false;
+  private breakChanged : boolean = false;
+  private today : string = moment().toISOString();
+  private nextYear : string = moment().add(1, "year").toISOString();
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              public couchDBProvider: CouchDbServiceProvider) {
+              public couchDBProvider: CouchDbServiceProvider, private dateFuns: DateFunctionServiceProvider) {
   }
 
-  setDates(){
-    let today = new Date();
-    let monthFromNow;
-    if(today.getMonth() == 11) { // seriously??
-      monthFromNow = new Date(today.getFullYear() + 1, 0, today.getDate());
-    }
-    else {
-      monthFromNow = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
-    }
-    this.dateToCheckIn = monthFromNow.toISOString();
+  setSelected(val : string){
+    if(this.selected === val) this.selected = '';
+    else this.selected = val;
   }
 
-  getStartDate(){
-    let dateStarted = new Date(this.currentBreak.started);
-    this.currentBreakStarted = dateStarted.getMonth() + "/" + dateStarted.getDate()
-      + "/" + dateStarted.getFullYear();
-  }
 
   ionViewDidLoad() {
     this.currentBreak = this.couchDBProvider.getCurrentBreak();
     if(!this.currentBreak){
-      this.setDates();
+      this.dateToCheckIn = moment().add(1, "month").toISOString();
     }
     else{
-      this.getStartDate();
+      this.currentBreakStarted = this.dateFuns.dateToPrettyDate(this.currentBreak.started);
       this.dateToSnoozeTo = this.currentBreak.notifyDate;
       this.dateToCheckIn = this.currentBreak.dateToCheckIn;
     }
@@ -62,7 +53,7 @@ export class BreakFromTrackingPage {
 
   takeBrake(){
     //todo: push to couch, deal with notifications, etc
-    let newBreak = {};
+    let newBreak = {'started': new Date()};
     newBreak['reasonForBreak'] = this.reasonForBreak;
     if(this.selected==='Yes' && this.dateToSnoozeTo){
       newBreak['notifyDate'] = this.dateToSnoozeTo;
@@ -73,12 +64,10 @@ export class BreakFromTrackingPage {
     else{
       newBreak['noDates'] = true;
     }
-    newBreak['started'] = new Date();
-    console.log(newBreak);
     this.couchDBProvider.setBreak(newBreak);
     this.currentBreak = newBreak;
     this.dateToCheckIn = newBreak['checkInDate'];
-    this.getStartDate();
+    this.currentBreakStarted = this.dateFuns.dateToPrettyDate(this.currentBreak.started);
   }
 
   updateBreak(){
@@ -87,8 +76,9 @@ export class BreakFromTrackingPage {
       delete this.currentBreak['checkInDate'];
     }
     else{
-      this.currentBreak['checkInDate'] = this.dateToCheckIn
+      this.currentBreak['checkInDate'] = this.dateToCheckIn;
     }
+    this.breakChanged=false;
     this.couchDBProvider.updateBreak(this.currentBreak);
   }
 
@@ -99,7 +89,9 @@ export class BreakFromTrackingPage {
     this.currentBreak = undefined;
     this.dateToSnoozeTo = undefined;
     this.dateToCheckIn = undefined;
-    this.setDates();
+    this.selected = undefined;
+    this.reasonForBreak = undefined;
+    this.dateToCheckIn = moment().add(1, "month").toISOString();
   }
 
 }

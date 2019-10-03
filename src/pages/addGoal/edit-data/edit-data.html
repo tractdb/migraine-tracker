@@ -1,157 +1,155 @@
-<!--
-  Generated template for the EditDataPage page.
-
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
-<ion-header>
-
-  <ion-navbar>
-    <ion-title>View/Edit Data</ion-title>
-  </ion-navbar>
-
-</ion-header>
 
 
-<ion-content padding>
+<ion-card class="modal">
+  <ion-card-header *ngIf="isCustom">Custom {{dataType}} Data</ion-card-header>
+  <ion-card-header *ngIf="!isCustom">{{data.name}}</ion-card-header>
 
-  <h3>
-    {{data.name}} Details:
-  </h3>
-
-  <ion-card>
-    <ion-card-content>
-      <ion-list>
-
-        <ion-item text-wrap>
-          <ion-label>
-            <ion-text>
-              <h2>Name</h2>
-              <h3>{{data.name}}<span
-                *ngIf="data.explanation">: {{data.explanation}}</span><span
-                *ngIf="data.custom">: Custom data you configured</span></h3>
-            </ion-text>
-          </ion-label>
-        </ion-item>
-
-        <ion-item text-wrap *ngIf="data.recommendingGoal">
-          <ion-label>
-            <ion-text>
-              <h2>Recommended Because of Your Goals:</h2>
-              <h3 text-wrap *ngFor="let goal of data.recommendingGoal">{{goal}}</h3>
-            </ion-text>
-          </ion-label>
-        </ion-item>
-
-        <ion-item text-wrap *ngIf="data['significance']">
-          <ion-label>
-            <ion-text>
-              <h2>Significance to Migraine:</h2>
-              <h3 text-wrap>{{data['significance']}}</h3>
-            </ion-text>
-          </ion-label>
-        </ion-item>
+  <ion-card-content>
 
 
-        <ion-item text-wrap>
-          <ion-label>
-            <ion-text>
-              <h2>
-                Field:
-                <button *ngIf="!editField && !(data.field && data.field.includes('calculated'))" icon-only color="primary" item-right (click)="editData('field')">
-                  <ion-icon slot="icon-only" name="create"></ion-icon>
-                </button>
-              </h2>
-              <h3 text-wrap *ngIf="!editField">{{data.field}}<span *ngIf="data.fieldDescription">: {{data.fieldDescription}}</span></h3>
-            </ion-text>
-          </ion-label>
-        </ion-item>
-        <ion-item *ngIf="editField">
-          <ion-select [(ngModel)]="data.field" (ngModelChange)="editedField()">
-            <ion-option *ngFor="let field of fieldList"
-                        [value]="field['name']"
-                        [selected]="data.field === field['name']">
-              <p>{{field['name']}}:</p>
-              <p>{{field['explanation']}}</p></ion-option>
-          </ion-select>
-        </ion-item>
+    <div class="listElement" *ngIf="isCustom">
+      <h3>Name:</h3>
+      <ion-input class="inputText" type="text" [(ngModel)]="data.name" placeholder="Enter name"></ion-input>
+    </div>
+
+    <div class="listElement" *ngIf="!isNew">
+      <h3>Description:</h3>
+      <h2 *ngIf="!isCustom">{{data.explanation}}</h2>
+      <h2 *ngIf="isCustom">Custom data you configured</h2>
+    </div>
+
+    <div class="listElement" *ngIf="!isCustom && data.recommendingGoals">
+      <h3>Recommended based on your goals:</h3>
+      <h2 text-wrap *ngFor="let goal of goalList">{{goal}}</h2>
+    </div>
 
 
-        <ng-container *ngIf="allowsGoals &&
-                              (data.field !== undefined && data.field === 'binary' || data.field === 'number')">
+    <div class="listElement">
+    <h3>How you're tracking:</h3>
+      <div class="fullSelect">
+
+        <div class="selectOption">
+          <div class="optionHeader" (click)="expandField(data)">
+            <div class="optionName">{{data.field}}</div>
+            <ion-icon class="dropdownIcon" *ngIf="!fieldButtonsExpanded && !data.fieldSet" name="arrow-dropdown"></ion-icon>
+            <ion-icon class="dropdownIcon"  *ngIf="fieldButtonsExpanded && !data.fieldSet" name="arrow-dropup"></ion-icon>
+          </div>
+          <span *ngIf="fieldButtonsExpanded" class="optionDetails">
+            <span *ngIf="!data.recommendedField || data.field!==data.recommendedField">
+              {{data['fieldExplanation']}}
+            </span>
+            <span *ngIf="data.recommendedField && data.field===data.recommendedField">
+                  <div class="recommended">(recommended)</div>
+              {{data.fieldDescription}}
+                </span>
+          </span>
+        </div>
+
+        <ng-container *ngIf="fieldButtonsExpanded">
+          <ng-container *ngFor="let field of fieldList">
+            <ng-container *ngIf="(!data.fieldsAllowed) || (data.fieldsAllowed.indexOf(field.name) > -1)">
+              <div class="selectOption" *ngIf="field['name'] !== data.field" (click)="editedField(field)">
+                <div class="optionHeader">
+                  <div class="optionName">{{field['name']}}</div>
+                </div>
+                <div class="optionDetails">
+                  <span *ngIf="!data.recommendedField || field['name']!==data.recommendedField">
+                    {{field['explanation']}}
+                  </span>
+                  <span *ngIf="data.recommendedField && field['name']===data.recommendedField">
+                    <div class="recommended">(recommended)</div>
+                    {{data.fieldDescription}}
+                  </span>
+                </div>
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </div>
 
 
-          <ion-item text-wrap>
-            <ion-label>
-              <ion-text>
-                <h2>
-                  Goal/Limit (Optional):
-                  <button *ngIf="!editGoal" icon-only item-right (click)="editData('goal')">
-                    <ion-icon  slot="icon-only" name="create"></ion-icon>
-                  </button>
-                </h2>
-                <h3 text-wrap *ngIf="data.goal && !editGoal">
-                  <span text-lowercase>{{data.goal.freq}} than {{data.goal.threshold}} times per {{data.goal.timespan}}</span>
-                </h3>
-              </ion-text>
-            </ion-label>
-          </ion-item>
+    <div class="listElement" *ngIf="allowsGoals &&
+                          (data.field !== undefined && data.field === 'binary' || data.field === 'number')">
 
-          <ng-container *ngIf="editGoal">
-            <ion-item>
-              <ion-label>More or less</ion-label>
-              <ion-select [(ngModel)]="data.goal.freq" (ngModelChange)="editedField()">
-                <ion-option value="More" [selected]="data.goal && data.goal.freq === 'More'">
-                  More
-                </ion-option>
-                <ion-option value="Less" [selected]="data.goal && data.goal.freq === 'Less'">
-                  Less
-                </ion-option>
-              </ion-select>
-            </ion-item>
 
-            <ion-item>
-              <ion-label>than</ion-label>
-              <ion-input type="number" text-right
-                         [placeholder]="(data.goal && data.goal.threshold) ? data.goal.threshold : '---'"
-                         [(ngModel)]="data.goal.threshold" (ngModelChange)="editedField()"></ion-input>
-            </ion-item>
 
-            <ion-item>
-              <ion-label>times per</ion-label>
-              <ion-select [(ngModel)]="data.goal.timespan" (ngModelChange)="editedField()">
-                <ion-option *ngIf="data.field !== 'binary'"
-                            value="Day" [selected]="data.goal && data.goal.timespan === 'Day'">
-                  Day
-                </ion-option>
-                <ion-option value="Week" [selected]="data.goal && data.goal.timespan === 'Week'">
-                  Week
-                </ion-option>
-                <ion-option value="Month" [selected]="data.goal && data.goal.timespan === 'Month'">
-                  Month
-                </ion-option>
-              </ion-select>
-            </ion-item>
+    <h3>
+      Goal/Limit (Optional):
+    </h3>
+
+      <div class="selectOption goalSelects">
+
+        <div>
+          <div class="miniSelect" (click)="goalFreqExpanded = !goalFreqExpanded;">
+            <div class="optionName">{{data.goal.freq}}</div>
+            <ion-icon class="dropdownIcon" *ngIf="!goalFreqExpanded" name="arrow-dropdown"></ion-icon>
+            <ion-icon class="dropdownIcon" *ngIf="goalFreqExpanded" name="arrow-dropup"></ion-icon>
+          </div>
+          <ng-container *ngIf="goalFreqExpanded">
+            <div class="miniSelect" *ngIf="data.goal.freq!=='More'" (click)="editedGoal('freq', 'More')">
+              More
+            </div>
+            <div class="miniSelect" *ngIf="data.goal.freq!=='Less'" (click)="editedGoal('freq', 'Less')">
+              Less
+            </div>
+          </ng-container>
+        </div>
+
+        <div class="goalText">than</div>
+
+        <div>
+          <ion-input size="number" type="number" text-right class="textBox"  no-padding no-border
+          [placeholder]="(data.goal && data.goal.threshold) ? data.goal.threshold : '---'"
+          [(ngModel)]="data.goal.threshold" (ngModelChange)="somethingEdited=true;"></ion-input>
+        </div>
+
+        <div class="goalText">per</div>
+
+        <div>
+          <div class="miniSelect" (click)="goalTimeExpanded = !goalTimeExpanded;">
+            <div class="optionName">{{data.goal.timespan}}</div>
+            <ion-icon class="dropdownIcon" *ngIf="!goalTimeExpanded" name="arrow-dropdown"></ion-icon>
+            <ion-icon class="dropdownIcon" *ngIf="goalTimeExpanded" name="arrow-dropup"></ion-icon>
+          </div>
+
+          <ng-container *ngIf="goalTimeExpanded">
+            <div class="miniSelect" *ngIf="data.goal.timespan!=='Day'" (click)="editedGoal('timespan', 'Day')">
+              Day
+            </div>
+            <div class="miniSelect" *ngIf="data.goal.timespan!=='Week'" (click)="editedGoal('timespan', 'Week')">
+              Week
+            </div>
+            <div class="miniSelect" *ngIf="data.goal.timespan!=='Month'" (click)="editedGoal('timespan', 'Month')">
+              Month
+            </div>
           </ng-container>
 
-        </ng-container>
+        </div>
 
-      </ion-list>
-    </ion-card-content>
-  </ion-card>
+        <ion-icon class="removeGoal" color="primary" item-right name="close-circle-outline" (click)="editedGoal('remove')"></ion-icon>
+
+      </div>
+    </div>
 
 
-  <button float-left ion-button (click)="backToConfig('cancel')">
-    Cancel
-  </button>
 
-  <button *ngIf="!data.selected || somethingEdited" float-right ion-button (click)="backToConfig('add')">
-    <ng-container *ngIf="!data.selected">Add</ng-container>
-    <ng-container *ngIf="data.selected">Save</ng-container>
-  </button>
+    <button float-left ion-button (click)="backToConfig('cancel')">
+      Cancel
+    </button>
 
-  <button *ngIf="data.selected && !somethingEdited" float-right ion-button (click)="backToConfig('remove')">
-    Remove
-  </button>
+    <button *ngIf="!data.selected || somethingEdited" float-right ion-button
+            [disabled]="!data.name || !data.field || ((data.goal.timespan || data.goal.freq || data.goal.threshold) && !(data.goal.timespan && data.goal.freq && data.goal.threshold) )" (click)="backToConfig('add')">
+      <ng-container *ngIf="!data.selected">Add</ng-container>
+      <ng-container *ngIf="data.selected">Save</ng-container>
+    </button>
 
-</ion-content>
+    <button *ngIf="data.selected && !somethingEdited" float-right ion-button (click)="backToConfig('remove')">
+      Remove
+    </button>
+
+  </ion-card-content>
+
+</ion-card>
+
+

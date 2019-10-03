@@ -7,7 +7,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>Tracked Data</ion-title>
+    <ion-title>{{dataDict?.date}}</ion-title>
 
   </ion-navbar>
 
@@ -16,42 +16,62 @@
 
 <ion-content padding>
 
-  <h2>{{dataDict.date}}
-    <button *ngIf="!edit" icon-only item-right (click)="startEditing()">
-      <ion-icon  slot="icon-only" name="create"></ion-icon>
-    </button>
-  </h2>
-
   <ion-card *ngFor="let dataType of dataTypes">
-    <ion-card-header text-wrap>
-      {{displayNames[dataType]}} Tracked
+
+
+    <ion-card-header text-wrap class="cardHeader" text-wrap (click)="this.edit[dataType] = !this.edit[dataType]" >
+      <ion-item class="headerItem">
+        <span>{{dataType}} Data</span>
+        <ion-icon *ngIf="!edit[dataType]" class="headerIcon" item-right color="primary" name="create"></ion-icon>
+        <ion-icon *ngIf="edit[dataType]" class="headerIcon" item-right color="primary" name="checkbox-outline"></ion-icon>
+      </ion-item>
     </ion-card-header>
+
+
     <ion-card-content>
+
       <ion-list *ngFor="let item of dataDict[dataType]['dataArray']">
-        <ion-item>
-          <ion-label>
+        <ion-item *ngIf="!edit[dataType]">
+          <ion-label text-wrap>
             <p *ngIf="!item.value">{{item.data.name}} (not tracked)</p>
-            <h3 *ngIf="item.value && !item.isDuration">{{item.data.name}}: {{item.value}}</h3>
-            <h3 *ngIf="item.value && item.isDuration">{{item.data.name}}: {{item.value.start}} - {{item.value.end}}</h3>
+            <h3 *ngIf="item.value">{{item.data.name}}:</h3>
+            <div *ngIf="item.value && !item.isDuration">{{item.value}}</div>
+            <div *ngIf="item.value && item.isDuration"> {{item.value.start}} - {{item.value.end}}</div>
           </ion-label>
         </ion-item>
 
+        <ng-container  *ngIf="edit[dataType]">
+          <div class="dataName">{{item.data.name}}</div>
+          <data-element-tracking *ngIf="!item.isDuration" [data]="item.data" [dataVal]="item.value"
+                                 (valueChanged) = 'changeVals($event, dataType, item)'>
+          </data-element-tracking>
 
-        <data-element-tracking *ngIf="edit && !item.isDuration" [data]="item.data" [dataVal]="item.value"
-                               (valueChanged) = 'changeVals($event, dataType, item)'>
-        </data-element-tracking>
+          <data-element-tracking *ngIf="item.isDuration" [data]="item.data"  [dataStart]="item.value.start"
+                                 [dataEnd]="item.value.end" (valueChanged) = 'changeVals($event, dataType, item)'>
+          </data-element-tracking>
+        </ng-container>
 
-        <data-element-tracking *ngIf="edit && item.isDuration" [data]="item.data"  [dataStart]="item.value.start"
-                               [dataEnd]="item.value.end" (valueChanged) = 'changeVals($event, dataType, item)'>
-        </data-element-tracking>
+
 
       </ion-list>
+
     </ion-card-content>
   </ion-card>
 
 
-  <h4 *ngIf="dataDict['dateChanged'] && dataDict['dateChanged'].length > 0">Data Edited:</h4>
-  <p *ngFor="let change of dataDict['dateChanged']">{{dateFunctions.dateToPrettyDate(change)}}</p>
+  <ion-card *ngIf="dataDict['dateChanged'] && dataDict['dateChanged'].length > 0">
+    <ion-card-header text-wrap class="cardHeader" text-wrap >
+        <span>Dates Edited:</span>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-list *ngFor="let change of dataDict['dateChanged']">
+        <ion-item>
+          {{dateFunctions.dateToPrettyDate(change)}}
+        </ion-item>
+      </ion-list>
+    </ion-card-content>
+  </ion-card>
 
   <button ion-button float-right (click)="closeModal()">Done</button>
 

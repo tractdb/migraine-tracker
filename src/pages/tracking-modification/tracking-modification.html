@@ -19,36 +19,30 @@
 <ion-content padding>
 
   <ion-card *ngFor="let dataType of allDataTypes">
-    <ion-card-header text-wrap>
-      Current {{displayNames[dataType]}}
+    <ion-card-header text-wrap (click)="modifyDatatypeRoutine(dataType)" >
+      <ion-item class="headerItem">
+        <span>Current {{displayNames[dataType]}} Data</span>
+        <ion-icon class="headerIcon" item-right color="primary" name="create"></ion-icon>
+      </ion-item>
     </ion-card-header>
     <ion-card-content>
-      <ion-list *ngFor="let data of currentData[dataType]">
-        <ion-item-sliding>
-          <ion-item (click)="editData(data, dataType)">
-            <ion-label>{{data.name}}</ion-label>
-          </ion-item>
-          <ion-item-options>
-            <ion-item-option icon-only color="primary" (click)="editData(data, dataType)">
-              <ion-icon class="adjust"  slot="icon-only" name="create"></ion-icon>
-            </ion-item-option>
-            <ion-item-option color="danger" icon-only (click)="removeData(data, dataType)">
-              <ion-icon class="adjust" slot="icon-only" name="trash"></ion-icon>
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+      <ion-list>
+        <ion-item *ngFor="let data of currentData[dataType]" text-wrap>
+          {{data.name}}
+        </ion-item>
       </ion-list>
-      <button class="button" ion-button full icon-start (click)="addData(dataType)">
-        <ion-icon name="add-circle"></ion-icon>
-        Add {{displayNames[dataType]}}
-      </button>
     </ion-card-content>
   </ion-card>
 
   <ion-card>
-    <ion-card-header text-wrap>
-      Current Frequency
+
+    <ion-card-header class="cardHeader" text-wrap (click)="changeFreq(dataType)" >
+      <ion-item class="headerItem">
+        <span>Current Frequency</span>
+        <ion-icon class="headerIcon" item-right color="primary" name="create"></ion-icon>
+      </ion-item>
     </ion-card-header>
+
     <ion-card-content *ngIf="notifications['regular']">
       You are currently receiving notifications
       <span text-lowercase>{{notifications['regular'].timescale}}</span>,
@@ -75,10 +69,6 @@
       *ngIf="notifications['retroactive'].delayNum > 1">s</span> after indicating symptoms.
     </ion-card-content>
 
-    <button class="button" ion-button full icon-start (click)="changeFreq()">
-      <ion-icon name="create"></ion-icon>
-      Change tracking frequency
-    </button>
   </ion-card>
 
 </ion-content>

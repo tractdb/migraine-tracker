@@ -1,10 +1,54 @@
 page-home {
 
+
+  .dataInfo{
+    padding-bottom: 2em;
+  }
+
+  .dataExamples{
+    color: var(--lighter-grey);
+    font-size: 1.5rem;
+    max-height: 1.5em;
+    text-transform: lowercase;
+    overflow: hidden;
+    text-overflow: ellipsis !important;
+    max-width: 85%;
+  }
+
+  .dataName{
+    font-size: 1.9rem !important;
+  }
+
+
+  .goalDiv{
+    font-style: italic;
+    padding-left:0.1em;
+    font-size: 1.7rem;
+  }
+
+  .trackingHeader{
+    font-size: 2.1rem;
+  }
+
+  .goalMet{
+    color: var(--green-text);
+  }
+
+  .overGoal{
+    color: var(--red-text)
+  }
+
+  .goalOK{
+    color: var(--blue-accent)
+  }
+
+  .button {z-index: 9999}
+
+  .quickTrackerButton{
+    height: 25vh;
+    display: inline-block
+  }
+
+
 }
 
-.button {z-index: 9999}
-
-.quickTrackerButton{
-  height: 25vh;
-  display: inline-block
-}
